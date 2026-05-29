@@ -65,6 +65,8 @@ foreach ( array(
     'class-aatg-generator.php',
     'class-aatg-rest-api.php',
     'class-aatg-settings.php',
+    'class-aatg-media.php',
+    'class-aatg-plugin.php',
 ) as $file ) {
     if ( file_exists( $includes . $file ) ) {
         require_once $includes . $file;
