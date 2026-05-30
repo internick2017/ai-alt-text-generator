@@ -28,10 +28,17 @@
 				data: { image_id: imageId },
 			} );
 
-			// Update the alt text field in the same panel if present.
-			const field = document.getElementById( 'attachments-' + imageId + '-alt' );
+			// Update the alt text field — IDs differ by context:
+			// - upload.php grid modal:  attachment-details-two-column-alt-text
+			// - Insert Media modal:     attachment-details-alt-text
+			// - Classic/form fallback:  attachments-{id}-alt
+			const field =
+				document.getElementById( 'attachment-details-two-column-alt-text' ) ||
+				document.getElementById( 'attachment-details-alt-text' ) ||
+				document.getElementById( 'attachments-' + imageId + '-alt' );
 			if ( field ) {
 				field.value = res.alt_text;
+				field.dispatchEvent( new Event( 'input', { bubbles: true } ) );
 				field.dispatchEvent( new Event( 'change', { bubbles: true } ) );
 			}
 			showMessage( btn, '✓ ' + res.alt_text, 'ok' );
