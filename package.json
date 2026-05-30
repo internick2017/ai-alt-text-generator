@@ -1,0 +1,14 @@
+{
+  "name": "ai-alt-text-generator",
+  "version": "1.1.0",
+  "description": "Block editor integration for AI Alt Text Generator.",
+  "license": "GPL-2.0-or-later",
+  "private": true,
+  "scripts": {
+    "build": "wp-scripts build src/block-editor/index.js --output-path=build",
+    "start": "wp-scripts start src/block-editor/index.js --output-path=build"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^30.0.0"
+  }
+}

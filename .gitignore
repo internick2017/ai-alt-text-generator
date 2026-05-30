@@ -1,5 +1,8 @@
 /vendor/
 /node_modules/
-/build/
 .phpunit.result.cache
 .DS_Store
+
+# build/ is committed: the compiled block-editor JS ships with the plugin so it
+# works on clone/install without a Node build step.
+.gstack/

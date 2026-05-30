@@ -95,7 +95,7 @@ const withAltTextGenerator = createHigherOrderComponent( ( BlockEdit ) => {
 			<>
 				<BlockEdit { ...props } />
 				{ props.isSelected && (
-					<InspectorControls>
+					<InspectorControls group="content">
 						<AltTextGenerator
 							attributes={ props.attributes }
 							setAttributes={ props.setAttributes }

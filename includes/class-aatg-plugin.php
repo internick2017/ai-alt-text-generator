@@ -64,6 +64,7 @@ class AATG_Plugin {
             $admin = new AATG_Admin();
             add_action( 'admin_menu', array( $admin, 'register_menus' ) );
             add_action( 'admin_enqueue_scripts', array( $admin, 'enqueue_assets' ) );
+            add_action( 'enqueue_block_editor_assets', array( $admin, 'enqueue_block_editor' ) );
         }
         if ( class_exists( 'AATG_Media' ) ) {
             $media = new AATG_Media();
