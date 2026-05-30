@@ -19,6 +19,7 @@
 		const original = btn.textContent;
 		btn.disabled = true;
 		btn.textContent = '…';
+		showMessage( btn, '', '' ); // clear any previous message
 
 		try {
 			const res = await wp.apiFetch( {
@@ -33,15 +34,38 @@
 				field.value = res.alt_text;
 				field.dispatchEvent( new Event( 'change', { bubbles: true } ) );
 			}
-			btn.textContent = '✓';
+			showMessage( btn, '✓ ' + res.alt_text, 'ok' );
 		} catch ( e ) {
-			btn.textContent = '✗';
-			window.console.error( 'AATG:', e.message || e );
+			// Surface the real error message (e.g. OpenAI quota) to the user.
+			const msg = ( e && e.message ) ? e.message : 'Generation failed.';
+			showMessage( btn, '⚠ ' + msg, 'err' );
 		} finally {
-			setTimeout( function () {
-				btn.disabled = false;
-				btn.textContent = original;
-			}, 1500 );
+			btn.disabled = false;
+			btn.textContent = original;
 		}
 	} );
+
+	/**
+	 * Show a status message in a div right after the button.
+	 * type: 'ok' (green) | 'err' (red) | '' (clear).
+	 */
+	function showMessage( btn, text, type ) {
+		let box = btn.parentNode.querySelector( '.aatg-message' );
+		if ( ! text ) {
+			if ( box ) {
+				box.remove();
+			}
+			return;
+		}
+		if ( ! box ) {
+			box = document.createElement( 'p' );
+			box.className = 'aatg-message';
+			box.style.margin = '6px 0 0';
+			box.style.fontSize = '12px';
+			box.style.lineHeight = '1.4';
+			btn.parentNode.appendChild( box );
+		}
+		box.textContent = text;
+		box.style.color = type === 'err' ? '#cf222e' : '#1a7f37';
+	}
 } )();

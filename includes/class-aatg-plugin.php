@@ -35,6 +35,7 @@ class AATG_Plugin {
         if ( ! defined( 'AATG_PLUGIN_DIR' ) ) {
             return; // In unit tests the classes are already loaded by bootstrap.php.
         }
+        require_once AATG_PLUGIN_DIR . 'includes/class-aatg-image.php';
         require_once AATG_PLUGIN_DIR . 'includes/class-aatg-openai.php';
         require_once AATG_PLUGIN_DIR . 'includes/class-aatg-ai-provider.php';
         require_once AATG_PLUGIN_DIR . 'includes/class-aatg-generator.php';

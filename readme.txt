@@ -3,7 +3,7 @@ Contributors: internick2017
 Tags: alt text, accessibility, seo, ai, openai
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -44,10 +44,19 @@ With gpt-4o-mini, roughly $0.001 per image.
 
 == Changelog ==
 
+= 1.0.1 =
+* Images are now sent to the AI as base64 data URIs instead of public URLs, so
+  generation works on localhost, behind authentication, and on firewalled sites.
+* The Media Library button now shows the result (or the error message) inline.
+
 = 1.0.0 =
 * Initial release: settings, media button, bulk generator, REST API.
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Improves reliability: images are sent directly to the AI, working on local and
+private sites. Errors are now shown clearly in the Media Library.
 
 = 1.0.0 =
 Initial release.

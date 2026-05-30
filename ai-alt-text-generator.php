@@ -3,7 +3,7 @@
  * Plugin Name:       AI Alt Text Generator
  * Plugin URI:        https://nickgranados.com/plugins/ai-alt-text-generator
  * Description:       Automatically generate descriptive alt text for images using AI. Supports WordPress 7.0 AI Connectors and OpenAI API for older versions.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Nick Granados
  * Author URI:        https://nickgranados.com
  * License:           GPL-2.0-or-later
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-define( 'AATG_VERSION', '1.0.0' );
+define( 'AATG_VERSION', '1.0.1' );
 define( 'AATG_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AATG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'AATG_PLUGIN_FILE', __FILE__ );

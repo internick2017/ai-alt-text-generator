@@ -60,6 +60,7 @@ if ( ! class_exists( 'WP_REST_Server' ) ) {
 // --- Load the plugin classes under test ---
 $includes = __DIR__ . '/../includes/';
 foreach ( array(
+    'class-aatg-image.php',
     'class-aatg-openai.php',
     'class-aatg-ai-provider.php',
     'class-aatg-generator.php',
