@@ -32,7 +32,7 @@ final class ImageTest extends TestCase {
 
     public function test_path_to_data_uri_reads_real_file() {
         // Write a tiny temp file and confirm it gets encoded.
-        $tmp = sys_get_temp_dir() . '/aatg-test-pixel.png';
+        $tmp = sys_get_temp_dir() . '/sag-test-pixel.png';
         file_put_contents( $tmp, 'PNGDATA' );
 
         $img = new \SAG_Image();
@@ -53,7 +53,7 @@ final class ImageTest extends TestCase {
     }
 
     public function test_path_to_data_uri_unsupported_type_returns_error() {
-        $tmp = sys_get_temp_dir() . '/aatg-test-file.txt';
+        $tmp = sys_get_temp_dir() . '/sag-test-file.txt';
         file_put_contents( $tmp, 'hello' );
 
         $img    = new \SAG_Image();
