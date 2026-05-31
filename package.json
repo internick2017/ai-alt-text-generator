@@ -1,7 +1,7 @@
 {
-  "name": "ai-alt-text-generator",
+  "name": "smart-alt-generator",
   "version": "1.1.0",
-  "description": "Block editor integration for AI Alt Text Generator.",
+  "description": "Block editor integration for Smart Alt Generator.",
   "license": "GPL-2.0-or-later",
   "private": true,
   "scripts": {

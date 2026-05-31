@@ -38,20 +38,20 @@ function AltTextGenerator( { attributes, setAttributes } ) {
 
 		try {
 			const res = await apiFetch( {
-				path: '/ai-alt-text/v1/generate',
+				path: '/smart-alt/v1/generate',
 				method: 'POST',
 				data,
 			} );
 			setAttributes( { alt: res.alt_text } );
 		} catch ( e ) {
-			setError( e && e.message ? e.message : __( 'Generation failed.', 'ai-alt-text-generator' ) );
+			setError( e && e.message ? e.message : __( 'Generation failed.', 'smart-alt-generator' ) );
 		} finally {
 			setLoading( false );
 		}
 	};
 
 	return (
-		<PanelBody title={ __( 'AI Alt Text', 'ai-alt-text-generator' ) } initialOpen={ true }>
+		<PanelBody title={ __( 'AI Alt Text', 'smart-alt-generator' ) } initialOpen={ true }>
 			<Button
 				variant="primary"
 				onClick={ handleGenerate }
@@ -61,10 +61,10 @@ function AltTextGenerator( { attributes, setAttributes } ) {
 				{ loading ? (
 					<>
 						<Spinner />
-						{ __( 'Generating…', 'ai-alt-text-generator' ) }
+						{ __( 'Generating…', 'smart-alt-generator' ) }
 					</>
 				) : (
-					__( '⚡ Generate with AI', 'ai-alt-text-generator' )
+					__( '⚡ Generate with AI', 'smart-alt-generator' )
 				) }
 			</Button>
 
@@ -109,6 +109,6 @@ const withAltTextGenerator = createHigherOrderComponent( ( BlockEdit ) => {
 
 addFilter(
 	'editor.BlockEdit',
-	'ai-alt-text-generator/with-image-controls',
+	'smart-alt-generator/with-image-controls',
 	withAltTextGenerator
 );

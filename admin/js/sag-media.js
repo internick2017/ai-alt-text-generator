@@ -5,7 +5,7 @@
  */
 ( function () {
 	document.addEventListener( 'click', async function ( event ) {
-		const btn = event.target.closest( '.aatg-generate-btn' );
+		const btn = event.target.closest( '.sag-generate-btn' );
 		if ( ! btn ) {
 			return;
 		}
@@ -23,7 +23,7 @@
 
 		try {
 			const res = await wp.apiFetch( {
-				path: '/ai-alt-text/v1/generate',
+				path: '/smart-alt/v1/generate',
 				method: 'POST',
 				data: { image_id: imageId },
 			} );
@@ -57,7 +57,7 @@
 	 * type: 'ok' (green) | 'err' (red) | '' (clear).
 	 */
 	function showMessage( btn, text, type ) {
-		let box = btn.parentNode.querySelector( '.aatg-message' );
+		let box = btn.parentNode.querySelector( '.sag-message' );
 		if ( ! text ) {
 			if ( box ) {
 				box.remove();
@@ -66,7 +66,7 @@
 		}
 		if ( ! box ) {
 			box = document.createElement( 'p' );
-			box.className = 'aatg-message';
+			box.className = 'sag-message';
 			box.style.margin = '6px 0 0';
 			box.style.fontSize = '12px';
 			box.style.lineHeight = '1.4';

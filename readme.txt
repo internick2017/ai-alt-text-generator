@@ -1,9 +1,9 @@
-=== AI Alt Text Generator ===
+=== Smart Alt Generator ===
 Contributors: internick2017
 Tags: alt text, accessibility, seo, ai, openai
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 1.0.1
+Stable tag: 1.1.1
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -29,7 +29,7 @@ uses your configured AI Connectors automatically.
 
 == Installation ==
 
-1. Upload the plugin to `/wp-content/plugins/ai-alt-text-generator`.
+1. Upload the plugin to `/wp-content/plugins/smart-alt-generator`.
 2. Activate it through the Plugins screen.
 3. (WP 6.x only) Go to Settings -> AI Alt Text and enter your OpenAI API key.
 4. Go to Media -> Bulk Alt Text to process existing images.

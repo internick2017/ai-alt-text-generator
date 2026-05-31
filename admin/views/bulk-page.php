@@ -3,7 +3,7 @@
  * Bulk generator page. Lists attachments missing alt text and lets the user
  * generate for all of them. Processing happens client-side via the REST API.
  *
- * @package AI_Alt_Text_Generator
+ * @package Smart_Alt_Generator
  */
 
 if ( ! defined( 'WPINC' ) ) {
@@ -11,7 +11,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Query images with empty or missing alt text.
-$aatg_query = new WP_Query(
+$sag_query = new WP_Query(
     array(
         'post_type'      => 'attachment',
         'post_mime_type' => 'image',
@@ -25,33 +25,33 @@ $aatg_query = new WP_Query(
     )
 );
 
-$aatg_ids = wp_list_pluck( $aatg_query->posts, 'ID' );
+$sag_ids = wp_list_pluck( $sag_query->posts, 'ID' );
 ?>
-<div class="wrap aatg-bulk">
-    <h1><?php esc_html_e( 'Bulk Alt Text Generator', 'ai-alt-text-generator' ); ?></h1>
+<div class="wrap sag-bulk">
+    <h1><?php esc_html_e( 'Bulk Alt Text Generator', 'smart-alt-generator' ); ?></h1>
 
     <p>
         <?php
         printf(
             /* translators: %d is the number of images. */
-            esc_html( _n( '%d image is missing alt text.', '%d images are missing alt text.', count( $aatg_ids ), 'ai-alt-text-generator' ) ),
-            count( $aatg_ids )
+            esc_html( _n( '%d image is missing alt text.', '%d images are missing alt text.', count( $sag_ids ), 'smart-alt-generator' ) ),
+            count( $sag_ids )
         );
         ?>
     </p>
 
-    <?php if ( ! empty( $aatg_ids ) ) : ?>
-        <button type="button" class="button button-primary" id="aatg-start"
-                data-ids="<?php echo esc_attr( wp_json_encode( $aatg_ids ) ); ?>">
-            <?php esc_html_e( 'Generate All', 'ai-alt-text-generator' ); ?>
+    <?php if ( ! empty( $sag_ids ) ) : ?>
+        <button type="button" class="button button-primary" id="sag-start"
+                data-ids="<?php echo esc_attr( wp_json_encode( $sag_ids ) ); ?>">
+            <?php esc_html_e( 'Generate All', 'smart-alt-generator' ); ?>
         </button>
 
-        <div class="aatg-progress-wrap" style="display:none;">
-            <div class="aatg-progress-bar"><span id="aatg-progress-fill"></span></div>
-            <p id="aatg-progress-text"></p>
+        <div class="sag-progress-wrap" style="display:none;">
+            <div class="sag-progress-bar"><span id="sag-progress-fill"></span></div>
+            <p id="sag-progress-text"></p>
         </div>
-        <ul id="aatg-log" class="aatg-log"></ul>
+        <ul id="sag-log" class="sag-log"></ul>
     <?php else : ?>
-        <p><?php esc_html_e( 'All your images already have alt text. ', 'ai-alt-text-generator' ); ?></p>
+        <p><?php esc_html_e( 'All your images already have alt text. ', 'smart-alt-generator' ); ?></p>
     <?php endif; ?>
 </div>

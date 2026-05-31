@@ -3,7 +3,7 @@
  * updating a progress bar. Uses wp.apiFetch (handles the nonce automatically).
  */
 ( function () {
-	const startBtn = document.getElementById( 'aatg-start' );
+	const startBtn = document.getElementById( 'sag-start' );
 	if ( ! startBtn ) {
 		return;
 	}
@@ -16,17 +16,17 @@
 		}
 
 		startBtn.disabled = true;
-		document.querySelector( '.aatg-progress-wrap' ).style.display = 'block';
+		document.querySelector( '.sag-progress-wrap' ).style.display = 'block';
 
-		const fill = document.getElementById( 'aatg-progress-fill' );
-		const text = document.getElementById( 'aatg-progress-text' );
-		const log = document.getElementById( 'aatg-log' );
+		const fill = document.getElementById( 'sag-progress-fill' );
+		const text = document.getElementById( 'sag-progress-text' );
+		const log = document.getElementById( 'sag-log' );
 
 		let done = 0;
 		for ( const id of ids ) {
 			try {
 				const res = await wp.apiFetch( {
-					path: '/ai-alt-text/v1/generate',
+					path: '/smart-alt/v1/generate',
 					method: 'POST',
 					data: { image_id: id },
 				} );
@@ -46,7 +46,7 @@
 	function addLog( log, message, ok ) {
 		const li = document.createElement( 'li' );
 		li.textContent = ( ok ? '✓ ' : '✗ ' ) + message;
-		li.className = ok ? 'aatg-ok' : 'aatg-err';
+		li.className = ok ? 'sag-ok' : 'sag-err';
 		log.appendChild( li );
 	}
 } )();

@@ -1,5 +1,5 @@
 {
-  "name": "nickgranados/ai-alt-text-generator",
+  "name": "nickgranados/smart-alt-generator",
   "description": "Automatically generate descriptive alt text for images using AI.",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
