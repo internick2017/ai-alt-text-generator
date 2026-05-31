@@ -1,5 +1,5 @@
 <?php
-namespace AATG\Tests;
+namespace SAG\Tests;
 
 use Brain\Monkey\Functions;
 
@@ -31,7 +31,7 @@ final class GeneratorTest extends TestCase {
             public function generate( $img, $lang ) { $this->received_image = $img; return 'A red apple.'; }
         };
 
-        $generator = new \AATG_Generator( $provider, $image );
+        $generator = new \SAG_Generator( $provider, $image );
         $result    = $generator->generate_for_image( 123 );
 
         $this->assertSame( 'A red apple.', $result );
@@ -44,11 +44,11 @@ final class GeneratorTest extends TestCase {
 
         $image     = new class { public function path_to_data_uri( $p ) { return 'x'; } };
         $provider  = new class { public function generate( $i, $l ) { return 'x'; } };
-        $generator = new \AATG_Generator( $provider, $image );
+        $generator = new \SAG_Generator( $provider, $image );
         $result    = $generator->generate_for_image( 999 );
 
         $this->assertInstanceOf( \WP_Error::class, $result );
-        $this->assertSame( 'aatg_invalid_image', $result->get_error_code() );
+        $this->assertSame( 'sag_invalid_image', $result->get_error_code() );
     }
 
     public function test_generate_for_image_propagates_image_error() {
@@ -57,15 +57,15 @@ final class GeneratorTest extends TestCase {
         // Image helper returns a WP_Error (e.g. unsupported type).
         $image = new class {
             public function path_to_data_uri( $p ) {
-                return new \WP_Error( 'aatg_image_type', 'Unsupported image type.' );
+                return new \WP_Error( 'sag_image_type', 'Unsupported image type.' );
             }
         };
         $provider  = new class { public function generate( $i, $l ) { return 'should not run'; } };
-        $generator = new \AATG_Generator( $provider, $image );
+        $generator = new \SAG_Generator( $provider, $image );
         $result    = $generator->generate_for_image( 5 );
 
         $this->assertInstanceOf( \WP_Error::class, $result );
-        $this->assertSame( 'aatg_image_type', $result->get_error_code() );
+        $this->assertSame( 'sag_image_type', $result->get_error_code() );
     }
 
     public function test_generate_for_url_downloads_and_sends_data_uri() {
@@ -79,7 +79,7 @@ final class GeneratorTest extends TestCase {
             public function generate( $img, $lang ) { $this->received_image = $img; return 'A cat.'; }
         };
 
-        $generator = new \AATG_Generator( $provider, $image );
+        $generator = new \SAG_Generator( $provider, $image );
         $result    = $generator->generate_for_url( 'https://x/cat.png' );
 
         $this->assertSame( 'A cat.', $result );

@@ -6,14 +6,14 @@
  * direct OpenAI client. The backend is injectable so both paths are testable;
  * passing null auto-detects based on WordPress capabilities.
  *
- * @package AI_Alt_Text_Generator
+ * @package Smart_Alt_Generator
  */
 
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class AATG_AI_Provider {
+class SAG_AI_Provider {
 
     /** @var string 'wp_connector'|'openai' */
     private $backend;
@@ -43,16 +43,16 @@ class AATG_AI_Provider {
      */
     public function build_prompt( $language ) {
         $lang = ( 'auto' === $language )
-            ? __( 'Use the same language as the website.', 'ai-alt-text-generator' )
+            ? __( 'Use the same language as the website.', 'smart-alt-generator' )
             : sprintf(
                 /* translators: %s is a language name. */
-                __( 'Write the alt text in %s.', 'ai-alt-text-generator' ),
+                __( 'Write the alt text in %s.', 'smart-alt-generator' ),
                 $language
             );
 
         return sprintf(
             /* translators: %s is the language instruction. */
-            __( 'Generate a concise, descriptive alt text for this image. Maximum 125 characters. %s Return only the alt text, no quotes.', 'ai-alt-text-generator' ),
+            __( 'Generate a concise, descriptive alt text for this image. Maximum 125 characters. %s Return only the alt text, no quotes.', 'smart-alt-generator' ),
             $lang
         );
     }
@@ -75,7 +75,7 @@ class AATG_AI_Provider {
 
     /** WP 6.x path. */
     private function generate_via_openai( $image_url, $prompt ) {
-        $client = new AATG_OpenAI();
+        $client = new SAG_OpenAI();
         return $client->request( $image_url, $prompt );
     }
 

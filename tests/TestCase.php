@@ -1,5 +1,5 @@
 <?php
-namespace AATG\Tests;
+namespace SAG\Tests;
 
 use Brain\Monkey;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase as PolyfillTestCase;

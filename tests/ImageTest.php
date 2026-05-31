@@ -1,5 +1,5 @@
 <?php
-namespace AATG\Tests;
+namespace SAG\Tests;
 
 use Brain\Monkey\Functions;
 
@@ -11,7 +11,7 @@ final class ImageTest extends TestCase {
     }
 
     public function test_mime_from_path_known_extensions() {
-        $img = new \AATG_Image();
+        $img = new \SAG_Image();
         $this->assertSame( 'image/jpeg', $img->mime_from_path( '/x/photo.jpg' ) );
         $this->assertSame( 'image/jpeg', $img->mime_from_path( '/x/photo.JPEG' ) );
         $this->assertSame( 'image/png', $img->mime_from_path( '/x/photo.png' ) );
@@ -19,12 +19,12 @@ final class ImageTest extends TestCase {
     }
 
     public function test_mime_from_path_unknown_returns_empty() {
-        $img = new \AATG_Image();
+        $img = new \SAG_Image();
         $this->assertSame( '', $img->mime_from_path( '/x/file.txt' ) );
     }
 
     public function test_build_data_uri_format() {
-        $img = new \AATG_Image();
+        $img = new \SAG_Image();
         $uri = $img->build_data_uri( 'HELLO', 'image/png' );
         // base64 of "HELLO" is SEVMTE8=
         $this->assertSame( 'data:image/png;base64,SEVMTE8=', $uri );
@@ -35,7 +35,7 @@ final class ImageTest extends TestCase {
         $tmp = sys_get_temp_dir() . '/aatg-test-pixel.png';
         file_put_contents( $tmp, 'PNGDATA' );
 
-        $img = new \AATG_Image();
+        $img = new \SAG_Image();
         $uri = $img->path_to_data_uri( $tmp );
 
         $this->assertStringStartsWith( 'data:image/png;base64,', $uri );
@@ -45,22 +45,22 @@ final class ImageTest extends TestCase {
     }
 
     public function test_path_to_data_uri_missing_file_returns_error() {
-        $img    = new \AATG_Image();
+        $img    = new \SAG_Image();
         $result = $img->path_to_data_uri( '/nope/missing.png' );
 
         $this->assertInstanceOf( \WP_Error::class, $result );
-        $this->assertSame( 'aatg_image_unreadable', $result->get_error_code() );
+        $this->assertSame( 'sag_image_unreadable', $result->get_error_code() );
     }
 
     public function test_path_to_data_uri_unsupported_type_returns_error() {
         $tmp = sys_get_temp_dir() . '/aatg-test-file.txt';
         file_put_contents( $tmp, 'hello' );
 
-        $img    = new \AATG_Image();
+        $img    = new \SAG_Image();
         $result = $img->path_to_data_uri( $tmp );
 
         $this->assertInstanceOf( \WP_Error::class, $result );
-        $this->assertSame( 'aatg_image_type', $result->get_error_code() );
+        $this->assertSame( 'sag_image_type', $result->get_error_code() );
 
         unlink( $tmp );
     }

@@ -2,14 +2,14 @@
 /**
  * OpenAI API client. Used on WordPress < 7.0 (no native AI Connectors).
  *
- * @package AI_Alt_Text_Generator
+ * @package Smart_Alt_Generator
  */
 
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class AATG_OpenAI {
+class SAG_OpenAI {
 
     const ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 
@@ -47,11 +47,11 @@ class AATG_OpenAI {
      */
     public function parse_response( $data ) {
         if ( isset( $data['error']['message'] ) ) {
-            return new WP_Error( 'aatg_openai_error', $data['error']['message'] );
+            return new WP_Error( 'sag_openai_error', $data['error']['message'] );
         }
         $text = $data['choices'][0]['message']['content'] ?? '';
         if ( '' === $text ) {
-            return new WP_Error( 'aatg_empty_response', __( 'OpenAI returned an empty response.', 'ai-alt-text-generator' ) );
+            return new WP_Error( 'sag_empty_response', __( 'OpenAI returned an empty response.', 'smart-alt-generator' ) );
         }
         return trim( $text );
     }
@@ -65,11 +65,11 @@ class AATG_OpenAI {
      * @return string|WP_Error
      */
     public function request( $image_url, $prompt ) {
-        $api_key = get_option( 'aatg_openai_api_key', '' );
+        $api_key = get_option( 'sag_openai_api_key', '' );
         if ( empty( $api_key ) ) {
-            return new WP_Error( 'aatg_no_api_key', __( 'OpenAI API key is not configured.', 'ai-alt-text-generator' ) );
+            return new WP_Error( 'sag_no_api_key', __( 'OpenAI API key is not configured.', 'smart-alt-generator' ) );
         }
-        $model = get_option( 'aatg_model', 'gpt-4o-mini' );
+        $model = get_option( 'sag_model', 'gpt-4o-mini' );
 
         $response = wp_remote_post(
             self::ENDPOINT,

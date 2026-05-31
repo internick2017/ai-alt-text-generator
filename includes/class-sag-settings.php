@@ -2,16 +2,16 @@
 /**
  * Settings — registers options via the WordPress Settings API.
  *
- * @package AI_Alt_Text_Generator
+ * @package Smart_Alt_Generator
  */
 
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class AATG_Settings {
+class SAG_Settings {
 
-    const GROUP = 'aatg_settings';
+    const GROUP = 'sag_settings';
 
     /** Allowed model ids. */
     private function allowed_models() {
@@ -20,10 +20,10 @@ class AATG_Settings {
 
     /** Hooked to admin_init. */
     public function register() {
-        register_setting( self::GROUP, 'aatg_openai_api_key', array( 'sanitize_callback' => 'sanitize_text_field', 'default' => '' ) );
-        register_setting( self::GROUP, 'aatg_model', array( 'sanitize_callback' => array( $this, 'sanitize_model' ), 'default' => 'gpt-4o-mini' ) );
-        register_setting( self::GROUP, 'aatg_language', array( 'sanitize_callback' => 'sanitize_text_field', 'default' => 'auto' ) );
-        register_setting( self::GROUP, 'aatg_auto_generate', array( 'sanitize_callback' => array( $this, 'sanitize_checkbox' ), 'default' => false ) );
+        register_setting( self::GROUP, 'sag_openai_api_key', array( 'sanitize_callback' => 'sanitize_text_field', 'default' => '' ) );
+        register_setting( self::GROUP, 'sag_model', array( 'sanitize_callback' => array( $this, 'sanitize_model' ), 'default' => 'gpt-4o-mini' ) );
+        register_setting( self::GROUP, 'sag_language', array( 'sanitize_callback' => 'sanitize_text_field', 'default' => 'auto' ) );
+        register_setting( self::GROUP, 'sag_auto_generate', array( 'sanitize_callback' => array( $this, 'sanitize_checkbox' ), 'default' => false ) );
     }
 
     /** Only allow known model ids; fall back to the cheap default. */

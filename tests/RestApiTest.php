@@ -1,5 +1,5 @@
 <?php
-namespace AATG\Tests;
+namespace SAG\Tests;
 
 use Brain\Monkey\Functions;
 
@@ -12,7 +12,7 @@ final class RestApiTest extends TestCase {
     }
 
     public function test_permission_requires_upload_files_cap() {
-        $api = new \AATG_REST_API();
+        $api = new \SAG_REST_API();
 
         Functions\when( 'current_user_can' )->justReturn( true );
         $this->assertTrue( $api->check_permission() );
@@ -27,7 +27,7 @@ final class RestApiTest extends TestCase {
             public function generate_for_image( $id ) { return 'Alt for ' . $id; }
             public function generate_for_url( $url ) { return 'Alt for url'; }
         };
-        $api = new \AATG_REST_API( $fake );
+        $api = new \SAG_REST_API( $fake );
 
         $request = new \WP_REST_Request();
         $request->set_param( 'image_id', 55 );
@@ -43,7 +43,7 @@ final class RestApiTest extends TestCase {
             public function generate_for_image( $id ) { return 'x'; }
             public function generate_for_url( $url ) { return 'Alt for url'; }
         };
-        $api = new \AATG_REST_API( $fake );
+        $api = new \SAG_REST_API( $fake );
 
         $request = new \WP_REST_Request();
         $request->set_param( 'image_url', 'https://x/y.jpg' );

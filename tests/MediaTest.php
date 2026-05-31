@@ -1,5 +1,5 @@
 <?php
-namespace AATG\Tests;
+namespace SAG\Tests;
 
 use Brain\Monkey\Functions;
 
@@ -18,7 +18,7 @@ final class MediaTest extends TestCase {
             public $called = false;
             public function generate_for_image( $id ) { $this->called = true; return 'x'; }
         };
-        $media = new \AATG_Media( $fake );
+        $media = new \SAG_Media( $fake );
         $media->maybe_auto_generate( 10 );
 
         $this->assertFalse( $fake->called, 'Should not generate when auto_generate is off' );
@@ -32,7 +32,7 @@ final class MediaTest extends TestCase {
             public $called_with = null;
             public function generate_for_image( $id ) { $this->called_with = $id; return 'x'; }
         };
-        $media = new \AATG_Media( $fake );
+        $media = new \SAG_Media( $fake );
         $media->maybe_auto_generate( 42 );
 
         $this->assertSame( 42, $fake->called_with );

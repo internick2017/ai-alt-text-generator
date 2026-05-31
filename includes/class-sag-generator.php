@@ -5,28 +5,28 @@
  * Images are converted to base64 data URIs so the AI provider never needs to
  * fetch them from our server (works on localhost, behind auth, on firewalls).
  *
- * @package AI_Alt_Text_Generator
+ * @package Smart_Alt_Generator
  */
 
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class AATG_Generator {
+class SAG_Generator {
 
     /** @var object Anything with a generate( $image, $language ) method. */
     private $provider;
 
-    /** @var object AATG_Image (or compatible) for data-URI conversion. */
+    /** @var object SAG_Image (or compatible) for data-URI conversion. */
     private $image;
 
     /**
-     * @param object|null $provider Inject a provider; defaults to AATG_AI_Provider.
-     * @param object|null $image    Inject an image helper; defaults to AATG_Image.
+     * @param object|null $provider Inject a provider; defaults to SAG_AI_Provider.
+     * @param object|null $image    Inject an image helper; defaults to SAG_Image.
      */
     public function __construct( $provider = null, $image = null ) {
-        $this->provider = $provider ?? new AATG_AI_Provider();
-        $this->image    = $image ?? new AATG_Image();
+        $this->provider = $provider ?? new SAG_AI_Provider();
+        $this->image    = $image ?? new SAG_Image();
     }
 
     /**
@@ -39,7 +39,7 @@ class AATG_Generator {
     public function generate_for_image( $image_id ) {
         $path = get_attached_file( $image_id );
         if ( ! $path ) {
-            return new WP_Error( 'aatg_invalid_image', __( 'Image not found.', 'ai-alt-text-generator' ) );
+            return new WP_Error( 'sag_invalid_image', __( 'Image not found.', 'smart-alt-generator' ) );
         }
 
         $data_uri = $this->image->path_to_data_uri( $path );
@@ -78,7 +78,7 @@ class AATG_Generator {
      * @return string|WP_Error
      */
     private function run_provider( $image ) {
-        $language = get_option( 'aatg_language', 'auto' );
+        $language = get_option( 'sag_language', 'auto' );
         return $this->provider->generate( $image, $language );
     }
 }

@@ -6,14 +6,14 @@
  * to fetch the image from our server. This works on localhost, behind auth, or
  * on firewalled sites where the image URL is not publicly reachable.
  *
- * @package AI_Alt_Text_Generator
+ * @package Smart_Alt_Generator
  */
 
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class AATG_Image {
+class SAG_Image {
 
     /** Max bytes to encode (OpenAI vision limit is ~20MB; stay safe at 18MB). */
     const MAX_BYTES = 18874368; // 18 * 1024 * 1024
@@ -61,22 +61,22 @@ class AATG_Image {
      */
     public function path_to_data_uri( $path ) {
         if ( ! is_string( $path ) || ! is_readable( $path ) ) {
-            return new WP_Error( 'aatg_image_unreadable', __( 'Image file could not be read.', 'ai-alt-text-generator' ) );
+            return new WP_Error( 'sag_image_unreadable', __( 'Image file could not be read.', 'smart-alt-generator' ) );
         }
 
         $mime = $this->mime_from_path( $path );
         if ( '' === $mime ) {
-            return new WP_Error( 'aatg_image_type', __( 'Unsupported image type.', 'ai-alt-text-generator' ) );
+            return new WP_Error( 'sag_image_type', __( 'Unsupported image type.', 'smart-alt-generator' ) );
         }
 
         $size = filesize( $path );
         if ( false !== $size && $size > self::MAX_BYTES ) {
-            return new WP_Error( 'aatg_image_too_large', __( 'Image is too large to process.', 'ai-alt-text-generator' ) );
+            return new WP_Error( 'sag_image_too_large', __( 'Image is too large to process.', 'smart-alt-generator' ) );
         }
 
         $bytes = file_get_contents( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions
         if ( false === $bytes ) {
-            return new WP_Error( 'aatg_image_unreadable', __( 'Image file could not be read.', 'ai-alt-text-generator' ) );
+            return new WP_Error( 'sag_image_unreadable', __( 'Image file could not be read.', 'smart-alt-generator' ) );
         }
 
         return $this->build_data_uri( $bytes, $mime );
@@ -97,12 +97,12 @@ class AATG_Image {
 
         $code = wp_remote_retrieve_response_code( $response );
         if ( 200 !== (int) $code ) {
-            return new WP_Error( 'aatg_image_fetch', __( 'Could not download the image.', 'ai-alt-text-generator' ) );
+            return new WP_Error( 'sag_image_fetch', __( 'Could not download the image.', 'smart-alt-generator' ) );
         }
 
         $bytes = wp_remote_retrieve_body( $response );
         if ( empty( $bytes ) ) {
-            return new WP_Error( 'aatg_image_fetch', __( 'Downloaded image was empty.', 'ai-alt-text-generator' ) );
+            return new WP_Error( 'sag_image_fetch', __( 'Downloaded image was empty.', 'smart-alt-generator' ) );
         }
 
         $mime = $this->mime_from_path( $url );

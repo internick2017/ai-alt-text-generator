@@ -60,14 +60,14 @@ if ( ! class_exists( 'WP_REST_Server' ) ) {
 // --- Load the plugin classes under test ---
 $includes = __DIR__ . '/../includes/';
 foreach ( array(
-    'class-aatg-image.php',
-    'class-aatg-openai.php',
-    'class-aatg-ai-provider.php',
-    'class-aatg-generator.php',
-    'class-aatg-rest-api.php',
-    'class-aatg-settings.php',
-    'class-aatg-media.php',
-    'class-aatg-plugin.php',
+    'class-sag-image.php',
+    'class-sag-openai.php',
+    'class-sag-ai-provider.php',
+    'class-sag-generator.php',
+    'class-sag-rest-api.php',
+    'class-sag-settings.php',
+    'class-sag-media.php',
+    'class-sag-plugin.php',
 ) as $file ) {
     if ( file_exists( $includes . $file ) ) {
         require_once $includes . $file;

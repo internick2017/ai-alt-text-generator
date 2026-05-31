@@ -2,14 +2,14 @@
 /**
  * Media hooks — auto-generate on upload + classic Media Library button.
  *
- * @package AI_Alt_Text_Generator
+ * @package Smart_Alt_Generator
  */
 
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class AATG_Media {
+class SAG_Media {
 
     /** @var object Generator with generate_for_image(). */
     private $generator;
@@ -25,13 +25,13 @@ class AATG_Media {
      * @param int $attachment_id
      */
     public function maybe_auto_generate( $attachment_id ) {
-        if ( ! get_option( 'aatg_auto_generate', false ) ) {
+        if ( ! get_option( 'sag_auto_generate', false ) ) {
             return;
         }
         if ( ! wp_attachment_is_image( $attachment_id ) ) {
             return;
         }
-        $generator = $this->generator ?? new AATG_Generator();
+        $generator = $this->generator ?? new SAG_Generator();
         $generator->generate_for_image( $attachment_id );
     }
 
@@ -45,12 +45,12 @@ class AATG_Media {
      */
     public function add_generate_button( $form_fields, $post ) {
         $button = sprintf(
-            '<button type="button" class="button aatg-generate-btn" data-image-id="%d">%s</button>',
+            '<button type="button" class="button sag-generate-btn" data-image-id="%d">%s</button>',
             esc_attr( $post->ID ),
-            esc_html__( 'Generate Alt Text', 'ai-alt-text-generator' )
+            esc_html__( 'Generate Alt Text', 'smart-alt-generator' )
         );
-        $form_fields['aatg_generate'] = array(
-            'label' => __( 'AI Alt Text', 'ai-alt-text-generator' ),
+        $form_fields['sag_generate'] = array(
+            'label' => __( 'AI Alt Text', 'smart-alt-generator' ),
             'input' => 'html',
             'html'  => $button,
         );

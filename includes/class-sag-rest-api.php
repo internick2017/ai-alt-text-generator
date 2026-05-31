@@ -2,18 +2,18 @@
 /**
  * REST API controller for alt text generation.
  *
- * Route: POST /wp-json/ai-alt-text/v1/generate
+ * Route: POST /wp-json/smart-alt/v1/generate
  *
- * @package AI_Alt_Text_Generator
+ * @package Smart_Alt_Generator
  */
 
 if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class AATG_REST_API {
+class SAG_REST_API {
 
-    const REST_NAMESPACE = 'ai-alt-text/v1';
+    const REST_NAMESPACE = 'smart-alt/v1';
 
     /** @var object Generator with generate_for_image()/generate_for_url(). */
     private $generator;
@@ -59,7 +59,7 @@ class AATG_REST_API {
      * @return array|WP_Error
      */
     public function handle_generate( $request ) {
-        $generator = $this->generator ?? new AATG_Generator();
+        $generator = $this->generator ?? new SAG_Generator();
 
         $image_id  = $request->get_param( 'image_id' );
         $image_url = $request->get_param( 'image_url' );
@@ -74,8 +74,8 @@ class AATG_REST_API {
             $resolved_id = null;
         } else {
             return new WP_Error(
-                'aatg_missing_param',
-                __( 'Provide image_id or image_url.', 'ai-alt-text-generator' ),
+                'sag_missing_param',
+                __( 'Provide image_id or image_url.', 'smart-alt-generator' ),
                 array( 'status' => 400 )
             );
         }

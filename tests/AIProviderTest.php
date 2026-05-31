@@ -1,5 +1,5 @@
 <?php
-namespace AATG\Tests;
+namespace SAG\Tests;
 
 use Brain\Monkey\Functions;
 
@@ -11,7 +11,7 @@ final class AIProviderTest extends TestCase {
     }
 
     public function test_build_prompt_auto_language() {
-        $provider = new \AATG_AI_Provider( 'openai' );
+        $provider = new \SAG_AI_Provider( 'openai' );
         $prompt   = $provider->build_prompt( 'auto' );
 
         $this->assertStringContainsString( '125 characters', $prompt );
@@ -19,7 +19,7 @@ final class AIProviderTest extends TestCase {
     }
 
     public function test_build_prompt_specific_language() {
-        $provider = new \AATG_AI_Provider( 'openai' );
+        $provider = new \SAG_AI_Provider( 'openai' );
         $prompt   = $provider->build_prompt( 'Spanish' );
 
         $this->assertStringContainsString( 'in Spanish', $prompt );
@@ -35,7 +35,7 @@ final class AIProviderTest extends TestCase {
             json_encode( array( 'choices' => array( array( 'message' => array( 'content' => 'A cat.' ) ) ) ) )
         );
 
-        $provider = new \AATG_AI_Provider( 'openai' );
+        $provider = new \SAG_AI_Provider( 'openai' );
         $result   = $provider->generate( 'https://x/cat.jpg', 'auto' );
 
         $this->assertSame( 'A cat.', $result );
