@@ -5,8 +5,8 @@
   "license": "GPL-2.0-or-later",
   "private": true,
   "scripts": {
-    "build": "wp-scripts build src/block-editor/index.js --output-path=build",
-    "start": "wp-scripts start src/block-editor/index.js --output-path=build"
+    "build": "wp-scripts build --output-path=build",
+    "start": "wp-scripts start --output-path=build"
   },
   "devDependencies": {
     "@wordpress/scripts": "^30.0.0"
