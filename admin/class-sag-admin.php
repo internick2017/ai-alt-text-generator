@@ -30,16 +30,66 @@ class SAG_Admin {
         );
     }
 
-    /** Hooked to admin_enqueue_scripts. Loads assets only on the screens that need them. */
+    /** Hooked to admin_enqueue_scripts. Loads React bundles for admin pages. */
     public function enqueue_assets( $hook ) {
-        // Bulk page assets.
-        if ( 'media_page_sag-bulk' === $hook ) {
-            wp_enqueue_style( 'sag-admin', SAG_PLUGIN_URL . 'admin/css/sag-admin.css', array(), SAG_VERSION );
-            wp_enqueue_script( 'sag-bulk', SAG_PLUGIN_URL . 'admin/js/sag-bulk.js', array( 'wp-api-fetch' ), SAG_VERSION, true );
+        // Settings page — React bundle.
+        if ( 'settings_page_sag-settings' === $hook ) {
+            $asset_file = SAG_PLUGIN_DIR . 'build/admin-settings.asset.php';
+            if ( ! file_exists( $asset_file ) ) {
+                return;
+            }
+            $asset = require $asset_file;
+            wp_enqueue_script(
+                'sag-admin-settings',
+                SAG_PLUGIN_URL . 'build/admin-settings.js',
+                $asset['dependencies'],
+                $asset['version'],
+                true
+            );
+            wp_localize_script( 'sag-admin-settings', 'sagSettingsData', array(
+                'hasConnector' => function_exists( 'wp_ai_client' ),
+                'nonce'        => wp_create_nonce( 'wp_rest' ),
+                'restBase'     => rest_url( 'smart-alt/v1' ),
+            ) );
             return;
         }
 
-        // Classic media button handler — load where the attachment panel appears.
+        // Bulk page — React bundle.
+        if ( 'media_page_sag-bulk' === $hook ) {
+            $bulk_query = new WP_Query( array(
+                'post_type'      => 'attachment',
+                'post_mime_type' => 'image',
+                'post_status'    => 'inherit',
+                'posts_per_page' => 100,
+                'meta_query'     => array(
+                    'relation' => 'OR',
+                    array( 'key' => '_wp_attachment_image_alt', 'compare' => 'NOT EXISTS' ),
+                    array( 'key' => '_wp_attachment_image_alt', 'value' => '', 'compare' => '=' ),
+                ),
+            ) );
+            $image_ids = wp_list_pluck( $bulk_query->posts, 'ID' );
+
+            $asset_file = SAG_PLUGIN_DIR . 'build/admin-bulk.asset.php';
+            if ( ! file_exists( $asset_file ) ) {
+                return;
+            }
+            $asset = require $asset_file;
+            wp_enqueue_script(
+                'sag-admin-bulk',
+                SAG_PLUGIN_URL . 'build/admin-bulk.js',
+                $asset['dependencies'],
+                $asset['version'],
+                true
+            );
+            wp_localize_script( 'sag-admin-bulk', 'sagBulkData', array(
+                'imageIds' => $image_ids,
+                'nonce'    => wp_create_nonce( 'wp_rest' ),
+                'restBase' => rest_url( 'smart-alt/v1' ),
+            ) );
+            return;
+        }
+
+        // Classic media library button — unchanged.
         if ( in_array( $hook, array( 'post.php', 'post-new.php', 'upload.php' ), true ) ) {
             wp_enqueue_script( 'sag-media', SAG_PLUGIN_URL . 'admin/js/sag-media.js', array( 'wp-api-fetch' ), SAG_VERSION, true );
         }
