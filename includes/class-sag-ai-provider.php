@@ -2,7 +2,7 @@
 /**
  * AI Provider router.
  *
- * Chooses between WordPress 7.0's native AI Connectors (wp_ai_client) and a
+ * Chooses between WordPress 7.0's native AI Connectors (AiClient) and a
  * direct OpenAI client. The backend is injectable so both paths are testable;
  * passing null auto-detects based on WordPress capabilities.
  *
@@ -26,13 +26,15 @@ class SAG_AI_Provider {
     }
 
     /**
-     * Auto-detect: prefer WP 7.0 native client if present.
-     * NOT unit-tested (function_exists cannot be mocked here) — verified manually.
+     * Auto-detect: prefer WP 7.0 native AI Connectors if available.
+     * NOT unit-tested (class_exists cannot be mocked here) — verified manually.
      *
      * @return string
      */
     public static function detect_backend() {
-        return function_exists( 'wp_ai_client' ) ? 'wp_connector' : 'openai';
+        return ( class_exists( 'WordPress\AiClient\AiClient' ) && \WordPress\AiClient\AiClient::isConfigured() )
+            ? 'wp_connector'
+            : 'openai';
     }
 
     /**
@@ -79,25 +81,16 @@ class SAG_AI_Provider {
         return $client->request( $image_url, $prompt );
     }
 
-    /** WP 7.0+ path — uses the native AI Connectors client. */
+    /** WP 7.0+ path — uses the native AI Connectors (AiClient). */
     private function generate_via_connector( $image_url, $prompt ) {
-        $client   = wp_ai_client();
-        $response = $client->get_chat_completion(
-            array(
-                'messages' => array(
-                    array(
-                        'role'    => 'user',
-                        'content' => array(
-                            array( 'type' => 'text', 'text' => $prompt ),
-                            array( 'type' => 'image_url', 'image_url' => array( 'url' => $image_url ) ),
-                        ),
-                    ),
-                ),
-            )
-        );
-        if ( is_wp_error( $response ) ) {
-            return $response;
+        try {
+            $result = \WordPress\AiClient\AiClient::prompt()
+                ->withText( $prompt )
+                ->withFile( $image_url )
+                ->generateTextResult();
+            return trim( $result->toText() );
+        } catch ( \Exception $e ) {
+            return new WP_Error( 'sag_connector_error', $e->getMessage() );
         }
-        return trim( $response->get_text() );
     }
 }
