@@ -184,15 +184,57 @@ class SAG_REST_API {
     }
 
     /**
-     * Tests the OpenAI API connection. Stub — implemented in Phase 2 Task 2.
+     * Tests the OpenAI API key with a minimal request (max_tokens: 1).
+     * Does not save anything. Uses the currently stored API key.
      *
-     * @return WP_Error
+     * @return array|WP_Error
      */
     public function test_connection( $request ) {
-        return new WP_Error(
-            'sag_not_implemented',
-            __( 'Test endpoint not yet implemented.', 'smart-alt-generator' ),
-            array( 'status' => 501 )
+        $api_key = get_option( 'sag_openai_api_key', '' );
+        if ( empty( $api_key ) ) {
+            return new WP_Error(
+                'sag_no_api_key',
+                __( 'OpenAI API key is not configured.', 'smart-alt-generator' ),
+                array( 'status' => 400 )
+            );
+        }
+
+        $model    = get_option( 'sag_model', 'gpt-4o-mini' );
+        $response = wp_remote_post(
+            SAG_OpenAI::ENDPOINT,
+            array(
+                'timeout' => 15,
+                'headers' => array(
+                    'Authorization' => 'Bearer ' . $api_key,
+                    'Content-Type'  => 'application/json',
+                ),
+                'body'    => wp_json_encode( array(
+                    'model'      => $model,
+                    'max_tokens' => 1,
+                    'messages'   => array(
+                        array( 'role' => 'user', 'content' => 'Hi' ),
+                    ),
+                ) ),
+            )
         );
+
+        if ( is_wp_error( $response ) ) {
+            return new WP_Error(
+                'sag_test_failed',
+                $response->get_error_message(),
+                array( 'status' => 502 )
+            );
+        }
+
+        $data = json_decode( wp_remote_retrieve_body( $response ), true );
+        if ( isset( $data['error']['message'] ) ) {
+            return new WP_Error(
+                'sag_test_failed',
+                $data['error']['message'],
+                array( 'status' => 400 )
+            );
+        }
+
+        return rest_ensure_response( array( 'ok' => true, 'model' => $model ) );
     }
 }
