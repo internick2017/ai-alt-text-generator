@@ -77,8 +77,9 @@ class SAG_REST_API {
                             'sanitize_callback' => 'sanitize_text_field',
                         ),
                         'sag_auto_generate'  => array(
-                            'type'     => 'boolean',
-                            'required' => false,
+                            'type'              => 'boolean',
+                            'required'          => false,
+                            'sanitize_callback' => array( 'SAG_Settings', 'sanitize_checkbox' ),
                         ),
                     ),
                 ),
@@ -149,7 +150,7 @@ class SAG_REST_API {
 
     /** Validates model value — returns true or WP_Error. */
     public function validate_model( $value ) {
-        $allowed = array( 'gpt-4o-mini', 'gpt-4o' );
+        $allowed = SAG_Settings::allowed_models();
         if ( in_array( $value, $allowed, true ) ) {
             return true;
         }
@@ -180,5 +181,18 @@ class SAG_REST_API {
             }
         }
         return rest_ensure_response( array( 'saved' => true ) );
+    }
+
+    /**
+     * Tests the OpenAI API connection. Stub — implemented in Phase 2 Task 2.
+     *
+     * @return WP_Error
+     */
+    public function test_connection( $request ) {
+        return new WP_Error(
+            'sag_not_implemented',
+            __( 'Test endpoint not yet implemented.', 'smart-alt-generator' ),
+            array( 'status' => 501 )
+        );
     }
 }
