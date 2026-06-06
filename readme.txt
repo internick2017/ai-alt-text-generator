@@ -44,6 +44,20 @@ With gpt-4o-mini, roughly $0.001 per image.
 
 == Changelog ==
 
+= 1.1.1 =
+* React-powered Settings page with live Test Connection button.
+* React-powered Bulk Generator with pause/resume and per-image result log.
+* Fixed WP 7.0 AI Connectors integration: uses the correct AiClient API
+  (wp_ai_client() never existed; replaced with AiClient::prompt() fluent API).
+* Plugin renamed to Smart Alt Generator (slug: smart-alt-generator).
+
+= 1.1.0 =
+* AI Alt Text panel moved to the Content tab in the Gutenberg block editor.
+* Block editor script loading fixed for WordPress < 6.6.
+* REST API endpoints for settings (GET/POST /smart-alt/v1/settings) and
+  connection test (GET /smart-alt/v1/test).
+* Alt text field now fills correctly in the Media Library modal.
+
 = 1.0.1 =
 * Images are now sent to the AI as base64 data URIs instead of public URLs, so
   generation works on localhost, behind authentication, and on firewalled sites.
@@ -53,6 +67,13 @@ With gpt-4o-mini, roughly $0.001 per image.
 * Initial release: settings, media button, bulk generator, REST API.
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+Adds a modern React admin UI, pause/resume bulk generation, and fixes the
+WordPress 7.0 AI Connectors integration.
+
+= 1.1.0 =
+Improves Gutenberg block editor panel and adds REST API settings endpoints.
 
 = 1.0.1 =
 Improves reliability: images are sent directly to the AI, working on local and
