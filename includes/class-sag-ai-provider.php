@@ -26,15 +26,32 @@ class SAG_AI_Provider {
     }
 
     /**
-     * Auto-detect: prefer WP 7.0 native AI Connectors if available.
-     * NOT unit-tested (class_exists cannot be mocked here) — verified manually.
+     * Auto-detect: prefer WP 7.0 native AI Connectors when a provider is
+     * actually configured, otherwise fall back to the direct OpenAI client.
      *
-     * @return string
+     * AiClient::isConfigured() requires a specific provider argument, so to
+     * answer "is any provider configured?" we walk the registry. Wrapped in a
+     * try/catch so a future SDK shape change degrades gracefully to OpenAI
+     * instead of fataling. NOT unit-tested (the SDK can't be mocked here) —
+     * verified manually against WordPress 7.0.
+     *
+     * @return string 'wp_connector'|'openai'
      */
     public static function detect_backend() {
-        return ( class_exists( 'WordPress\AiClient\AiClient' ) && \WordPress\AiClient\AiClient::isConfigured() )
-            ? 'wp_connector'
-            : 'openai';
+        if ( ! class_exists( 'WordPress\AiClient\AiClient' ) ) {
+            return 'openai';
+        }
+        try {
+            $registry = \WordPress\AiClient\AiClient::defaultRegistry();
+            foreach ( $registry->getRegisteredProviderIds() as $id ) {
+                if ( $registry->isProviderConfigured( $id ) ) {
+                    return 'wp_connector';
+                }
+            }
+        } catch ( \Throwable $e ) {
+            // SDK unavailable or shape changed — fall back to direct OpenAI.
+        }
+        return 'openai';
     }
 
     /**
