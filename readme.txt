@@ -42,6 +42,11 @@ Only on WordPress 6.x. On 7.0+ the plugin uses your AI Connectors configuration.
 = How much does generation cost? =
 With gpt-4o-mini, roughly $0.001 per image.
 
+== Screenshots ==
+
+1. Settings — configure your AI provider, model, language, and auto-generate on upload.
+2. Bulk generator — process every image missing alt text with live progress and a per-image result log.
+
 == Changelog ==
 
 = 1.1.1 =

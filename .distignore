@@ -11,6 +11,8 @@
 /.distignore
 /.gstack
 /.superpowers
+/.wordpress-org
+/.wordpress-org-assets
 /.phpunit.result.cache
 
 # Dependency + build sources (vendor is dev-only: phpunit, mockery, etc.)
