@@ -47,7 +47,7 @@ class SAG_Admin {
                 true
             );
             wp_localize_script( 'sag-admin-settings', 'sagSettingsData', array(
-                'hasConnector' => function_exists( 'wp_ai_client' ),
+                'hasConnector' => 'wp_connector' === SAG_AI_Provider::detect_backend(),
                 'nonce'        => wp_create_nonce( 'wp_rest' ),
                 'restBase'     => rest_url( 'smart-alt/v1' ),
             ) );
