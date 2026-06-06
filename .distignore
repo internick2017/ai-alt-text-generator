@@ -1,0 +1,32 @@
+# Files and directories excluded from the distributed WordPress.org plugin ZIP.
+# Everything listed here is development-only; the shipped plugin needs just the
+# PHP runtime classes, the compiled build/, languages/, readme.txt and the
+# main plugin file.
+
+# Version control / tooling
+/.git
+/.github
+/.gitignore
+/.gitattributes
+/.distignore
+/.gstack
+/.superpowers
+/.phpunit.result.cache
+
+# Dependency + build sources (vendor is dev-only: phpunit, mockery, etc.)
+/node_modules
+/vendor
+/src
+/webpack.config.js
+/package.json
+/package-lock.json
+/composer.json
+/composer.lock
+
+# Tests & docs
+/tests
+/docs
+/phpunit.xml
+
+# Scratch
+/probe-ai.php

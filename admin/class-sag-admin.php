@@ -61,6 +61,7 @@ class SAG_Admin {
                 'post_mime_type' => 'image',
                 'post_status'    => 'inherit',
                 'posts_per_page' => 100,
+                // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Intentional and unavoidable: finding attachments missing alt text requires a meta_query. Bounded to 100 results per page.
                 'meta_query'     => array(
                     'relation' => 'OR',
                     array( 'key' => '_wp_attachment_image_alt', 'compare' => 'NOT EXISTS' ),
