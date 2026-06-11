@@ -125,7 +125,7 @@ class SAG_REST_API {
         } else {
             return new WP_Error(
                 'sag_missing_param',
-                __( 'Provide image_id or image_url.', 'smart-alt-generator' ),
+                __( 'Provide image_id or image_url.', 'internick-smart-alt-generator' ),
                 array( 'status' => 400 )
             );
         }
@@ -156,7 +156,7 @@ class SAG_REST_API {
         }
         return new WP_Error(
             'sag_invalid_model',
-            __( 'Invalid model.', 'smart-alt-generator' ),
+            __( 'Invalid model.', 'internick-smart-alt-generator' ),
             array( 'status' => 400 )
         );
     }
@@ -194,7 +194,7 @@ class SAG_REST_API {
         if ( empty( $api_key ) ) {
             return new WP_Error(
                 'sag_no_api_key',
-                __( 'OpenAI API key is not configured.', 'smart-alt-generator' ),
+                __( 'OpenAI API key is not configured.', 'internick-smart-alt-generator' ),
                 array( 'status' => 400 )
             );
         }

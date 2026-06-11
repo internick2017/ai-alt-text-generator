@@ -9,10 +9,10 @@ const { imageIds = [] } = window.sagBulkData ?? {};
 function StatBar( { total, successes, errors } ) {
 	const remaining = total - successes - errors;
 	const stats = [
-		{ label: __( 'Total', 'smart-alt-generator' ), value: total, color: '#1d2327' },
-		{ label: __( 'Completed', 'smart-alt-generator' ), value: successes, color: '#00a32a' },
-		{ label: __( 'Errors', 'smart-alt-generator' ), value: errors, color: '#d63638' },
-		{ label: __( 'Remaining', 'smart-alt-generator' ), value: remaining, color: '#2271b1' },
+		{ label: __( 'Total', 'internick-smart-alt-generator' ), value: total, color: '#1d2327' },
+		{ label: __( 'Completed', 'internick-smart-alt-generator' ), value: successes, color: '#00a32a' },
+		{ label: __( 'Errors', 'internick-smart-alt-generator' ), value: errors, color: '#d63638' },
+		{ label: __( 'Remaining', 'internick-smart-alt-generator' ), value: remaining, color: '#2271b1' },
 	];
 	return (
 		<div style={ { display: 'flex', gap: '12px', marginBottom: '16px' } }>
@@ -69,28 +69,28 @@ function BulkControls( { status, onStart, onPause, onResume } ) {
 	if ( status === 'idle' ) {
 		return (
 			<Button variant="primary" onClick={ onStart }>
-				{ __( 'Generate All', 'smart-alt-generator' ) }
+				{ __( 'Generate All', 'internick-smart-alt-generator' ) }
 			</Button>
 		);
 	}
 	if ( status === 'running' ) {
 		return (
 			<Button variant="secondary" onClick={ onPause }>
-				{ __( '⏸ Pause', 'smart-alt-generator' ) }
+				{ __( '⏸ Pause', 'internick-smart-alt-generator' ) }
 			</Button>
 		);
 	}
 	if ( status === 'paused' ) {
 		return (
 			<Button variant="primary" onClick={ onResume }>
-				{ __( '▶ Resume', 'smart-alt-generator' ) }
+				{ __( '▶ Resume', 'internick-smart-alt-generator' ) }
 			</Button>
 		);
 	}
 	// done
 	return (
 		<Button variant="secondary" disabled>
-			{ __( '✓ All done', 'smart-alt-generator' ) }
+			{ __( '✓ All done', 'internick-smart-alt-generator' ) }
 		</Button>
 	);
 }
@@ -104,13 +104,13 @@ function LogList( { log, onClear } ) {
 		<div style={ { background: '#fff', border: '1px solid #c3c4c7', borderRadius: '4px', overflow: 'hidden' } }>
 			<div style={ { padding: '8px 12px', borderBottom: '1px solid #f0f0f1', display: 'flex', justifyContent: 'space-between', alignItems: 'center' } }>
 				<span style={ { fontSize: '11px', fontWeight: 600, color: '#646970', textTransform: 'uppercase', letterSpacing: '.3px' } }>
-					{ __( 'Results', 'smart-alt-generator' ) }
+					{ __( 'Results', 'internick-smart-alt-generator' ) }
 				</span>
 				<button
 					onClick={ onClear }
 					style={ { fontSize: '11px', color: '#2271b1', background: 'none', border: 'none', cursor: 'pointer', padding: 0 } }
 				>
-					{ __( 'Clear log', 'smart-alt-generator' ) }
+					{ __( 'Clear log', 'internick-smart-alt-generator' ) }
 				</button>
 			</div>
 			<div style={ { maxHeight: '240px', overflowY: 'auto' } }>
@@ -167,7 +167,7 @@ function BulkApp() {
 				addLog(
 					imageIds[ i ],
 					false,
-					e?.message || __( 'Generation failed.', 'smart-alt-generator' )
+					e?.message || __( 'Generation failed.', 'internick-smart-alt-generator' )
 				);
 				setErrors( ( n ) => n + 1 );
 			}
@@ -199,15 +199,15 @@ function BulkApp() {
 	if ( total === 0 ) {
 		return (
 			<div style={ { paddingTop: '16px' } }>
-				<h1>{ __( 'Bulk Alt Text Generator', 'smart-alt-generator' ) }</h1>
-				<p>{ __( 'All your images already have alt text.', 'smart-alt-generator' ) }</p>
+				<h1>{ __( 'Bulk Alt Text Generator', 'internick-smart-alt-generator' ) }</h1>
+				<p>{ __( 'All your images already have alt text.', 'internick-smart-alt-generator' ) }</p>
 			</div>
 		);
 	}
 
 	return (
 		<div style={ { maxWidth: '760px', paddingTop: '16px' } }>
-			<h1>{ __( 'Bulk Alt Text Generator', 'smart-alt-generator' ) }</h1>
+			<h1>{ __( 'Bulk Alt Text Generator', 'internick-smart-alt-generator' ) }</h1>
 			<StatBar total={ total } successes={ successes } errors={ errors } />
 			{ status !== 'idle' && <ProgressBar processed={ processed } total={ total } /> }
 			<div style={ { marginBottom: '16px' } }>

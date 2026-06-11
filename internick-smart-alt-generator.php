@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name:       Smart Alt Generator
- * Plugin URI:        https://nickgranados.com/plugins/smart-alt-generator
+ * Plugin Name:       Internick - Smart Alt Generator
+ * Plugin URI:        https://nickgranados.com/plugins/internick-smart-alt-generator
  * Description:       Automatically generate descriptive alt text for images using AI. Supports WordPress 7.0 AI Connectors and OpenAI API for older versions.
  * Version:           1.1.1
  * Author:            Nick Granados
  * Author URI:        https://nickgranados.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       smart-alt-generator
+ * Text Domain:       internick-smart-alt-generator
  * Domain Path:       /languages
  * Requires at least: 6.4
  * Requires PHP:      8.1

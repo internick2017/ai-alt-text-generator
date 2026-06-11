@@ -47,10 +47,10 @@ class SAG_Media {
         $button = sprintf(
             '<button type="button" class="button sag-generate-btn" data-image-id="%d">%s</button>',
             esc_attr( $post->ID ),
-            esc_html__( 'Generate Alt Text', 'smart-alt-generator' )
+            esc_html__( 'Generate Alt Text', 'internick-smart-alt-generator' )
         );
         $form_fields['sag_generate'] = array(
-            'label' => __( 'AI Alt Text', 'smart-alt-generator' ),
+            'label' => __( 'AI Alt Text', 'internick-smart-alt-generator' ),
             'input' => 'html',
             'html'  => $button,
         );

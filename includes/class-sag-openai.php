@@ -51,7 +51,7 @@ class SAG_OpenAI {
         }
         $text = $data['choices'][0]['message']['content'] ?? '';
         if ( '' === $text ) {
-            return new WP_Error( 'sag_empty_response', __( 'OpenAI returned an empty response.', 'smart-alt-generator' ) );
+            return new WP_Error( 'sag_empty_response', __( 'OpenAI returned an empty response.', 'internick-smart-alt-generator' ) );
         }
         return trim( $text );
     }
@@ -67,7 +67,7 @@ class SAG_OpenAI {
     public function request( $image_url, $prompt ) {
         $api_key = get_option( 'sag_openai_api_key', '' );
         if ( empty( $api_key ) ) {
-            return new WP_Error( 'sag_no_api_key', __( 'OpenAI API key is not configured.', 'smart-alt-generator' ) );
+            return new WP_Error( 'sag_no_api_key', __( 'OpenAI API key is not configured.', 'internick-smart-alt-generator' ) );
         }
         $model = get_option( 'sag_model', 'gpt-4o-mini' );
 

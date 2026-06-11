@@ -39,7 +39,7 @@ class SAG_Generator {
     public function generate_for_image( $image_id ) {
         $path = get_attached_file( $image_id );
         if ( ! $path ) {
-            return new WP_Error( 'sag_invalid_image', __( 'Image not found.', 'smart-alt-generator' ) );
+            return new WP_Error( 'sag_invalid_image', __( 'Image not found.', 'internick-smart-alt-generator' ) );
         }
 
         $data_uri = $this->image->path_to_data_uri( $path );

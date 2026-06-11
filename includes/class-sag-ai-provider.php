@@ -62,16 +62,16 @@ class SAG_AI_Provider {
      */
     public function build_prompt( $language ) {
         $lang = ( 'auto' === $language )
-            ? __( 'Use the same language as the website.', 'smart-alt-generator' )
+            ? __( 'Use the same language as the website.', 'internick-smart-alt-generator' )
             : sprintf(
                 /* translators: %s is a language name. */
-                __( 'Write the alt text in %s.', 'smart-alt-generator' ),
+                __( 'Write the alt text in %s.', 'internick-smart-alt-generator' ),
                 $language
             );
 
         return sprintf(
             /* translators: %s is the language instruction. */
-            __( 'Generate a concise, descriptive alt text for this image. Maximum 125 characters. %s Return only the alt text, no quotes.', 'smart-alt-generator' ),
+            __( 'Generate a concise, descriptive alt text for this image. Maximum 125 characters. %s Return only the alt text, no quotes.', 'internick-smart-alt-generator' ),
             $lang
         );
     }

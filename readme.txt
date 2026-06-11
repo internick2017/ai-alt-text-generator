@@ -1,4 +1,4 @@
-=== Smart Alt Generator ===
+=== Internick - Smart Alt Generator ===
 Contributors: internick2017
 Tags: alt text, accessibility, seo, ai, openai
 Requires at least: 6.4
@@ -12,7 +12,7 @@ Automatically generate descriptive alt text for images using AI. Supports WordPr
 
 == Description ==
 
-AI Alt Text Generator uses artificial intelligence to create descriptive,
+Internick - Smart Alt Generator uses artificial intelligence to create descriptive,
 SEO-friendly alt text for your WordPress images — improving accessibility
 (WCAG) and search rankings.
 
@@ -29,7 +29,7 @@ uses your configured AI Connectors automatically.
 
 == Installation ==
 
-1. Upload the plugin to `/wp-content/plugins/smart-alt-generator`.
+1. Upload the plugin to `/wp-content/plugins/internick-smart-alt-generator`.
 2. Activate it through the Plugins screen.
 3. (WP 6.x only) Go to Settings -> AI Alt Text and enter your OpenAI API key.
 4. Go to Media -> Bulk Alt Text to process existing images.
@@ -54,7 +54,7 @@ With gpt-4o-mini, roughly $0.001 per image.
 * React-powered Bulk Generator with pause/resume and per-image result log.
 * Fixed WP 7.0 AI Connectors integration: uses the correct AiClient API
   (wp_ai_client() never existed; replaced with AiClient::prompt() fluent API).
-* Plugin renamed to Smart Alt Generator (slug: smart-alt-generator).
+* Plugin renamed to Internick - Smart Alt Generator (slug: internick-smart-alt-generator).
 
 = 1.1.0 =
 * AI Alt Text panel moved to the Content tab in the Gutenberg block editor.

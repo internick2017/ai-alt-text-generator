@@ -22,7 +22,7 @@ function ConnectorsNotice() {
 			<p>
 				{ __(
 					'WordPress AI Connectors detected. Using your configured AI provider.',
-					'smart-alt-generator'
+					'internick-smart-alt-generator'
 				) }
 			</p>
 		</div>
@@ -47,10 +47,10 @@ function TestConnectionButton( { apiKey } ) {
 		try {
 			await apiFetch( { path: '/smart-alt/v1/test' } );
 			setStatus( 'ok' );
-			setMessage( __( 'Connection successful', 'smart-alt-generator' ) );
+			setMessage( __( 'Connection successful', 'internick-smart-alt-generator' ) );
 		} catch ( e ) {
 			setStatus( 'error' );
-			setMessage( e?.message || __( 'Connection failed', 'smart-alt-generator' ) );
+			setMessage( e?.message || __( 'Connection failed', 'internick-smart-alt-generator' ) );
 		}
 	};
 
@@ -62,7 +62,7 @@ function TestConnectionButton( { apiKey } ) {
 				disabled={ status === 'testing' }
 			>
 				{ status === 'testing' ? <Spinner /> : '⚡ ' }
-				{ __( 'Test Connection', 'smart-alt-generator' ) }
+				{ __( 'Test Connection', 'internick-smart-alt-generator' ) }
 			</Button>
 			{ status === 'ok' && (
 				<span style={ { color: '#00a32a', fontSize: '13px' } }>
@@ -86,19 +86,19 @@ function ProviderCard( { settings, onChange } ) {
 	return (
 		<Card style={ { marginBottom: '16px' } }>
 			<CardHeader>
-				<strong>{ __( 'AI Provider', 'smart-alt-generator' ) }</strong>
+				<strong>{ __( 'AI Provider', 'internick-smart-alt-generator' ) }</strong>
 			</CardHeader>
 			<CardBody>
 				<TextControl
-					label={ __( 'OpenAI API Key', 'smart-alt-generator' ) }
+					label={ __( 'OpenAI API Key', 'internick-smart-alt-generator' ) }
 					type="password"
 					value={ settings.sag_openai_api_key }
 					onChange={ ( v ) => onChange( 'sag_openai_api_key', v ) }
-					help={ __( 'Get your key at platform.openai.com', 'smart-alt-generator' ) }
+					help={ __( 'Get your key at platform.openai.com', 'internick-smart-alt-generator' ) }
 					autoComplete="off"
 				/>
 				<SelectControl
-					label={ __( 'Model', 'smart-alt-generator' ) }
+					label={ __( 'Model', 'internick-smart-alt-generator' ) }
 					value={ settings.sag_model }
 					options={ [
 						{ label: 'gpt-4o-mini — Fastest, cheapest (recommended)', value: 'gpt-4o-mini' },
@@ -117,25 +117,25 @@ function GenerationCard( { settings, onChange } ) {
 	return (
 		<Card style={ { marginBottom: '16px' } }>
 			<CardHeader>
-				<strong>{ __( 'Generation', 'smart-alt-generator' ) }</strong>
+				<strong>{ __( 'Generation', 'internick-smart-alt-generator' ) }</strong>
 			</CardHeader>
 			<CardBody>
 				<ToggleControl
-					label={ __( 'Auto-generate on upload', 'smart-alt-generator' ) }
+					label={ __( 'Auto-generate on upload', 'internick-smart-alt-generator' ) }
 					help={ __(
 						'Automatically generate alt text when a new image is uploaded to the Media Library.',
-						'smart-alt-generator'
+						'internick-smart-alt-generator'
 					) }
 					checked={ settings.sag_auto_generate }
 					onChange={ ( v ) => onChange( 'sag_auto_generate', v ) }
 				/>
 				<TextControl
-					label={ __( 'Language', 'smart-alt-generator' ) }
+					label={ __( 'Language', 'internick-smart-alt-generator' ) }
 					value={ settings.sag_language }
 					onChange={ ( v ) => onChange( 'sag_language', v ) }
 					help={ __(
 						'Use "auto" to match the site language, or enter a language name (e.g. "Spanish").',
-						'smart-alt-generator'
+						'internick-smart-alt-generator'
 					) }
 				/>
 			</CardBody>
@@ -150,12 +150,12 @@ function SaveFooter( { onSave, saveStatus } ) {
 			<CardFooter justify="flex-end">
 				{ saveStatus === 'saved' && (
 					<span style={ { color: '#00a32a', marginRight: '12px' } }>
-						✓ { __( 'Settings saved', 'smart-alt-generator' ) }
+						✓ { __( 'Settings saved', 'internick-smart-alt-generator' ) }
 					</span>
 				) }
 				{ saveStatus === 'error' && (
 					<span style={ { color: '#d63638', marginRight: '12px' } }>
-						✗ { __( 'Save failed. Please try again.', 'smart-alt-generator' ) }
+						✗ { __( 'Save failed. Please try again.', 'internick-smart-alt-generator' ) }
 					</span>
 				) }
 				<Button
@@ -164,8 +164,8 @@ function SaveFooter( { onSave, saveStatus } ) {
 					disabled={ saveStatus === 'saving' }
 				>
 					{ saveStatus === 'saving'
-						? __( 'Saving…', 'smart-alt-generator' )
-						: __( 'Save Settings', 'smart-alt-generator' ) }
+						? __( 'Saving…', 'internick-smart-alt-generator' )
+						: __( 'Save Settings', 'internick-smart-alt-generator' ) }
 				</Button>
 			</CardFooter>
 		</Card>
@@ -220,7 +220,7 @@ function SettingsApp() {
 
 	return (
 		<div style={ { maxWidth: '640px', paddingTop: '16px' } }>
-			<h1>{ __( 'Smart Alt Generator', 'smart-alt-generator' ) }</h1>
+			<h1>{ __( 'Smart Alt Generator', 'internick-smart-alt-generator' ) }</h1>
 			{ hasConnector && <ConnectorsNotice /> }
 			<ProviderCard settings={ settings } onChange={ handleChange } />
 			<GenerationCard settings={ settings } onChange={ handleChange } />

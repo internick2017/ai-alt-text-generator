@@ -44,14 +44,14 @@ function AltTextGenerator( { attributes, setAttributes } ) {
 			} );
 			setAttributes( { alt: res.alt_text } );
 		} catch ( e ) {
-			setError( e && e.message ? e.message : __( 'Generation failed.', 'smart-alt-generator' ) );
+			setError( e && e.message ? e.message : __( 'Generation failed.', 'internick-smart-alt-generator' ) );
 		} finally {
 			setLoading( false );
 		}
 	};
 
 	return (
-		<PanelBody title={ __( 'AI Alt Text', 'smart-alt-generator' ) } initialOpen={ true }>
+		<PanelBody title={ __( 'AI Alt Text', 'internick-smart-alt-generator' ) } initialOpen={ true }>
 			<Button
 				variant="primary"
 				onClick={ handleGenerate }
@@ -61,10 +61,10 @@ function AltTextGenerator( { attributes, setAttributes } ) {
 				{ loading ? (
 					<>
 						<Spinner />
-						{ __( 'Generating…', 'smart-alt-generator' ) }
+						{ __( 'Generating…', 'internick-smart-alt-generator' ) }
 					</>
 				) : (
-					__( '⚡ Generate with AI', 'smart-alt-generator' )
+					__( '⚡ Generate with AI', 'internick-smart-alt-generator' )
 				) }
 			</Button>
 
@@ -109,6 +109,6 @@ const withAltTextGenerator = createHigherOrderComponent( ( BlockEdit ) => {
 
 addFilter(
 	'editor.BlockEdit',
-	'smart-alt-generator/with-image-controls',
+	'internick-smart-alt-generator/with-image-controls',
 	withAltTextGenerator
 );

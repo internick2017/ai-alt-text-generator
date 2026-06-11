@@ -14,16 +14,16 @@ class SAG_Admin {
     /** Hooked to admin_menu. */
     public function register_menus() {
         add_options_page(
-            __( 'AI Alt Text', 'smart-alt-generator' ),
-            __( 'AI Alt Text', 'smart-alt-generator' ),
+            __( 'AI Alt Text', 'internick-smart-alt-generator' ),
+            __( 'AI Alt Text', 'internick-smart-alt-generator' ),
             'manage_options',
             'sag-settings',
             array( $this, 'render_settings_page' )
         );
 
         add_media_page(
-            __( 'Bulk Alt Text', 'smart-alt-generator' ),
-            __( 'Bulk Alt Text', 'smart-alt-generator' ),
+            __( 'Bulk Alt Text', 'internick-smart-alt-generator' ),
+            __( 'Bulk Alt Text', 'internick-smart-alt-generator' ),
             'upload_files',
             'sag-bulk',
             array( $this, 'render_bulk_page' )
