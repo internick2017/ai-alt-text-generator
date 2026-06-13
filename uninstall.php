@@ -10,7 +10,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
     die;
 }
 
-delete_option( 'sag_openai_api_key' );
-delete_option( 'sag_model' );
-delete_option( 'sag_language' );
-delete_option( 'sag_auto_generate' );
+delete_option( 'insag_openai_api_key' );
+delete_option( 'insag_model' );
+delete_option( 'insag_language' );
+delete_option( 'insag_auto_generate' );

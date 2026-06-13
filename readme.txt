@@ -3,7 +3,7 @@ Contributors: internick2017
 Tags: alt text, accessibility, seo, ai, openai
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -47,7 +47,45 @@ With gpt-4o-mini, roughly $0.001 per image.
 1. Settings — configure your AI provider, model, language, and auto-generate on upload.
 2. Bulk generator — process every image missing alt text with live progress and a per-image result log.
 
+== External services ==
+
+This plugin connects to the OpenAI API to generate alt text for your images. It is
+required for AI generation on WordPress 6.x sites that do not have the native
+WordPress 7.0 AI Connectors configured.
+
+When you click "Generate" (in the block editor, the Media Library, or the Bulk
+generator) or "Test Connection" on the settings page, the plugin sends the image
+(as a base64 data URI) and a short text instruction to OpenAI's Chat Completions
+endpoint (https://api.openai.com/v1/chat/completions), authenticated with the API
+key you configure. The "Test Connection" button sends only a minimal "Hi" message
+with no image, to verify the key works. Nothing is sent unless you trigger one of
+these actions.
+
+This service is provided by OpenAI. By using the OpenAI path you agree to their terms:
+
+* Terms of Use: https://openai.com/policies/terms-of-use
+* Privacy Policy: https://openai.com/policies/privacy-policy
+
+On WordPress 7.0+ with AI Connectors configured, generation uses your site's
+configured AI provider through WordPress core instead, and this plugin makes no
+direct external calls.
+
+== Development ==
+
+The full, unminified source code — including the React/JavaScript sources under
+`src/` and the build tooling — is publicly available at:
+
+https://github.com/internick2017/smart-alt-generator
+
+Build the compiled assets in `build/` with `npm install && npm run build`.
+
 == Changelog ==
+
+= 1.1.2 =
+* Hardened REST API permissions: per-attachment capability check on generation,
+  and the connection test is now restricted to administrators.
+* Documented the OpenAI external service and the public source repository.
+* Renamed internal code prefixes for uniqueness (fresh install — no migration needed).
 
 = 1.1.1 =
 * React-powered Settings page with live Test Connection button.

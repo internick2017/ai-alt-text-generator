@@ -5,7 +5,7 @@
  */
 ( function () {
 	document.addEventListener( 'click', async function ( event ) {
-		const btn = event.target.closest( '.sag-generate-btn' );
+		const btn = event.target.closest( '.insag-generate-btn' );
 		if ( ! btn ) {
 			return;
 		}
@@ -23,7 +23,7 @@
 
 		try {
 			const res = await wp.apiFetch( {
-				path: '/smart-alt/v1/generate',
+				path: '/insag/v1/generate',
 				method: 'POST',
 				data: { image_id: imageId },
 			} );
@@ -57,7 +57,7 @@
 	 * type: 'ok' (green) | 'err' (red) | '' (clear).
 	 */
 	function showMessage( btn, text, type ) {
-		let box = btn.parentNode.querySelector( '.sag-message' );
+		let box = btn.parentNode.querySelector( '.insag-message' );
 		if ( ! text ) {
 			if ( box ) {
 				box.remove();
@@ -66,7 +66,7 @@
 		}
 		if ( ! box ) {
 			box = document.createElement( 'p' );
-			box.className = 'sag-message';
+			box.className = 'insag-message';
 			box.style.margin = '6px 0 0';
 			box.style.fontSize = '12px';
 			box.style.lineHeight = '1.4';

@@ -9,7 +9,7 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class SAG_OpenAI {
+class INSAG_OpenAI {
 
     const ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 
@@ -47,11 +47,11 @@ class SAG_OpenAI {
      */
     public function parse_response( $data ) {
         if ( isset( $data['error']['message'] ) ) {
-            return new WP_Error( 'sag_openai_error', $data['error']['message'] );
+            return new WP_Error( 'insag_openai_error', $data['error']['message'] );
         }
         $text = $data['choices'][0]['message']['content'] ?? '';
         if ( '' === $text ) {
-            return new WP_Error( 'sag_empty_response', __( 'OpenAI returned an empty response.', 'internick-smart-alt-generator' ) );
+            return new WP_Error( 'insag_empty_response', __( 'OpenAI returned an empty response.', 'internick-smart-alt-generator' ) );
         }
         return trim( $text );
     }
@@ -65,11 +65,11 @@ class SAG_OpenAI {
      * @return string|WP_Error
      */
     public function request( $image_url, $prompt ) {
-        $api_key = get_option( 'sag_openai_api_key', '' );
+        $api_key = get_option( 'insag_openai_api_key', '' );
         if ( empty( $api_key ) ) {
-            return new WP_Error( 'sag_no_api_key', __( 'OpenAI API key is not configured.', 'internick-smart-alt-generator' ) );
+            return new WP_Error( 'insag_no_api_key', __( 'OpenAI API key is not configured.', 'internick-smart-alt-generator' ) );
         }
-        $model = get_option( 'sag_model', 'gpt-4o-mini' );
+        $model = get_option( 'insag_model', 'gpt-4o-mini' );
 
         $response = wp_remote_post(
             self::ENDPOINT,

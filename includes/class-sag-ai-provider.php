@@ -13,7 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class SAG_AI_Provider {
+class INSAG_AI_Provider {
 
     /** @var string 'wp_connector'|'openai' */
     private $backend;
@@ -94,7 +94,7 @@ class SAG_AI_Provider {
 
     /** WP 6.x path. */
     private function generate_via_openai( $image_url, $prompt ) {
-        $client = new SAG_OpenAI();
+        $client = new INSAG_OpenAI();
         return $client->request( $image_url, $prompt );
     }
 
@@ -107,7 +107,7 @@ class SAG_AI_Provider {
                 ->generateTextResult();
             return trim( $result->toText() );
         } catch ( \Exception $e ) {
-            return new WP_Error( 'sag_connector_error', $e->getMessage() );
+            return new WP_Error( 'insag_connector_error', $e->getMessage() );
         }
     }
 }

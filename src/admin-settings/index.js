@@ -13,7 +13,7 @@ import {
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 
-const { hasConnector = false } = window.sagSettingsData ?? {};
+const { hasConnector = false } = window.insagSettingsData ?? {};
 
 /** WP 7.0+ notice — shown only when AI Connectors are active. */
 function ConnectorsNotice() {
@@ -45,7 +45,7 @@ function TestConnectionButton( { apiKey } ) {
 	const handleTest = async () => {
 		setStatus( 'testing' );
 		try {
-			await apiFetch( { path: '/smart-alt/v1/test' } );
+			await apiFetch( { path: '/insag/v1/test' } );
 			setStatus( 'ok' );
 			setMessage( __( 'Connection successful', 'internick-smart-alt-generator' ) );
 		} catch ( e ) {
@@ -92,21 +92,21 @@ function ProviderCard( { settings, onChange } ) {
 				<TextControl
 					label={ __( 'OpenAI API Key', 'internick-smart-alt-generator' ) }
 					type="password"
-					value={ settings.sag_openai_api_key }
-					onChange={ ( v ) => onChange( 'sag_openai_api_key', v ) }
+					value={ settings.insag_openai_api_key }
+					onChange={ ( v ) => onChange( 'insag_openai_api_key', v ) }
 					help={ __( 'Get your key at platform.openai.com', 'internick-smart-alt-generator' ) }
 					autoComplete="off"
 				/>
 				<SelectControl
 					label={ __( 'Model', 'internick-smart-alt-generator' ) }
-					value={ settings.sag_model }
+					value={ settings.insag_model }
 					options={ [
 						{ label: 'gpt-4o-mini — Fastest, cheapest (recommended)', value: 'gpt-4o-mini' },
 						{ label: 'gpt-4o — Highest quality', value: 'gpt-4o' },
 					] }
-					onChange={ ( v ) => onChange( 'sag_model', v ) }
+					onChange={ ( v ) => onChange( 'insag_model', v ) }
 				/>
-				<TestConnectionButton apiKey={ settings.sag_openai_api_key } />
+				<TestConnectionButton apiKey={ settings.insag_openai_api_key } />
 			</CardBody>
 		</Card>
 	);
@@ -126,13 +126,13 @@ function GenerationCard( { settings, onChange } ) {
 						'Automatically generate alt text when a new image is uploaded to the Media Library.',
 						'internick-smart-alt-generator'
 					) }
-					checked={ settings.sag_auto_generate }
-					onChange={ ( v ) => onChange( 'sag_auto_generate', v ) }
+					checked={ settings.insag_auto_generate }
+					onChange={ ( v ) => onChange( 'insag_auto_generate', v ) }
 				/>
 				<TextControl
 					label={ __( 'Language', 'internick-smart-alt-generator' ) }
-					value={ settings.sag_language }
-					onChange={ ( v ) => onChange( 'sag_language', v ) }
+					value={ settings.insag_language }
+					onChange={ ( v ) => onChange( 'insag_language', v ) }
 					help={ __(
 						'Use "auto" to match the site language, or enter a language name (e.g. "Spanish").',
 						'internick-smart-alt-generator'
@@ -173,10 +173,10 @@ function SaveFooter( { onSave, saveStatus } ) {
 }
 
 const DEFAULT_SETTINGS = {
-	sag_openai_api_key: '',
-	sag_model: 'gpt-4o-mini',
-	sag_language: 'auto',
-	sag_auto_generate: false,
+	insag_openai_api_key: '',
+	insag_model: 'gpt-4o-mini',
+	insag_language: 'auto',
+	insag_auto_generate: false,
 };
 
 /** Root component — loads settings from REST, handles save. */
@@ -186,7 +186,7 @@ function SettingsApp() {
 	const [ saveStatus, setSaveStatus ] = useState( null ); // null | saving | saved | error
 
 	useEffect( () => {
-		apiFetch( { path: '/smart-alt/v1/settings' } )
+		apiFetch( { path: '/insag/v1/settings' } )
 			.then( ( data ) => {
 				setSettings( ( prev ) => ( { ...prev, ...data } ) );
 				setLoading( false );
@@ -203,7 +203,7 @@ function SettingsApp() {
 		setSaveStatus( 'saving' );
 		try {
 			await apiFetch( {
-				path: '/smart-alt/v1/settings',
+				path: '/insag/v1/settings',
 				method: 'POST',
 				data: settings,
 			} );
@@ -229,7 +229,7 @@ function SettingsApp() {
 	);
 }
 
-const root = document.getElementById( 'sag-settings-root' );
+const root = document.getElementById( 'ininsag-settings-root' );
 if ( root ) {
 	createRoot( root ).render( <SettingsApp /> );
 }

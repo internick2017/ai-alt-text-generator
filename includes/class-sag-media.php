@@ -9,7 +9,7 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class SAG_Media {
+class INSAG_Media {
 
     /** @var object Generator with generate_for_image(). */
     private $generator;
@@ -25,13 +25,13 @@ class SAG_Media {
      * @param int $attachment_id
      */
     public function maybe_auto_generate( $attachment_id ) {
-        if ( ! get_option( 'sag_auto_generate', false ) ) {
+        if ( ! get_option( 'insag_auto_generate', false ) ) {
             return;
         }
         if ( ! wp_attachment_is_image( $attachment_id ) ) {
             return;
         }
-        $generator = $this->generator ?? new SAG_Generator();
+        $generator = $this->generator ?? new INSAG_Generator();
         $generator->generate_for_image( $attachment_id );
     }
 
@@ -45,11 +45,11 @@ class SAG_Media {
      */
     public function add_generate_button( $form_fields, $post ) {
         $button = sprintf(
-            '<button type="button" class="button sag-generate-btn" data-image-id="%d">%s</button>',
+            '<button type="button" class="button insag-generate-btn" data-image-id="%d">%s</button>',
             esc_attr( $post->ID ),
             esc_html__( 'Generate Alt Text', 'internick-smart-alt-generator' )
         );
-        $form_fields['sag_generate'] = array(
+        $form_fields['insag_generate'] = array(
             'label' => __( 'AI Alt Text', 'internick-smart-alt-generator' ),
             'input' => 'html',
             'html'  => $button,

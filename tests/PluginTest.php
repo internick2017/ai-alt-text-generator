@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 final class PluginTest extends TestCase {
 
     public function test_get_instance_returns_same_object() {
-        // SAG_Plugin constructor calls load_dependencies() + register_hooks();
+        // INSAG_Plugin constructor calls load_dependencies() + register_hooks();
         // register_hooks() calls add_action()/add_filter()/is_admin(), so stub them.
         Functions\when( 'add_action' )->justReturn( true );
         Functions\when( 'add_filter' )->justReturn( true );
@@ -14,8 +14,8 @@ final class PluginTest extends TestCase {
         Functions\when( 'plugin_dir_path' )->justReturn( '/tmp/' );
         Functions\when( 'plugin_dir_url' )->justReturn( 'http://x/' );
 
-        $a = \SAG_Plugin::get_instance();
-        $b = \SAG_Plugin::get_instance();
+        $a = \INSAG_Plugin::get_instance();
+        $b = \INSAG_Plugin::get_instance();
 
         $this->assertSame( $a, $b, 'Singleton must return the same instance' );
     }

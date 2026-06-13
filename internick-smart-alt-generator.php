@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name:       Internick - Smart Alt Generator
- * Plugin URI:        https://nickgranados.com/plugins/internick-smart-alt-generator
+ * Plugin URI:        https://github.com/internick2017/smart-alt-generator
  * Description:       Automatically generate descriptive alt text for images using AI. Supports WordPress 7.0 AI Connectors and OpenAI API for older versions.
- * Version:           1.1.1
+ * Version:           1.1.2
  * Author:            Nick Granados
  * Author URI:        https://nickgranados.com
  * License:           GPL-2.0-or-later
@@ -20,14 +20,14 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-define( 'SAG_VERSION', '1.1.1' );
-define( 'SAG_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'SAG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'SAG_PLUGIN_FILE', __FILE__ );
+define( 'INSAG_VERSION', '1.1.2' );
+define( 'INSAG_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'INSAG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'INSAG_PLUGIN_FILE', __FILE__ );
 
-require_once SAG_PLUGIN_DIR . 'includes/class-sag-plugin.php';
+require_once INSAG_PLUGIN_DIR . 'includes/class-sag-plugin.php';
 
-register_activation_hook( __FILE__, array( 'SAG_Plugin', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'SAG_Plugin', 'deactivate' ) );
+register_activation_hook( __FILE__, array( 'INSAG_Plugin', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'INSAG_Plugin', 'deactivate' ) );
 
-SAG_Plugin::get_instance();
+INSAG_Plugin::get_instance();

@@ -3,7 +3,7 @@ import { Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 
-const { imageIds = [] } = window.sagBulkData ?? {};
+const { imageIds = [] } = window.insagBulkData ?? {};
 
 /** 4 stat boxes: total / completed / errors / remaining. */
 function StatBar( { total, successes, errors } ) {
@@ -157,7 +157,7 @@ function BulkApp() {
 			}
 			try {
 				const res = await apiFetch( {
-					path: '/smart-alt/v1/generate',
+					path: '/insag/v1/generate',
 					method: 'POST',
 					data: { image_id: imageIds[ i ] },
 				} );
@@ -223,7 +223,7 @@ function BulkApp() {
 	);
 }
 
-const root = document.getElementById( 'sag-bulk-root' );
+const root = document.getElementById( 'ininsag-bulk-root' );
 if ( root ) {
 	createRoot( root ).render( <BulkApp /> );
 }

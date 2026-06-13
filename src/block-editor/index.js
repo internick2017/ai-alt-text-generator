@@ -38,7 +38,7 @@ function AltTextGenerator( { attributes, setAttributes } ) {
 
 		try {
 			const res = await apiFetch( {
-				path: '/smart-alt/v1/generate',
+				path: '/insag/v1/generate',
 				method: 'POST',
 				data,
 			} );

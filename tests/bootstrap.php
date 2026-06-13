@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 /**
- * PHPUnit bootstrap — loads Composer autoloader (for Brain Monkey),
+ * PHPUnit bootstrap â€” loads Composer autoloader (for Brain Monkey),
  * defines minimal WordPress stubs, and loads the plugin's classes.
  */
 

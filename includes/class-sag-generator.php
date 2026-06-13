@@ -12,21 +12,21 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class SAG_Generator {
+class INSAG_Generator {
 
     /** @var object Anything with a generate( $image, $language ) method. */
     private $provider;
 
-    /** @var object SAG_Image (or compatible) for data-URI conversion. */
+    /** @var object INSAG_Image (or compatible) for data-URI conversion. */
     private $image;
 
     /**
-     * @param object|null $provider Inject a provider; defaults to SAG_AI_Provider.
-     * @param object|null $image    Inject an image helper; defaults to SAG_Image.
+     * @param object|null $provider Inject a provider; defaults to INSAG_AI_Provider.
+     * @param object|null $image    Inject an image helper; defaults to INSAG_Image.
      */
     public function __construct( $provider = null, $image = null ) {
-        $this->provider = $provider ?? new SAG_AI_Provider();
-        $this->image    = $image ?? new SAG_Image();
+        $this->provider = $provider ?? new INSAG_AI_Provider();
+        $this->image    = $image ?? new INSAG_Image();
     }
 
     /**
@@ -39,7 +39,7 @@ class SAG_Generator {
     public function generate_for_image( $image_id ) {
         $path = get_attached_file( $image_id );
         if ( ! $path ) {
-            return new WP_Error( 'sag_invalid_image', __( 'Image not found.', 'internick-smart-alt-generator' ) );
+            return new WP_Error( 'insag_invalid_image', __( 'Image not found.', 'internick-smart-alt-generator' ) );
         }
 
         $data_uri = $this->image->path_to_data_uri( $path );
@@ -78,7 +78,7 @@ class SAG_Generator {
      * @return string|WP_Error
      */
     private function run_provider( $image ) {
-        $language = get_option( 'sag_language', 'auto' );
+        $language = get_option( 'insag_language', 'auto' );
         return $this->provider->generate( $image, $language );
     }
 }

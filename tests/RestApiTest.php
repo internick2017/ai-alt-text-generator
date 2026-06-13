@@ -12,7 +12,7 @@ final class RestApiTest extends TestCase {
     }
 
     public function test_permission_requires_upload_files_cap() {
-        $api = new \SAG_REST_API();
+        $api = new \INSAG_REST_API();
 
         Functions\when( 'current_user_can' )->justReturn( true );
         $this->assertTrue( $api->check_permission() );
@@ -27,10 +27,12 @@ final class RestApiTest extends TestCase {
             public function generate_for_image( $id ) { return 'Alt for ' . $id; }
             public function generate_for_url( $url ) { return 'Alt for url'; }
         };
-        $api = new \SAG_REST_API( $fake );
+        $api = new \INSAG_REST_API( $fake );
 
         $request = new \WP_REST_Request();
         $request->set_param( 'image_id', 55 );
+
+        Functions\when( 'current_user_can' )->justReturn( true );
 
         $response = $api->handle_generate( $request );
         $this->assertSame( 'Alt for 55', $response['alt_text'] );
@@ -38,12 +40,30 @@ final class RestApiTest extends TestCase {
         $this->assertTrue( $response['saved'] );
     }
 
+    public function test_handle_generate_denies_image_id_without_edit_cap() {
+        $fake = new class {
+            public function generate_for_image( $id ) { return 'should not run'; }
+            public function generate_for_url( $url ) { return 'x'; }
+        };
+        $api = new \INSAG_REST_API( $fake );
+
+        $request = new \WP_REST_Request();
+        $request->set_param( 'image_id', 55 );
+
+        // User lacks edit_post on this attachment.
+        Functions\when( 'current_user_can' )->justReturn( false );
+
+        $response = $api->handle_generate( $request );
+        $this->assertInstanceOf( \WP_Error::class, $response );
+        $this->assertSame( 'insag_forbidden', $response->get_error_code() );
+    }
+
     public function test_handle_generate_with_url_only_does_not_save() {
         $fake = new class {
             public function generate_for_image( $id ) { return 'x'; }
             public function generate_for_url( $url ) { return 'Alt for url'; }
         };
-        $api = new \SAG_REST_API( $fake );
+        $api = new \INSAG_REST_API( $fake );
 
         $request = new \WP_REST_Request();
         $request->set_param( 'image_url', 'https://x/y.jpg' );

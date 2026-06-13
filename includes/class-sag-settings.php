@@ -9,9 +9,9 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class SAG_Settings {
+class INSAG_Settings {
 
-    const GROUP = 'sag_settings';
+    const GROUP = 'insag_settings';
 
     /** Allowed model ids. */
     public static function allowed_models() {
@@ -20,10 +20,10 @@ class SAG_Settings {
 
     /** Hooked to admin_init. */
     public function register() {
-        register_setting( self::GROUP, 'sag_openai_api_key', array( 'sanitize_callback' => 'sanitize_text_field', 'default' => '' ) );
-        register_setting( self::GROUP, 'sag_model', array( 'sanitize_callback' => array( $this, 'sanitize_model' ), 'default' => 'gpt-4o-mini' ) );
-        register_setting( self::GROUP, 'sag_language', array( 'sanitize_callback' => 'sanitize_text_field', 'default' => 'auto' ) );
-        register_setting( self::GROUP, 'sag_auto_generate', array( 'sanitize_callback' => array( $this, 'sanitize_checkbox' ), 'default' => false ) );
+        register_setting( self::GROUP, 'insag_openai_api_key', array( 'sanitize_callback' => 'sanitize_text_field', 'default' => '' ) );
+        register_setting( self::GROUP, 'insag_model', array( 'sanitize_callback' => array( $this, 'sanitize_model' ), 'default' => 'gpt-4o-mini' ) );
+        register_setting( self::GROUP, 'insag_language', array( 'sanitize_callback' => 'sanitize_text_field', 'default' => 'auto' ) );
+        register_setting( self::GROUP, 'insag_auto_generate', array( 'sanitize_callback' => array( $this, 'sanitize_checkbox' ), 'default' => false ) );
     }
 
     /** Only allow known model ids; fall back to the cheap default. */

@@ -9,7 +9,7 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-class SAG_Admin {
+class INSAG_Admin {
 
     /** Hooked to admin_menu. */
     public function register_menus() {
@@ -17,7 +17,7 @@ class SAG_Admin {
             __( 'AI Alt Text', 'internick-smart-alt-generator' ),
             __( 'AI Alt Text', 'internick-smart-alt-generator' ),
             'manage_options',
-            'sag-settings',
+            'insag-settings',
             array( $this, 'render_settings_page' )
         );
 
@@ -25,7 +25,7 @@ class SAG_Admin {
             __( 'Bulk Alt Text', 'internick-smart-alt-generator' ),
             __( 'Bulk Alt Text', 'internick-smart-alt-generator' ),
             'upload_files',
-            'sag-bulk',
+            'insag-bulk',
             array( $this, 'render_bulk_page' )
         );
     }
@@ -33,29 +33,29 @@ class SAG_Admin {
     /** Hooked to admin_enqueue_scripts. Loads React bundles for admin pages. */
     public function enqueue_assets( $hook ) {
         // Settings page — React bundle.
-        if ( 'settings_page_sag-settings' === $hook ) {
-            $asset_file = SAG_PLUGIN_DIR . 'build/admin-settings.asset.php';
+        if ( 'settings_page_ininsag-settings' === $hook ) {
+            $asset_file = INSAG_PLUGIN_DIR . 'build/admin-settings.asset.php';
             if ( ! file_exists( $asset_file ) ) {
                 return;
             }
             $asset = require $asset_file;
             wp_enqueue_script(
-                'sag-admin-settings',
-                SAG_PLUGIN_URL . 'build/admin-settings.js',
+                'insag-admin-settings',
+                INSAG_PLUGIN_URL . 'build/admin-settings.js',
                 $asset['dependencies'],
                 $asset['version'],
                 true
             );
-            wp_localize_script( 'sag-admin-settings', 'sagSettingsData', array(
-                'hasConnector' => 'wp_connector' === SAG_AI_Provider::detect_backend(),
+            wp_localize_script( 'insag-admin-settings', 'insagSettingsData', array(
+                'hasConnector' => 'wp_connector' === INSAG_AI_Provider::detect_backend(),
                 'nonce'        => wp_create_nonce( 'wp_rest' ),
-                'restBase'     => rest_url( 'smart-alt/v1' ),
+                'restBase'     => rest_url( 'insag/v1' ),
             ) );
             return;
         }
 
         // Bulk page — React bundle.
-        if ( 'media_page_sag-bulk' === $hook ) {
+        if ( 'media_page_ininsag-bulk' === $hook ) {
             $bulk_query = new WP_Query( array(
                 'post_type'      => 'attachment',
                 'post_mime_type' => 'image',
@@ -70,29 +70,29 @@ class SAG_Admin {
             ) );
             $image_ids = wp_list_pluck( $bulk_query->posts, 'ID' );
 
-            $asset_file = SAG_PLUGIN_DIR . 'build/admin-bulk.asset.php';
+            $asset_file = INSAG_PLUGIN_DIR . 'build/admin-bulk.asset.php';
             if ( ! file_exists( $asset_file ) ) {
                 return;
             }
             $asset = require $asset_file;
             wp_enqueue_script(
-                'sag-admin-bulk',
-                SAG_PLUGIN_URL . 'build/admin-bulk.js',
+                'insag-admin-bulk',
+                INSAG_PLUGIN_URL . 'build/admin-bulk.js',
                 $asset['dependencies'],
                 $asset['version'],
                 true
             );
-            wp_localize_script( 'sag-admin-bulk', 'sagBulkData', array(
+            wp_localize_script( 'insag-admin-bulk', 'insagBulkData', array(
                 'imageIds' => $image_ids,
                 'nonce'    => wp_create_nonce( 'wp_rest' ),
-                'restBase' => rest_url( 'smart-alt/v1' ),
+                'restBase' => rest_url( 'insag/v1' ),
             ) );
             return;
         }
 
         // Classic media library button — unchanged.
         if ( in_array( $hook, array( 'post.php', 'post-new.php', 'upload.php' ), true ) ) {
-            wp_enqueue_script( 'sag-media', SAG_PLUGIN_URL . 'admin/js/sag-media.js', array( 'wp-api-fetch' ), SAG_VERSION, true );
+            wp_enqueue_script( 'insag-media', INSAG_PLUGIN_URL . 'admin/js/sag-media.js', array( 'wp-api-fetch' ), INSAG_VERSION, true );
         }
     }
 
@@ -101,7 +101,7 @@ class SAG_Admin {
      * that adds the "Generate with AI" button to the image block.
      */
     public function enqueue_block_editor() {
-        $asset_file = SAG_PLUGIN_DIR . 'build/index.asset.php';
+        $asset_file = INSAG_PLUGIN_DIR . 'build/index.asset.php';
         if ( ! file_exists( $asset_file ) ) {
             return; // Build not present (dev clone without npm build).
         }
@@ -130,19 +130,19 @@ class SAG_Admin {
         }
 
         wp_enqueue_script(
-            'sag-block-editor',
-            SAG_PLUGIN_URL . 'build/index.js',
+            'insag-block-editor',
+            INSAG_PLUGIN_URL . 'build/index.js',
             $deps,
-            $asset['version'] . '-' . SAG_VERSION,
+            $asset['version'] . '-' . INSAG_VERSION,
             false // Load in <head> so the filter runs before the editor renders blocks.
         );
     }
 
     public function render_settings_page() {
-        require SAG_PLUGIN_DIR . 'admin/views/settings-page.php';
+        require INSAG_PLUGIN_DIR . 'admin/views/settings-page.php';
     }
 
     public function render_bulk_page() {
-        require SAG_PLUGIN_DIR . 'admin/views/bulk-page.php';
+        require INSAG_PLUGIN_DIR . 'admin/views/bulk-page.php';
     }
 }
