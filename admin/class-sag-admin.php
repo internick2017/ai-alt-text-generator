@@ -28,6 +28,14 @@ class INSAG_Admin {
             'insag-bulk',
             array( $this, 'render_bulk_page' )
         );
+
+        add_media_page(
+            __( 'Alt Text Audit', 'internick-smart-alt-generator' ),
+            __( 'Alt Text Audit', 'internick-smart-alt-generator' ),
+            'upload_files',
+            'insag-audit',
+            array( $this, 'render_audit_page' )
+        );
     }
 
     /** Hooked to admin_enqueue_scripts. Loads React bundles for admin pages. */
@@ -90,6 +98,27 @@ class INSAG_Admin {
             return;
         }
 
+        // Audit page — React bundle.
+        if ( 'media_page_insag-audit' === $hook ) {
+            $asset_file = INSAG_PLUGIN_DIR . 'build/admin-audit.asset.php';
+            if ( ! file_exists( $asset_file ) ) {
+                return;
+            }
+            $asset = require $asset_file;
+            wp_enqueue_script(
+                'insag-admin-audit',
+                INSAG_PLUGIN_URL . 'build/admin-audit.js',
+                $asset['dependencies'],
+                $asset['version'],
+                true
+            );
+            wp_localize_script( 'insag-admin-audit', 'insagAuditData', array(
+                'nonce'    => wp_create_nonce( 'wp_rest' ),
+                'restBase' => rest_url( 'insag/v1' ),
+            ) );
+            return;
+        }
+
         // Classic media library button — unchanged.
         if ( in_array( $hook, array( 'post.php', 'post-new.php', 'upload.php' ), true ) ) {
             wp_enqueue_script( 'insag-media', INSAG_PLUGIN_URL . 'admin/js/sag-media.js', array( 'wp-api-fetch' ), INSAG_VERSION, true );
@@ -144,5 +173,9 @@ class INSAG_Admin {
 
     public function render_bulk_page() {
         require INSAG_PLUGIN_DIR . 'admin/views/bulk-page.php';
+    }
+
+    public function render_audit_page() {
+        require INSAG_PLUGIN_DIR . 'admin/views/audit-page.php';
     }
 }
