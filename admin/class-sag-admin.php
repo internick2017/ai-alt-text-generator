@@ -33,7 +33,7 @@ class INSAG_Admin {
     /** Hooked to admin_enqueue_scripts. Loads React bundles for admin pages. */
     public function enqueue_assets( $hook ) {
         // Settings page — React bundle.
-        if ( 'settings_page_ininsag-settings' === $hook ) {
+        if ( 'settings_page_insag-settings' === $hook ) {
             $asset_file = INSAG_PLUGIN_DIR . 'build/admin-settings.asset.php';
             if ( ! file_exists( $asset_file ) ) {
                 return;
@@ -55,7 +55,7 @@ class INSAG_Admin {
         }
 
         // Bulk page — React bundle.
-        if ( 'media_page_ininsag-bulk' === $hook ) {
+        if ( 'media_page_insag-bulk' === $hook ) {
             $bulk_query = new WP_Query( array(
                 'post_type'      => 'attachment',
                 'post_mime_type' => 'image',
