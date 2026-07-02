@@ -3,7 +3,7 @@ Contributors: internick2017
 Tags: alt text, accessibility, seo, ai, openai
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -81,6 +81,10 @@ Build the compiled assets in `build/` with `npm install && npm run build`.
 
 == Changelog ==
 
+= 1.1.3 =
+* Fixed the Settings and Bulk Alt Text admin screens showing up blank: the script
+  loader checked the wrong admin-page hook, so the React interface never loaded.
+
 = 1.1.2 =
 * Hardened REST API permissions: per-attachment capability check on generation,
   and the connection test is now restricted to administrators.
@@ -110,6 +114,9 @@ Build the compiled assets in `build/` with `npm install && npm run build`.
 * Initial release: settings, media button, bulk generator, REST API.
 
 == Upgrade Notice ==
+
+= 1.1.3 =
+Fixes the Settings and Bulk Alt Text screens showing up blank.
 
 = 1.1.1 =
 Adds a modern React admin UI, pause/resume bulk generation, and fixes the
