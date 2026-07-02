@@ -3,7 +3,7 @@
  * Plugin Name:       Internick - Smart Alt Generator
  * Plugin URI:        https://github.com/internick2017/smart-alt-generator
  * Description:       Automatically generate descriptive alt text for images using AI. Supports WordPress 7.0 AI Connectors and OpenAI API for older versions.
- * Version:           1.1.3
+ * Version:           1.2.0
  * Author:            Nick Granados
  * Author URI:        https://nickgranados.com
  * License:           GPL-2.0-or-later
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-define( 'INSAG_VERSION', '1.1.3' );
+define( 'INSAG_VERSION', '1.2.0' );
 define( 'INSAG_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'INSAG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'INSAG_PLUGIN_FILE', __FILE__ );

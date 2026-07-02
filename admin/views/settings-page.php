@@ -10,5 +10,5 @@ if ( ! defined( 'WPINC' ) ) {
 }
 ?>
 <div class="wrap">
-    <div id="ininsag-settings-root"></div>
+    <div id="insag-settings-root"></div>
 </div>

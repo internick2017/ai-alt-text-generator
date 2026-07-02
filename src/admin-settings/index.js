@@ -229,7 +229,7 @@ function SettingsApp() {
 	);
 }
 
-const root = document.getElementById( 'ininsag-settings-root' );
+const root = document.getElementById( 'insag-settings-root' );
 if ( root ) {
 	createRoot( root ).render( <SettingsApp /> );
 }

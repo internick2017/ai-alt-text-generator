@@ -223,7 +223,7 @@ function BulkApp() {
 	);
 }
 
-const root = document.getElementById( 'ininsag-bulk-root' );
+const root = document.getElementById( 'insag-bulk-root' );
 if ( root ) {
 	createRoot( root ).render( <BulkApp /> );
 }

@@ -1,9 +1,9 @@
 === Internick - Smart Alt Generator ===
 Contributors: internick2017
-Tags: alt text, accessibility, seo, ai, openai
+Tags: alt text, accessibility, wcag, seo, ai
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 1.1.3
+Stable tag: 1.2.0
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -18,6 +18,7 @@ SEO-friendly alt text for your WordPress images — improving accessibility
 
 Features:
 
+* Alt Text Audit: scan your whole library for missing, empty, duplicate, overly long, or placeholder alt text, with a health score and per-image generate, edit, or ignore actions
 * Native WordPress 7.0 AI Connectors support — no separate API key needed
 * Bulk generator — process every image missing alt text at once
 * Auto-generate on upload
@@ -81,6 +82,12 @@ Build the compiled assets in `build/` with `npm install && npm run build`.
 
 == Changelog ==
 
+= 1.2.0 =
+* New: Alt Text Audit dashboard (Media -> Alt Text Audit) that scores your
+  library's alt text and flags missing, empty, duplicate, too-long, and
+  placeholder values, with per-image generate / edit / ignore actions and a
+  filter-aware "Generate all shown" bulk action.
+
 = 1.1.3 =
 * Fixed the Settings and Bulk Alt Text admin screens showing up blank: the script
   loader checked the wrong admin-page hook, so the React interface never loaded.
@@ -114,6 +121,9 @@ Build the compiled assets in `build/` with `npm install && npm run build`.
 * Initial release: settings, media button, bulk generator, REST API.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Adds the Alt Text Audit dashboard to review and fix your whole library's alt text.
 
 = 1.1.3 =
 Fixes the Settings and Bulk Alt Text screens showing up blank.
