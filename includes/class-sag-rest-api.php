@@ -113,6 +113,34 @@ class INSAG_REST_API {
                 ),
             )
         );
+
+        register_rest_route(
+            self::REST_NAMESPACE,
+            '/audit/dismiss',
+            array(
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => array( $this, 'handle_audit_dismiss' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'image_id'  => array( 'type' => 'integer', 'required' => true, 'sanitize_callback' => 'absint' ),
+                    'dismissed' => array( 'type' => 'boolean', 'required' => true ),
+                ),
+            )
+        );
+
+        register_rest_route(
+            self::REST_NAMESPACE,
+            '/audit/set-alt',
+            array(
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => array( $this, 'handle_audit_set_alt' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'image_id' => array( 'type' => 'integer', 'required' => true, 'sanitize_callback' => 'absint' ),
+                    'alt'      => array( 'type' => 'string', 'required' => true, 'sanitize_callback' => 'sanitize_text_field' ),
+                ),
+            )
+        );
     }
 
     /** Only users who can upload files may generate. */
@@ -256,6 +284,52 @@ class INSAG_REST_API {
             'score'       => INSAG_Audit::score( $running['healthy'], $running['total'] ),
             'items'       => $items,
         ) );
+    }
+
+    /**
+     * Toggle the "dismissed" (reviewed / ignore) flag on an attachment.
+     *
+     * @param WP_REST_Request $request
+     * @return array|WP_Error
+     */
+    public function handle_audit_dismiss( $request ) {
+        $id = (int) $request->get_param( 'image_id' );
+        if ( ! current_user_can( 'edit_post', $id ) ) {
+            return new WP_Error(
+                'insag_forbidden',
+                __( 'You are not allowed to edit this attachment.', 'internick-smart-alt-generator' ),
+                array( 'status' => 403 )
+            );
+        }
+        $dismissed = (bool) $request->get_param( 'dismissed' );
+        if ( $dismissed ) {
+            update_post_meta( $id, '_insag_audit_dismissed', 1 );
+        } else {
+            delete_post_meta( $id, '_insag_audit_dismissed' );
+        }
+        delete_transient( 'insag_audit_summary' );
+        return rest_ensure_response( array( 'image_id' => $id, 'dismissed' => $dismissed ) );
+    }
+
+    /**
+     * Save manually edited alt text for an attachment.
+     *
+     * @param WP_REST_Request $request
+     * @return array|WP_Error
+     */
+    public function handle_audit_set_alt( $request ) {
+        $id = (int) $request->get_param( 'image_id' );
+        if ( ! current_user_can( 'edit_post', $id ) ) {
+            return new WP_Error(
+                'insag_forbidden',
+                __( 'You are not allowed to edit this attachment.', 'internick-smart-alt-generator' ),
+                array( 'status' => 403 )
+            );
+        }
+        $alt = sanitize_text_field( (string) $request->get_param( 'alt' ) );
+        update_post_meta( $id, '_wp_attachment_image_alt', $alt );
+        delete_transient( 'insag_audit_summary' );
+        return rest_ensure_response( array( 'image_id' => $id, 'alt' => $alt ) );
     }
 
     /** Only admins may read/write settings. */
