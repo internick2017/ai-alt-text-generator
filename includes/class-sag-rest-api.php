@@ -96,6 +96,23 @@ class INSAG_REST_API {
                 'permission_callback' => array( $this, 'check_admin' ),
             )
         );
+
+        register_rest_route(
+            self::REST_NAMESPACE,
+            '/audit/scan',
+            array(
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => array( $this, 'handle_audit_scan' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'page' => array(
+                        'type'              => 'integer',
+                        'required'          => false,
+                        'sanitize_callback' => 'absint',
+                    ),
+                ),
+            )
+        );
     }
 
     /** Only users who can upload files may generate. */
@@ -150,6 +167,95 @@ class INSAG_REST_API {
                 'saved'    => $saved,
             )
         );
+    }
+
+    /**
+     * Scan one page of image attachments (100 per page). On the first page it
+     * (re)builds the global duplicate signature set and resets the running
+     * summary; both live in short-lived transients so duplicate detection has a
+     * whole-library view and the score survives across paged requests.
+     *
+     * @param WP_REST_Request $request
+     * @return array|WP_Error
+     */
+    public function handle_audit_scan( $request ) {
+        global $wpdb;
+        $per_page = 100;
+        $page     = max( 1, (int) $request->get_param( 'page' ) );
+
+        if ( 1 === $page ) {
+            // One query for every image's alt value -> duplicate signature set.
+            $alts = $wpdb->get_col(
+                "SELECT pm.meta_value
+                 FROM {$wpdb->posts} p
+                 INNER JOIN {$wpdb->postmeta} pm
+                   ON pm.post_id = p.ID AND pm.meta_key = '_wp_attachment_image_alt'
+                 WHERE p.post_type = 'attachment' AND p.post_mime_type LIKE 'image/%'"
+            );
+            set_transient( 'insag_audit_dupes', INSAG_Audit::find_duplicates( (array) $alts ), 15 * MINUTE_IN_SECONDS );
+            set_transient( 'insag_audit_summary', array(
+                'counts'  => array_fill_keys( INSAG_Audit::flags(), 0 ),
+                'healthy' => 0,
+                'total'   => 0,
+            ), 15 * MINUTE_IN_SECONDS );
+        }
+
+        $dupes   = get_transient( 'insag_audit_dupes' );
+        $running = get_transient( 'insag_audit_summary' );
+        if ( ! is_array( $dupes ) ) {
+            $dupes = array();
+        }
+        if ( ! is_array( $running ) ) {
+            $running = array( 'counts' => array_fill_keys( INSAG_Audit::flags(), 0 ), 'healthy' => 0, 'total' => 0 );
+        }
+
+        $query = new WP_Query( array(
+            'post_type'      => 'attachment',
+            'post_mime_type' => 'image',
+            'post_status'    => 'inherit',
+            'posts_per_page' => $per_page,
+            'paged'          => $page,
+            'orderby'        => 'ID',
+            'order'          => 'ASC',
+            'fields'         => 'ids',
+        ) );
+
+        $records = array();
+        foreach ( $query->posts as $id ) {
+            $id       = (int) $id;
+            $has_meta = metadata_exists( 'post', $id, '_wp_attachment_image_alt' );
+            $file     = get_attached_file( $id );
+            $records[] = array(
+                'id'        => $id,
+                'alt'       => $has_meta ? (string) get_post_meta( $id, '_wp_attachment_image_alt', true ) : null,
+                'filename'  => $file ? wp_basename( $file ) : '',
+                'dismissed' => (bool) get_post_meta( $id, '_insag_audit_dismissed', true ),
+            );
+        }
+
+        $page_result = INSAG_Audit::summarize( $records, $dupes );
+
+        foreach ( $page_result['counts'] as $flag => $n ) {
+            $running['counts'][ $flag ] = ( $running['counts'][ $flag ] ?? 0 ) + $n;
+        }
+        $running['healthy'] += $page_result['healthy'];
+        $running['total']   += count( $records );
+        set_transient( 'insag_audit_summary', $running, 15 * MINUTE_IN_SECONDS );
+
+        $items = array();
+        foreach ( $page_result['items'] as $item ) {
+            $item['thumb'] = wp_get_attachment_image_url( $item['id'], 'thumbnail' );
+            $items[]       = $item;
+        }
+
+        return rest_ensure_response( array(
+            'page'        => $page,
+            'total_pages' => (int) $query->max_num_pages,
+            'total'       => (int) $running['total'],
+            'counts'      => $running['counts'],
+            'score'       => INSAG_Audit::score( $running['healthy'], $running['total'] ),
+            'items'       => $items,
+        ) );
     }
 
     /** Only admins may read/write settings. */
