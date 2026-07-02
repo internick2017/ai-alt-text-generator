@@ -43,7 +43,12 @@ Layout, top to bottom:
    - **Generate with AI** — reuses the existing `POST /generate` endpoint.
    - **Edit + Save** — inline text field that saves manual alt text.
    - **Dismiss** — marks the item reviewed and removes it from the report.
-4. **Re-scan** button to refresh the audit.
+4. **Generate all shown** button (header) that runs AI generation over the currently
+   filtered/visible set, reusing `POST /generate`, with a count and a live progress
+   counter, plus a confirmation because each call is a paid request. This lets a whole
+   category (for example every missing-alt image) be fixed in one action, while per-row
+   Generate stays for fine-grained control.
+5. **Re-scan** button to refresh the audit.
 
 ## Analysis engine — `INSAG_Audit`
 
