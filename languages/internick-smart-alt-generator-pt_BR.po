@@ -145,7 +145,7 @@ msgstr "Já deixei / Não mostrar de novo"
 
 #: build/admin-audit.js:1
 msgid "Missing"
-msgstr "Faltando"
+msgstr "Faltante"
 
 #: build/admin-audit.js:1
 msgid "Empty"
