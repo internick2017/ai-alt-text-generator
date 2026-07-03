@@ -40,6 +40,7 @@ class INSAG_Plugin {
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-ai-provider.php';
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-generator.php';
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-audit.php';
+        require_once INSAG_PLUGIN_DIR . 'includes/class-sag-review-notice.php';
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-rest-api.php';
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-settings.php';
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-media.php';
