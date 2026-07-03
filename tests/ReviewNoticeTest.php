@@ -45,6 +45,7 @@ final class ReviewNoticeTest extends TestCase {
             ->andReturn( true );
 
         \INSAG_Review_Notice::record_generation();
+        $this->addToAssertionCount( 1 );
     }
 
     // ---- apply_action(): persists the user's choice ----

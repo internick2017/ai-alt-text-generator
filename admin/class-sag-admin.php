@@ -38,7 +38,7 @@ class INSAG_Admin {
         );
     }
 
-    /** Hooked to admin_enqueue_scripts. Loads React bundles for admin pages. */
+    /** Hooked to admin_enqueue_scripts. Loads the review-notice script and the React bundles for admin pages. */
     public function enqueue_assets( $hook ) {
         // Review notice buttons — only on plugin screens, only when the notice is due.
         if ( in_array( $hook, INSAG_Review_Notice::ALLOWED_SCREENS, true )
