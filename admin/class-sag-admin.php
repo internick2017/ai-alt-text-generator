@@ -77,6 +77,11 @@ class INSAG_Admin {
                 'nonce'        => wp_create_nonce( 'wp_rest' ),
                 'restBase'     => rest_url( 'insag/v1' ),
             ) );
+            wp_set_script_translations(
+                'insag-admin-settings',
+                'internick-smart-alt-generator',
+                INSAG_PLUGIN_DIR . 'languages'
+            );
             return;
         }
 
@@ -113,6 +118,11 @@ class INSAG_Admin {
                 'nonce'    => wp_create_nonce( 'wp_rest' ),
                 'restBase' => rest_url( 'insag/v1' ),
             ) );
+            wp_set_script_translations(
+                'insag-admin-bulk',
+                'internick-smart-alt-generator',
+                INSAG_PLUGIN_DIR . 'languages'
+            );
             return;
         }
 
@@ -134,6 +144,11 @@ class INSAG_Admin {
                 'nonce'    => wp_create_nonce( 'wp_rest' ),
                 'restBase' => rest_url( 'insag/v1' ),
             ) );
+            wp_set_script_translations(
+                'insag-admin-audit',
+                'internick-smart-alt-generator',
+                INSAG_PLUGIN_DIR . 'languages'
+            );
             return;
         }
 
@@ -182,6 +197,11 @@ class INSAG_Admin {
             $deps,
             $asset['version'] . '-' . INSAG_VERSION,
             false // Load in <head> so the filter runs before the editor renders blocks.
+        );
+        wp_set_script_translations(
+            'insag-block-editor',
+            'internick-smart-alt-generator',
+            INSAG_PLUGIN_DIR . 'languages'
         );
     }
 
