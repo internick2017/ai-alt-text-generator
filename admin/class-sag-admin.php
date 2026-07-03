@@ -38,8 +38,26 @@ class INSAG_Admin {
         );
     }
 
-    /** Hooked to admin_enqueue_scripts. Loads React bundles for admin pages. */
+    /** Hooked to admin_enqueue_scripts. Loads the review-notice script and the React bundles for admin pages. */
     public function enqueue_assets( $hook ) {
+        // Review notice buttons — only on plugin screens, only when the notice is due.
+        if ( in_array( $hook, INSAG_Review_Notice::ALLOWED_SCREENS, true )
+            && current_user_can( 'manage_options' )
+            && INSAG_Review_Notice::is_due() ) {
+            wp_enqueue_script(
+                'insag-review-notice',
+                INSAG_PLUGIN_URL . 'admin/js/sag-review-notice.js',
+                array(),
+                INSAG_VERSION,
+                true
+            );
+            wp_localize_script( 'insag-review-notice', 'insagReviewData', array(
+                'restBase'  => rest_url( 'insag/v1' ),
+                'nonce'     => wp_create_nonce( 'wp_rest' ),
+                'reviewUrl' => INSAG_Review_Notice::REVIEW_URL,
+            ) );
+        }
+
         // Settings page — React bundle.
         if ( 'settings_page_insag-settings' === $hook ) {
             $asset_file = INSAG_PLUGIN_DIR . 'build/admin-settings.asset.php';
@@ -59,6 +77,11 @@ class INSAG_Admin {
                 'nonce'        => wp_create_nonce( 'wp_rest' ),
                 'restBase'     => rest_url( 'insag/v1' ),
             ) );
+            wp_set_script_translations(
+                'insag-admin-settings',
+                'internick-smart-alt-generator',
+                INSAG_PLUGIN_DIR . 'languages'
+            );
             return;
         }
 
@@ -95,6 +118,11 @@ class INSAG_Admin {
                 'nonce'    => wp_create_nonce( 'wp_rest' ),
                 'restBase' => rest_url( 'insag/v1' ),
             ) );
+            wp_set_script_translations(
+                'insag-admin-bulk',
+                'internick-smart-alt-generator',
+                INSAG_PLUGIN_DIR . 'languages'
+            );
             return;
         }
 
@@ -116,6 +144,11 @@ class INSAG_Admin {
                 'nonce'    => wp_create_nonce( 'wp_rest' ),
                 'restBase' => rest_url( 'insag/v1' ),
             ) );
+            wp_set_script_translations(
+                'insag-admin-audit',
+                'internick-smart-alt-generator',
+                INSAG_PLUGIN_DIR . 'languages'
+            );
             return;
         }
 
@@ -164,6 +197,11 @@ class INSAG_Admin {
             $deps,
             $asset['version'] . '-' . INSAG_VERSION,
             false // Load in <head> so the filter runs before the editor renders blocks.
+        );
+        wp_set_script_translations(
+            'insag-block-editor',
+            'internick-smart-alt-generator',
+            INSAG_PLUGIN_DIR . 'languages'
         );
     }
 

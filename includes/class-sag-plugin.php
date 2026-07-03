@@ -40,6 +40,7 @@ class INSAG_Plugin {
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-ai-provider.php';
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-generator.php';
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-audit.php';
+        require_once INSAG_PLUGIN_DIR . 'includes/class-sag-review-notice.php';
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-rest-api.php';
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-settings.php';
         require_once INSAG_PLUGIN_DIR . 'includes/class-sag-media.php';
@@ -53,6 +54,8 @@ class INSAG_Plugin {
      * during incremental development (some classes are added in later tasks).
      */
     private function register_hooks() {
+        add_action( 'init', array( __CLASS__, 'load_textdomain' ) );
+
         if ( class_exists( 'INSAG_REST_API' ) ) {
             $rest = new INSAG_REST_API();
             add_action( 'rest_api_init', array( $rest, 'register_routes' ) );
@@ -67,11 +70,23 @@ class INSAG_Plugin {
             add_action( 'admin_enqueue_scripts', array( $admin, 'enqueue_assets' ) );
             add_action( 'enqueue_block_editor_assets', array( $admin, 'enqueue_block_editor' ) );
         }
+        if ( is_admin() && class_exists( 'INSAG_Review_Notice' ) ) {
+            add_action( 'admin_notices', array( 'INSAG_Review_Notice', 'maybe_render' ) );
+        }
         if ( class_exists( 'INSAG_Media' ) ) {
             $media = new INSAG_Media();
             add_action( 'add_attachment', array( $media, 'maybe_auto_generate' ) );
             add_filter( 'attachment_fields_to_edit', array( $media, 'add_generate_button' ), 10, 2 );
         }
+    }
+
+    /** Load bundled translations from /languages. Hooked to init. */
+    public static function load_textdomain() {
+        load_plugin_textdomain(
+            'internick-smart-alt-generator',
+            false,
+            dirname( plugin_basename( INSAG_PLUGIN_FILE ) ) . '/languages'
+        );
     }
 
     /** Runs on activation: set default options. */

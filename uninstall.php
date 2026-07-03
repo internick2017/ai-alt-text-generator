@@ -14,3 +14,6 @@ delete_option( 'insag_openai_api_key' );
 delete_option( 'insag_model' );
 delete_option( 'insag_language' );
 delete_option( 'insag_auto_generate' );
+delete_option( 'insag_generation_count' );
+delete_option( 'insag_review_state' );
+delete_option( 'insag_review_snooze_until' );

@@ -66,6 +66,7 @@ foreach ( array(
     'class-sag-ai-provider.php',
     'class-sag-generator.php',
     'class-sag-audit.php',
+    'class-sag-review-notice.php',
     'class-sag-rest-api.php',
     'class-sag-settings.php',
     'class-sag-media.php',

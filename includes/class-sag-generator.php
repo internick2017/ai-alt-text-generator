@@ -53,6 +53,7 @@ class INSAG_Generator {
         }
 
         update_post_meta( $image_id, '_wp_attachment_image_alt', sanitize_text_field( $alt ) );
+        INSAG_Review_Notice::record_generation();
         return $alt;
     }
 
