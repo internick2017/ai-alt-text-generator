@@ -3,7 +3,7 @@ Contributors: internick2017
 Tags: alt text, accessibility, wcag, seo, ai
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -47,6 +47,7 @@ With gpt-4o-mini, roughly $0.001 per image.
 
 1. Settings — configure your AI provider, model, language, and auto-generate on upload.
 2. Bulk generator — process every image missing alt text with live progress and a per-image result log.
+3. Alt Text Audit — score your media library's alt text, see every issue flagged, and fix each one with AI, manual edit, or ignore.
 
 == External services ==
 
@@ -81,6 +82,10 @@ https://github.com/internick2017/smart-alt-generator
 Build the compiled assets in `build/` with `npm install && npm run build`.
 
 == Changelog ==
+
+= 1.2.1 =
+* New: the plugin now speaks Spanish (es_ES) and Brazilian Portuguese (pt_BR) — admin pages, editor button, and notices.
+* New: a small, dismissible request for a review after 10 successful generations (only on the plugin's own screens, never elsewhere).
 
 = 1.2.0 =
 * New: Alt Text Audit dashboard (Media -> Alt Text Audit) that scores your
