@@ -68,6 +68,9 @@ class INSAG_Plugin {
             add_action( 'admin_enqueue_scripts', array( $admin, 'enqueue_assets' ) );
             add_action( 'enqueue_block_editor_assets', array( $admin, 'enqueue_block_editor' ) );
         }
+        if ( is_admin() && class_exists( 'INSAG_Review_Notice' ) ) {
+            add_action( 'admin_notices', array( 'INSAG_Review_Notice', 'maybe_render' ) );
+        }
         if ( class_exists( 'INSAG_Media' ) ) {
             $media = new INSAG_Media();
             add_action( 'add_attachment', array( $media, 'maybe_auto_generate' ) );

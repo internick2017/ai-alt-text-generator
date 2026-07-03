@@ -94,4 +94,38 @@ class INSAG_Review_Notice {
             time()
         );
     }
+
+    /** Hooked to admin_notices. Renders only on plugin screens, for admins, when due. */
+    public static function maybe_render() {
+        $screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+        if ( ! $screen || ! in_array( $screen->id, self::ALLOWED_SCREENS, true ) ) {
+            return;
+        }
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+        if ( ! self::is_due() ) {
+            return;
+        }
+        ?>
+        <div class="notice notice-info insag-review-notice">
+            <p>
+                <strong><?php echo esc_html__( "You've generated alt text for 10+ images with Smart Alt Generator!", 'internick-smart-alt-generator' ); ?></strong>
+                <?php echo esc_html__( "If it's saving you time, a review on WordPress.org would help a lot. 🙏", 'internick-smart-alt-generator' ); ?>
+            </p>
+            <p>
+                <a class="button button-primary" data-insag-review="reviewed"
+                   href="<?php echo esc_url( self::REVIEW_URL ); ?>" target="_blank" rel="noopener noreferrer">
+                    <?php echo esc_html__( 'Leave a review ⭐', 'internick-smart-alt-generator' ); ?>
+                </a>
+                <button type="button" class="button" data-insag-review="later">
+                    <?php echo esc_html__( 'Maybe later', 'internick-smart-alt-generator' ); ?>
+                </button>
+                <button type="button" class="button-link" data-insag-review="forever">
+                    <?php echo esc_html__( "I already did / Don't show again", 'internick-smart-alt-generator' ); ?>
+                </button>
+            </p>
+        </div>
+        <?php
+    }
 }

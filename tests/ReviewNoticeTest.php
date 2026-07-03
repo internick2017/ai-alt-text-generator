@@ -76,4 +76,55 @@ final class ReviewNoticeTest extends TestCase {
         Functions\expect( 'update_option' )->never();
         $this->assertFalse( \INSAG_Review_Notice::apply_action( 'nuke', 1000 ) );
     }
+
+    // ---- maybe_render(): guards ----
+
+    private function fake_screen( $id ) {
+        Functions\when( 'get_current_screen' )->justReturn( (object) array( 'id' => $id ) );
+    }
+
+    public function test_render_skips_wrong_screen() {
+        $this->fake_screen( 'dashboard' );
+        Functions\when( 'current_user_can' )->justReturn( true );
+        Functions\when( 'get_option' )->justReturn( 99 );
+
+        ob_start();
+        \INSAG_Review_Notice::maybe_render();
+        $this->assertSame( '', ob_get_clean() );
+    }
+
+    public function test_render_skips_non_admin_user() {
+        $this->fake_screen( 'settings_page_insag-settings' );
+        Functions\when( 'current_user_can' )->justReturn( false );
+        Functions\when( 'get_option' )->justReturn( 99 );
+
+        ob_start();
+        \INSAG_Review_Notice::maybe_render();
+        $this->assertSame( '', ob_get_clean() );
+    }
+
+    public function test_render_outputs_three_actions_when_due() {
+        $this->fake_screen( 'media_page_insag-audit' );
+        Functions\when( 'current_user_can' )->justReturn( true );
+        Functions\when( '__' )->returnArg( 1 );
+        Functions\when( 'esc_html__' )->returnArg( 1 );
+        Functions\when( 'esc_html' )->returnArg( 1 );
+        Functions\when( 'esc_url' )->returnArg( 1 );
+        // get_option: count over threshold, state empty, snooze 0.
+        Functions\when( 'get_option' )->alias(
+            function ( $key, $default = false ) {
+                return 'insag_generation_count' === $key ? 42 : $default;
+            }
+        );
+
+        ob_start();
+        \INSAG_Review_Notice::maybe_render();
+        $html = ob_get_clean();
+
+        $this->assertStringContainsString( 'insag-review-notice', $html );
+        $this->assertStringContainsString( 'data-insag-review="reviewed"', $html );
+        $this->assertStringContainsString( 'data-insag-review="later"', $html );
+        $this->assertStringContainsString( 'data-insag-review="forever"', $html );
+        $this->assertStringContainsString( 'wordpress.org/support/plugin/internick-smart-alt-generator/reviews', $html );
+    }
 }
