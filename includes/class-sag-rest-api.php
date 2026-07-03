@@ -141,6 +141,25 @@ class INSAG_REST_API {
                 ),
             )
         );
+
+        register_rest_route(
+            self::REST_NAMESPACE,
+            '/review/dismiss',
+            array(
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => array( $this, 'handle_review_dismiss' ),
+                // Admins only: the notice itself is only shown to admins.
+                'permission_callback' => array( $this, 'check_admin' ),
+                'args'                => array(
+                    'action' => array(
+                        'type'              => 'string',
+                        'required'          => true,
+                        'enum'              => array( 'later', 'forever', 'reviewed' ),
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ),
+                ),
+            )
+        );
     }
 
     /** Only users who can upload files may generate. */
@@ -330,6 +349,24 @@ class INSAG_REST_API {
         update_post_meta( $id, '_wp_attachment_image_alt', $alt );
         delete_transient( 'insag_audit_summary' );
         return rest_ensure_response( array( 'image_id' => $id, 'alt' => $alt ) );
+    }
+
+    /**
+     * Record the user's response to the review notice.
+     *
+     * @param WP_REST_Request $request
+     * @return array|WP_Error
+     */
+    public function handle_review_dismiss( $request ) {
+        $action = (string) $request->get_param( 'action' );
+        if ( ! INSAG_Review_Notice::apply_action( $action, time() ) ) {
+            return new WP_Error(
+                'insag_invalid_action',
+                __( 'Unknown review action.', 'internick-smart-alt-generator' ),
+                array( 'status' => 400 )
+            );
+        }
+        return rest_ensure_response( array( 'state_action' => $action, 'ok' => true ) );
     }
 
     /** Only admins may read/write settings. */
