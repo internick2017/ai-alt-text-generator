@@ -21,6 +21,12 @@ final class GeneratorTest extends TestCase {
             ->with( 123, '_wp_attachment_image_alt', 'A red apple.' )
             ->andReturn( true );
 
+        // Expect the counter to be incremented.
+        Functions\expect( 'update_option' )
+            ->once()
+            ->with( 'insag_generation_count', \Mockery::type( 'int' ), false )
+            ->andReturn( true );
+
         // Fake image helper returns a data URI.
         $image = new class {
             public function path_to_data_uri( $p ) { return 'data:image/jpeg;base64,AAA'; }
@@ -84,5 +90,39 @@ final class GeneratorTest extends TestCase {
 
         $this->assertSame( 'A cat.', $result );
         $this->assertStringStartsWith( 'data:image/png;base64,', $provider->received_image );
+    }
+
+    public function test_successful_generation_increments_review_counter() {
+        Functions\when( 'get_attached_file' )->justReturn( '/var/uploads/img.jpg' );
+        Functions\when( 'get_option' )->justReturn( 'auto' );
+        Functions\when( 'sanitize_text_field' )->returnArg( 1 );
+        Functions\when( 'update_post_meta' )->justReturn( true );
+
+        // get_option is stubbed to 'auto' for everything, so the counter
+        // increment becomes (int) 'auto' + 1 = 1. What matters: it fires once.
+        Functions\expect( 'update_option' )
+            ->once()
+            ->with( 'insag_generation_count', \Mockery::type( 'int' ), false )
+            ->andReturn( true );
+
+        $image     = new class { public function path_to_data_uri( $p ) { return 'data:image/jpeg;base64,AAA'; } };
+        $provider  = new class { public function generate( $i, $l ) { return 'A red apple.'; } };
+        $generator = new \INSAG_Generator( $provider, $image );
+
+        $this->assertSame( 'A red apple.', $generator->generate_for_image( 123 ) );
+    }
+
+    public function test_failed_generation_does_not_increment_counter() {
+        Functions\when( 'get_attached_file' )->justReturn( '/var/uploads/img.jpg' );
+        Functions\when( 'get_option' )->justReturn( 'auto' );
+        Functions\expect( 'update_option' )->never();
+
+        $image    = new class { public function path_to_data_uri( $p ) { return 'data:image/jpeg;base64,AAA'; } };
+        $provider = new class {
+            public function generate( $i, $l ) { return new \WP_Error( 'insag_api', 'boom' ); }
+        };
+        $generator = new \INSAG_Generator( $provider, $image );
+
+        $this->assertInstanceOf( \WP_Error::class, $generator->generate_for_image( 123 ) );
     }
 }
