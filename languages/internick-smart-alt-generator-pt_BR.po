@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Domain: internick-smart-alt-generator\n"
 
 #. Plugin Name of the plugin
@@ -123,9 +123,10 @@ msgstr "Ação de avaliação desconhecida."
 msgid "Invalid model."
 msgstr "Modelo inválido."
 
-#: includes/class-sag-review-notice.php:113
-msgid "You've generated alt text for 10+ images with Smart Alt Generator!"
-msgstr "Você já gerou texto alternativo para mais de 10 imagens com o Smart Alt Generator!"
+#: includes/class-sag-review-notice.php:115
+#, php-format
+msgid "You've generated alt text for %d+ images with Smart Alt Generator!"
+msgstr "Você gerou texto alternativo para mais de %d imagens com o Smart Alt Generator!"
 
 #: includes/class-sag-review-notice.php:114
 msgid "If it's saving you time, a review on WordPress.org would help a lot. 🙏"
@@ -278,6 +279,18 @@ msgstr "Gerador de texto alternativo em massa"
 #: build/admin-bulk.js:1
 msgid "All your images already have alt text."
 msgstr "Todas as suas imagens já têm texto alternativo."
+
+#: build/admin-bulk.js:1
+msgid "Retry"
+msgstr "Tentar novamente"
+
+#: build/admin-bulk.js:1
+msgid "Could not load the next batch. Check your connection and press Retry."
+msgstr "Não foi possível carregar o próximo lote. Verifique sua conexão e pressione Tentar novamente."
+
+#: build/admin-bulk.js:1
+msgid "This will generate alt text for %d images using your API key. Continue?"
+msgstr "Isso gerará texto alternativo para %d imagens usando sua chave de API. Continuar?"
 
 #: build/admin-settings.js:1
 msgid "WordPress AI Connectors detected. Using your configured AI provider."
