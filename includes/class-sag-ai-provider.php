@@ -38,20 +38,40 @@ class INSAG_AI_Provider {
      * @return string 'wp_connector'|'openai'
      */
     public static function detect_backend() {
+        return empty( self::configured_connector_ids() ) ? 'openai' : 'wp_connector';
+    }
+
+    /**
+     * IDs of every WP AI Connector that is actually configured (has valid
+     * credentials), e.g. [ 'anthropic', 'google' ]. Used to tell the admin
+     * which provider(s) are in play — the plugin does not pick one of these
+     * itself; when more than one is configured, WordPress' AiClient chooses
+     * per request via its own model discovery, not something this plugin
+     * controls or can predict ahead of a generation.
+     *
+     * Wrapped in a try/catch so a future SDK shape change degrades
+     * gracefully to an empty list (treated as "no connector") instead of
+     * fataling. NOT unit-tested (the SDK can't be mocked here) — verified
+     * manually against WordPress 7.0.
+     *
+     * @return string[]
+     */
+    public static function configured_connector_ids() {
         if ( ! class_exists( 'WordPress\AiClient\AiClient' ) ) {
-            return 'openai';
+            return array();
         }
         try {
             $registry = \WordPress\AiClient\AiClient::defaultRegistry();
-            foreach ( $registry->getRegisteredProviderIds() as $id ) {
-                if ( $registry->isProviderConfigured( $id ) ) {
-                    return 'wp_connector';
+            return array_values( array_filter(
+                $registry->getRegisteredProviderIds(),
+                function ( $id ) use ( $registry ) {
+                    return $registry->isProviderConfigured( $id );
                 }
-            }
+            ) );
         } catch ( \Throwable $e ) {
             // SDK unavailable or shape changed — fall back to direct OpenAI.
+            return array();
         }
-        return 'openai';
     }
 
     /**

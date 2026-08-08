@@ -10,20 +10,37 @@ import {
 	ToggleControl,
 	Spinner,
 } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 
-const { hasConnector = false } = window.insagSettingsData ?? {};
+const { hasConnector = false, connectorIds = [] } = window.insagSettingsData ?? {};
 
-/** WP 7.0+ notice — shown only when AI Connectors are active. */
+/** Capitalizes a provider id like 'anthropic' into a display name like 'Anthropic'. */
+function providerLabel( id ) {
+	return id.charAt( 0 ).toUpperCase() + id.slice( 1 );
+}
+
+/** WP 7.0+ notice — shown only when at least one AI Connector is configured. */
 function ConnectorsNotice() {
+	const names = connectorIds.map( providerLabel ).join( ', ' );
+	const single = connectorIds.length === 1;
 	return (
 		<div className="notice notice-success inline" style={ { marginTop: 0 } }>
 			<p>
-				{ __(
-					'WordPress AI Connectors detected. Using your configured AI provider.',
-					'internick-smart-alt-generator'
-				) }
+				{ single
+					? sprintf(
+						/* translators: %s: the connected AI provider's name, e.g. "Anthropic". */
+						__( 'Generating alt text via your WordPress AI Connector: %s.', 'internick-smart-alt-generator' ),
+						names
+					)
+					: sprintf(
+						/* translators: %s: comma-separated list of connected AI providers, e.g. "Anthropic, Google". */
+						__(
+							'Generating alt text via WordPress AI Connectors. Connected: %s — WordPress picks which one answers each request automatically; this plugin does not choose or know in advance.',
+							'internick-smart-alt-generator'
+						),
+						names
+					) }
 			</p>
 		</div>
 	);

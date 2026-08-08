@@ -72,10 +72,12 @@ class INSAG_Admin {
                 $asset['version'],
                 true
             );
+            $connector_ids = INSAG_AI_Provider::configured_connector_ids();
             wp_localize_script( 'insag-admin-settings', 'insagSettingsData', array(
-                'hasConnector' => 'wp_connector' === INSAG_AI_Provider::detect_backend(),
-                'nonce'        => wp_create_nonce( 'wp_rest' ),
-                'restBase'     => rest_url( 'insag/v1' ),
+                'hasConnector'  => ! empty( $connector_ids ),
+                'connectorIds'  => $connector_ids,
+                'nonce'         => wp_create_nonce( 'wp_rest' ),
+                'restBase'      => rest_url( 'insag/v1' ),
             ) );
             wp_set_script_translations(
                 'insag-admin-settings',
