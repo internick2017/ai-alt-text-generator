@@ -94,7 +94,14 @@ function ProviderCard( { settings, onChange } ) {
 					type="password"
 					value={ settings.insag_openai_api_key }
 					onChange={ ( v ) => onChange( 'insag_openai_api_key', v ) }
-					help={ __( 'Get your key at platform.openai.com', 'internick-smart-alt-generator' ) }
+					help={
+						<>
+							{ __( "Don't have a key? ", 'internick-smart-alt-generator' ) }
+							<a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">
+								{ __( 'Get one at platform.openai.com', 'internick-smart-alt-generator' ) }
+							</a>
+						</>
+					}
 					autoComplete="off"
 				/>
 				<SelectControl
