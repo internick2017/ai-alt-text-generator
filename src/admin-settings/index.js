@@ -100,6 +100,11 @@ function ProviderCard( { settings, onChange } ) {
 							<a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">
 								{ __( 'Get one at platform.openai.com', 'internick-smart-alt-generator' ) }
 							</a>
+							<br />
+							{ __( "Billed separately from ChatGPT Plus, as pay-per-use credits — ", 'internick-smart-alt-generator' ) }
+							<a href="https://platform.openai.com/settings/organization/billing/overview" target="_blank" rel="noopener noreferrer">
+								{ __( 'check your OpenAI credit balance', 'internick-smart-alt-generator' ) }
+							</a>
 						</>
 					}
 					autoComplete="off"
