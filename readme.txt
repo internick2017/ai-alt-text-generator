@@ -3,7 +3,7 @@ Contributors: internick2017
 Tags: alt text, accessibility, wcag, seo, ai
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -82,6 +82,12 @@ https://github.com/internick2017/smart-alt-generator
 Build the compiled assets in `build/` with `npm install && npm run build`.
 
 == Changelog ==
+
+= 1.3.0 =
+* Bulk Generator now processes your entire media library, in batches of 100, with a progress counter across the whole run.
+* A confirmation dialog shows the total number of images (and that your API key will be used) before large runs start.
+* Review request now appears after 5 generated alt texts (was 10) and is only dismissed when the server confirms it.
+* Brazilian Portuguese plural rule corrected.
 
 = 1.2.1 =
 * New: the plugin now speaks Spanish (es_ES) and Brazilian Portuguese (pt_BR) — admin pages, editor button, and notices.

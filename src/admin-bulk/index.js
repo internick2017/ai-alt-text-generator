@@ -151,6 +151,7 @@ function BulkApp() {
 	const runningRef = useRef( false ); // guards against a second concurrent processQueue
 	const attemptedRef = useRef( new Set() );
 	const queueRef = useRef( [] ); // remaining IDs of the current batch
+	const pageRef = useRef( 1 ); // current page of the /bulk/scan walk across the whole library
 
 	const addLog = useCallback( ( id, ok, text ) => {
 		setLog( ( prev ) => [ { id, ok, text }, ...prev ] );
@@ -185,19 +186,27 @@ function BulkApp() {
 				}
 				let scan;
 				try {
-					scan = await apiFetch( { path: '/insag/v1/bulk/scan?page=1' } );
+					scan = await apiFetch( { path: `/insag/v1/bulk/scan?page=${ pageRef.current }` } );
 				} catch ( e ) {
 					addLog( 0, false, __( 'Could not load the next batch. Check your connection and press Retry.', 'internick-smart-alt-generator' ) );
 					setErrors( ( n ) => n + 1 );
 					setStatus( 'error' );
 					return;
 				}
+				const totalPages = scan?.total_pages || 1;
 				const fresh = ( scan?.ids || [] ).filter( ( id ) => ! attemptedRef.current.has( id ) );
 				if ( fresh.length === 0 ) {
+					if ( pageRef.current < totalPages ) {
+						pageRef.current += 1;
+						continue;
+					}
 					setStatus( 'done' );
 					return;
 				}
 				queueRef.current = fresh;
+				if ( pageRef.current < totalPages ) {
+					pageRef.current += 1;
+				}
 			}
 		} finally {
 			runningRef.current = false;
@@ -218,6 +227,7 @@ function BulkApp() {
 		pausedRef.current = false;
 		attemptedRef.current = new Set();
 		queueRef.current = [];
+		pageRef.current = 1;
 		setSuccesses( 0 );
 		setErrors( 0 );
 		setProcessed( 0 );
