@@ -58,6 +58,23 @@ if ( ! class_exists( 'WP_REST_Server' ) ) {
     }
 }
 
+// --- Minimal WP_Query stub: lets a test control posts/found_posts/max_num_pages ---
+if ( ! class_exists( 'WP_Query' ) ) {
+    class WP_Query {
+        public $posts         = array();
+        public $found_posts   = 0;
+        public $max_num_pages = 0;
+        public function __construct( $args = array() ) {
+            global $insag_test_wp_query_result;
+            if ( is_array( $insag_test_wp_query_result ) ) {
+                $this->posts         = $insag_test_wp_query_result['posts'] ?? array();
+                $this->found_posts   = $insag_test_wp_query_result['found_posts'] ?? 0;
+                $this->max_num_pages = $insag_test_wp_query_result['max_num_pages'] ?? 0;
+            }
+        }
+    }
+}
+
 // --- Load the plugin classes under test ---
 $includes = __DIR__ . '/../includes/';
 foreach ( array(

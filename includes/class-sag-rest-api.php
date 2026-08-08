@@ -116,6 +116,19 @@ class INSAG_REST_API {
 
         register_rest_route(
             self::REST_NAMESPACE,
+            '/bulk/scan',
+            array(
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => array( $this, 'handle_bulk_scan' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'page' => array( 'type' => 'integer', 'default' => 1, 'minimum' => 1 ),
+                ),
+            )
+        );
+
+        register_rest_route(
+            self::REST_NAMESPACE,
             '/audit/dismiss',
             array(
                 'methods'             => WP_REST_Server::CREATABLE,
@@ -302,6 +315,25 @@ class INSAG_REST_API {
             'counts'      => $running['counts'],
             'score'       => INSAG_Audit::score( $running['healthy'], $running['total'] ),
             'items'       => $items,
+        ) );
+    }
+
+    /**
+     * One page (100 IDs) of images missing alt text, plus the library-wide total,
+     * so the bulk UI can batch through arbitrarily large libraries.
+     *
+     * @param WP_REST_Request $request
+     * @return WP_REST_Response
+     */
+    public function handle_bulk_scan( $request ) {
+        $page  = max( 1, (int) $request->get_param( 'page' ) );
+        $query = new WP_Query( INSAG_Media::missing_alt_query_args( $page ) );
+
+        return rest_ensure_response( array(
+            'page'        => $page,
+            'total_pages' => (int) $query->max_num_pages,
+            'total'       => (int) $query->found_posts,
+            'ids'         => array_map( 'intval', $query->posts ),
         ) );
     }
 
