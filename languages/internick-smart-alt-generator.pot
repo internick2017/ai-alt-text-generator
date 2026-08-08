@@ -75,6 +75,10 @@ msgstr ""
 msgid "Generate a concise, descriptive alt text for this image. Maximum 125 characters. %s Return only the alt text, no quotes."
 msgstr ""
 
+#: includes/class-sag-ai-provider.php:110
+msgid "The AI provider returned an empty response."
+msgstr ""
+
 #: includes/class-sag-generator.php:42
 msgid "Image not found."
 msgstr ""
@@ -314,32 +318,38 @@ msgid "Clear log"
 msgstr ""
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:184
+msgid "The AI returned an empty alt text."
+msgstr ""
+
+#: build/admin-bulk.js:1
 #: build/index.js:1
-#: src/admin-bulk/index.js:181
+#: src/admin-bulk/index.js:192
 #: src/block-editor/index.js:47
 msgid "Generation failed."
 msgstr ""
 
 #: build/admin-bulk.js:1
-#: src/admin-bulk/index.js:190
+#: src/admin-bulk/index.js:207
+#: src/admin-bulk/index.js:225
 msgid "Could not load the next batch. Check your connection and press Retry."
 msgstr ""
 
 #. translators: %d: number of images that will be sent to the AI provider.
 #: build/admin-bulk.js:1
-#: src/admin-bulk/index.js:214
+#: src/admin-bulk/index.js:253
 #, js-format
 msgid "This will generate alt text for %d images using your API key. Continue?"
 msgstr ""
 
 #: build/admin-bulk.js:1
-#: src/admin-bulk/index.js:247
-#: src/admin-bulk/index.js:255
+#: src/admin-bulk/index.js:287
+#: src/admin-bulk/index.js:295
 msgid "Bulk Alt Text Generator"
 msgstr ""
 
 #: build/admin-bulk.js:1
-#: src/admin-bulk/index.js:248
+#: src/admin-bulk/index.js:288
 msgid "All your images already have alt text."
 msgstr ""
 

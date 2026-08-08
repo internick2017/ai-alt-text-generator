@@ -75,6 +75,10 @@ if ( ! class_exists( 'WP_Query' ) ) {
     }
 }
 
+// --- Minimal WP 7.0 AI Connectors stub, so the wp_connector path is testable.
+// Tests set AiClient::$text to control what the fake model "generates". ---
+require_once __DIR__ . '/stubs/class-aiclient-stub.php';
+
 // --- Load the plugin classes under test ---
 $includes = __DIR__ . '/../includes/';
 foreach ( array(

@@ -67,6 +67,10 @@ msgstr "Escreva o texto alternativo em %s."
 msgid "Generate a concise, descriptive alt text for this image. Maximum 125 characters. %s Return only the alt text, no quotes."
 msgstr "Gere um texto alternativo conciso e descritivo para esta imagem. Máximo de 125 caracteres. %s Retorne apenas o texto alternativo, sem aspas."
 
+#: includes/class-sag-ai-provider.php:110
+msgid "The AI provider returned an empty response."
+msgstr "O provedor de IA retornou uma resposta vazia."
+
 #: includes/class-sag-generator.php:42
 msgid "Image not found."
 msgstr "Imagem não encontrada."
@@ -283,6 +287,10 @@ msgstr "Todas as suas imagens já têm texto alternativo."
 #: build/admin-bulk.js:1
 msgid "Retry"
 msgstr "Tentar novamente"
+
+#: build/admin-bulk.js:1
+msgid "The AI returned an empty alt text."
+msgstr "A IA retornou um texto alternativo vazio."
 
 #: build/admin-bulk.js:1
 msgid "Could not load the next batch. Check your connection and press Retry."

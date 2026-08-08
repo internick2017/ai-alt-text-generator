@@ -40,4 +40,25 @@ final class AIProviderTest extends TestCase {
 
         $this->assertSame( 'A cat.', $result );
     }
+
+    public function test_connector_returns_error_on_empty_response() {
+        // An empty (or whitespace-only) generation must never be saved as alt
+        // text: it would leave the image in the "missing alt" result set while
+        // the caller counted it as a success.
+        \WordPress\AiClient\AiClient::$text = "  \n ";
+
+        $provider = new \INSAG_AI_Provider( 'wp_connector' );
+        $result   = $provider->generate( 'https://x/cat.jpg', 'auto' );
+
+        $this->assertInstanceOf( \WP_Error::class, $result );
+        $this->assertSame( 'insag_empty_response', $result->get_error_code() );
+    }
+
+    public function test_connector_returns_trimmed_text_when_not_empty() {
+        \WordPress\AiClient\AiClient::$text = "  A cat.\n";
+
+        $provider = new \INSAG_AI_Provider( 'wp_connector' );
+
+        $this->assertSame( 'A cat.', $provider->generate( 'https://x/cat.jpg', 'auto' ) );
+    }
 }

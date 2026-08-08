@@ -133,6 +133,10 @@ Build the compiled assets in `build/` with `npm install && npm run build`.
 
 == Upgrade Notice ==
 
+= 1.3.0 =
+The Bulk Generator now works through your entire media library instead of
+stopping after the first 100 images.
+
 = 1.2.0 =
 Adds the Alt Text Audit dashboard to review and fix your whole library's alt text.
 

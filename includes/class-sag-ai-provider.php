@@ -105,7 +105,11 @@ class INSAG_AI_Provider {
                 ->withText( $prompt )
                 ->withFile( $image_url )
                 ->generateTextResult();
-            return trim( $result->toText() );
+            $text = trim( $result->toText() );
+            if ( '' === $text ) {
+                return new WP_Error( 'insag_empty_response', __( 'The AI provider returned an empty response.', 'internick-smart-alt-generator' ) );
+            }
+            return $text;
         } catch ( \Exception $e ) {
             return new WP_Error( 'insag_connector_error', $e->getMessage() );
         }

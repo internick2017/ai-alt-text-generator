@@ -176,8 +176,18 @@ function BulkApp() {
 							method: 'POST',
 							data: { image_id: id },
 						} );
-						addLog( id, true, res.alt_text );
-						setSuccesses( ( s ) => s + 1 );
+						// An "empty success" would keep the image in the /bulk/scan
+						// result set forever while the loop counted it as done,
+						// desyncing the prefix count. Treat it as a failure.
+						const altText = ( res?.alt_text || '' ).trim();
+						if ( '' === altText ) {
+							addLog( id, false, __( 'The AI returned an empty alt text.', 'internick-smart-alt-generator' ) );
+							setErrors( ( n ) => n + 1 );
+							stuckRef.current += 1;
+						} else {
+							addLog( id, true, altText );
+							setSuccesses( ( s ) => s + 1 );
+						}
 					} catch ( e ) {
 						addLog( id, false, e?.message || __( 'Generation failed.', 'internick-smart-alt-generator' ) );
 						setErrors( ( n ) => n + 1 );
@@ -201,6 +211,28 @@ function BulkApp() {
 				}
 				const fresh = ( scan?.ids || [] ).filter( ( id ) => ! attemptedRef.current.has( id ) );
 				if ( fresh.length === 0 ) {
+					// Safety net: the prefix count can drift above the real prefix
+					// (a /generate that succeeded server-side but failed client-side,
+					// or a failed image deleted mid-run), which would park the page
+					// window past the frontier and strand a block of images. Before
+					// declaring completion, re-check page 1 once. attemptedRef filters
+					// out everything already tried, so this can never ping-pong.
+					if ( page > 1 ) {
+						let rescan;
+						try {
+							rescan = await apiFetch( { path: '/insag/v1/bulk/scan?page=1' } );
+						} catch ( e ) {
+							addLog( 0, false, __( 'Could not load the next batch. Check your connection and press Retry.', 'internick-smart-alt-generator' ) );
+							setErrors( ( n ) => n + 1 );
+							setStatus( 'error' );
+							return;
+						}
+						const recovered = ( rescan?.ids || [] ).filter( ( id ) => ! attemptedRef.current.has( id ) );
+						if ( recovered.length > 0 ) {
+							queueRef.current = recovered;
+							continue;
+						}
+					}
 					setStatus( 'done' );
 					return;
 				}
