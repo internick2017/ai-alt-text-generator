@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 class INSAG_Review_Notice {
 
-    const THRESHOLD      = 10;
+    const THRESHOLD      = 5;
     const SNOOZE_SECONDS = 2592000; // 30 days.
 
     const STATE_SNOOZED   = 'snoozed';
@@ -110,7 +110,10 @@ class INSAG_Review_Notice {
         ?>
         <div class="notice notice-info insag-review-notice">
             <p>
-                <strong><?php echo esc_html__( "You've generated alt text for 10+ images with Smart Alt Generator!", 'internick-smart-alt-generator' ); ?></strong>
+                <strong><?php
+                    /* translators: %d: minimum number of generated alt texts before this notice appears. */
+                    echo esc_html( sprintf( __( "You've generated alt text for %d+ images with Smart Alt Generator!", 'internick-smart-alt-generator' ), self::THRESHOLD ) );
+                ?></strong>
                 <?php echo esc_html__( "If it's saving you time, a review on WordPress.org would help a lot. 🙏", 'internick-smart-alt-generator' ); ?>
             </p>
             <p>

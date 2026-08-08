@@ -26,8 +26,12 @@
                     'X-WP-Nonce': window.insagReviewData.nonce,
                 },
                 body: JSON.stringify( { action: action } ),
-            } ).finally( function () {
-                notice.remove();
+            } ).then( function ( response ) {
+                if ( response.ok ) {
+                    notice.remove();
+                }
+            } ).catch( function () {
+                // Network failure: keep the notice so the user can try again.
             } );
         } );
     } );

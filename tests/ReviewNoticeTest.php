@@ -8,11 +8,11 @@ final class ReviewNoticeTest extends TestCase {
     // ---- should_show(): pure, no WP calls ----
 
     public function test_hidden_below_threshold() {
-        $this->assertFalse( \INSAG_Review_Notice::should_show( 9, '', 0, 1000 ) );
+        $this->assertFalse( \INSAG_Review_Notice::should_show( 4, '', 0, 1000 ) );
     }
 
     public function test_shown_at_threshold_with_no_state() {
-        $this->assertTrue( \INSAG_Review_Notice::should_show( 10, '', 0, 1000 ) );
+        $this->assertTrue( \INSAG_Review_Notice::should_show( 5, '', 0, 1000 ) );
     }
 
     public function test_hidden_when_dismissed() {
@@ -32,7 +32,7 @@ final class ReviewNoticeTest extends TestCase {
     }
 
     public function test_unknown_state_treated_as_never_answered() {
-        $this->assertTrue( \INSAG_Review_Notice::should_show( 10, 'garbage', 0, 1000 ) );
+        $this->assertTrue( \INSAG_Review_Notice::should_show( 5, 'garbage', 0, 1000 ) );
     }
 
     // ---- record_generation(): increments the counter option ----
