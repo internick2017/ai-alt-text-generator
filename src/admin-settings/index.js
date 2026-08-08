@@ -29,6 +29,25 @@ function ConnectorsNotice() {
 	);
 }
 
+/** Shown when no AI Connector is active — explains the current backend and the alternative. */
+function DirectApiNotice() {
+	return (
+		<div className="notice notice-info inline" style={ { marginTop: 0 } }>
+			<p>
+				{ __(
+					'Currently generating alt text by calling OpenAI directly with the API key below.',
+					'internick-smart-alt-generator'
+				) }
+				{ ' ' }
+				{ __(
+					'Running WordPress 7.0 or newer? You can connect a different AI provider (such as Anthropic or Google) in your site’s AI settings — once configured, this plugin switches to it automatically, no key or code change needed here.',
+					'internick-smart-alt-generator'
+				) }
+			</p>
+		</div>
+	);
+}
+
 /**
  * "⚡ Test Connection" button inside ProviderCard.
  * Resets when the API key changes.
@@ -233,7 +252,7 @@ function SettingsApp() {
 	return (
 		<div style={ { maxWidth: '640px', paddingTop: '16px' } }>
 			<h1>{ __( 'Smart Alt Generator', 'internick-smart-alt-generator' ) }</h1>
-			{ hasConnector && <ConnectorsNotice /> }
+			{ hasConnector ? <ConnectorsNotice /> : <DirectApiNotice /> }
 			<ProviderCard settings={ settings } onChange={ handleChange } />
 			<GenerationCard settings={ settings } onChange={ handleChange } />
 			<SaveFooter onSave={ handleSave } saveStatus={ saveStatus } />
