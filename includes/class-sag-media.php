@@ -56,4 +56,31 @@ class INSAG_Media {
         );
         return $form_fields;
     }
+
+    /**
+     * WP_Query args for one page (100 items) of images missing alt text.
+     * Shared by the bulk admin page and the /bulk/scan REST endpoint.
+     *
+     * @param int $page 1-based page number.
+     * @return array
+     */
+    public static function missing_alt_query_args( $page ) {
+        return array(
+            'post_type'      => 'attachment',
+            'post_mime_type' => 'image',
+            'post_status'    => 'inherit',
+            'posts_per_page' => 100,
+            'paged'          => max( 1, (int) $page ),
+            'orderby'        => 'ID',
+            'order'          => 'ASC',
+            'fields'         => 'ids',
+            'no_found_rows'  => false,
+            // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Intentional and unavoidable: finding attachments missing alt text requires a meta_query. Bounded to 100 results per page.
+            'meta_query'     => array(
+                'relation' => 'OR',
+                array( 'key' => '_wp_attachment_image_alt', 'compare' => 'NOT EXISTS' ),
+                array( 'key' => '_wp_attachment_image_alt', 'value' => '', 'compare' => '=' ),
+            ),
+        );
+    }
 }

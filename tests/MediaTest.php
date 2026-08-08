@@ -37,4 +37,19 @@ final class MediaTest extends TestCase {
 
         $this->assertSame( 42, $fake->called_with );
     }
+
+    public function test_missing_alt_query_args_first_page() {
+        $args = \INSAG_Media::missing_alt_query_args( 1 );
+        $this->assertSame( 'attachment', $args['post_type'] );
+        $this->assertSame( 100, $args['posts_per_page'] );
+        $this->assertSame( 1, $args['paged'] );
+        $this->assertSame( 'ids', $args['fields'] );
+        $this->assertFalse( $args['no_found_rows'] );
+        $this->assertSame( 'OR', $args['meta_query']['relation'] );
+    }
+
+    public function test_missing_alt_query_args_clamps_page_to_one() {
+        $this->assertSame( 1, \INSAG_Media::missing_alt_query_args( 0 )['paged'] );
+        $this->assertSame( 3, \INSAG_Media::missing_alt_query_args( 3 )['paged'] );
+    }
 }
