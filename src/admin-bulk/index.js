@@ -87,6 +87,13 @@ function BulkControls( { status, onStart, onPause, onResume } ) {
 			</Button>
 		);
 	}
+	if ( status === 'error' ) {
+		return (
+			<Button variant="primary" onClick={ onResume }>
+				{ __( 'Retry', 'internick-smart-alt-generator' ) }
+			</Button>
+		);
+	}
 	// done
 	return (
 		<Button variant="secondary" disabled>
@@ -135,12 +142,13 @@ function LogList( { log, onClear } ) {
 
 /** Root component — manages the generation loop state machine. */
 function BulkApp() {
-	const [ status, setStatus ] = useState( 'idle' ); // idle | running | paused | done
+	const [ status, setStatus ] = useState( 'idle' ); // idle | running | paused | error | done
 	const [ successes, setSuccesses ] = useState( 0 );
 	const [ errors, setErrors ] = useState( 0 );
 	const [ processed, setProcessed ] = useState( 0 );
 	const [ log, setLog ] = useState( [] );
 	const pausedRef = useRef( false );
+	const runningRef = useRef( false ); // guards against a second concurrent processQueue
 	const attemptedRef = useRef( new Set() );
 	const queueRef = useRef( [] ); // remaining IDs of the current batch
 
@@ -149,45 +157,57 @@ function BulkApp() {
 	}, [] );
 
 	const processQueue = useCallback( async () => {
-		while ( true ) {
-			while ( queueRef.current.length > 0 ) {
-				if ( pausedRef.current ) {
+		if ( runningRef.current ) {
+			return;
+		}
+		runningRef.current = true;
+		try {
+			while ( true ) {
+				while ( queueRef.current.length > 0 ) {
+					if ( pausedRef.current ) {
+						return;
+					}
+					const id = queueRef.current.shift();
+					attemptedRef.current.add( id );
+					try {
+						const res = await apiFetch( {
+							path: '/insag/v1/generate',
+							method: 'POST',
+							data: { image_id: id },
+						} );
+						addLog( id, true, res.alt_text );
+						setSuccesses( ( s ) => s + 1 );
+					} catch ( e ) {
+						addLog( id, false, e?.message || __( 'Generation failed.', 'internick-smart-alt-generator' ) );
+						setErrors( ( n ) => n + 1 );
+					}
+					setProcessed( ( p ) => p + 1 );
+				}
+				let scan;
+				try {
+					scan = await apiFetch( { path: '/insag/v1/bulk/scan?page=1' } );
+				} catch ( e ) {
+					addLog( 0, false, __( 'Could not load the next batch. Check your connection and press Retry.', 'internick-smart-alt-generator' ) );
+					setErrors( ( n ) => n + 1 );
+					setStatus( 'error' );
 					return;
 				}
-				const id = queueRef.current.shift();
-				attemptedRef.current.add( id );
-				try {
-					const res = await apiFetch( {
-						path: '/insag/v1/generate',
-						method: 'POST',
-						data: { image_id: id },
-					} );
-					addLog( id, true, res.alt_text );
-					setSuccesses( ( s ) => s + 1 );
-				} catch ( e ) {
-					addLog( id, false, e?.message || __( 'Generation failed.', 'internick-smart-alt-generator' ) );
-					setErrors( ( n ) => n + 1 );
+				const fresh = ( scan?.ids || [] ).filter( ( id ) => ! attemptedRef.current.has( id ) );
+				if ( fresh.length === 0 ) {
+					setStatus( 'done' );
+					return;
 				}
-				setProcessed( ( p ) => p + 1 );
+				queueRef.current = fresh;
 			}
-			let scan;
-			try {
-				scan = await apiFetch( { path: '/insag/v1/bulk/scan?page=1' } );
-			} catch ( e ) {
-				addLog( 0, false, __( 'Could not load the next batch. Check your connection and press Generate All to retry.', 'internick-smart-alt-generator' ) );
-				setStatus( 'done' );
-				return;
-			}
-			const fresh = ( scan.ids || [] ).filter( ( id ) => ! attemptedRef.current.has( id ) );
-			if ( fresh.length === 0 ) {
-				setStatus( 'done' );
-				return;
-			}
-			queueRef.current = fresh;
+		} finally {
+			runningRef.current = false;
 		}
 	}, [ addLog ] );
 
 	const handleStart = useCallback( () => {
+		if ( runningRef.current ) {
+			return;
+		}
 		if (
 			total > 100 &&
 			// translators: %d: number of images that will be sent to the AI provider.
@@ -210,7 +230,12 @@ function BulkApp() {
 		setStatus( 'paused' );
 	}, [] );
 
+	// Also used to Retry after a scan failure: resumes with attemptedRef/counters
+	// intact so already-generated images are never regenerated/repaid for.
 	const handleResume = useCallback( () => {
+		if ( runningRef.current ) {
+			return;
+		}
 		pausedRef.current = false;
 		setStatus( 'running' );
 		processQueue();
