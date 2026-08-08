@@ -1,9 +1,9 @@
 import { createRoot, useState, useCallback, useRef } from '@wordpress/element';
 import { Button } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 
-const { imageIds = [] } = window.insagBulkData ?? {};
+const { total = 0 } = window.insagBulkData ?? {};
 
 /** 4 stat boxes: total / completed / errors / remaining. */
 function StatBar( { total, successes, errors } ) {
@@ -141,49 +141,69 @@ function BulkApp() {
 	const [ processed, setProcessed ] = useState( 0 );
 	const [ log, setLog ] = useState( [] );
 	const pausedRef = useRef( false );
-	const indexRef = useRef( 0 );
-
-	const total = imageIds.length;
+	const attemptedRef = useRef( new Set() );
+	const queueRef = useRef( [] ); // remaining IDs of the current batch
 
 	const addLog = useCallback( ( id, ok, text ) => {
 		setLog( ( prev ) => [ { id, ok, text }, ...prev ] );
 	}, [] );
 
-	const runFrom = useCallback( async ( startIndex ) => {
-		for ( let i = startIndex; i < imageIds.length; i++ ) {
-			if ( pausedRef.current ) {
-				indexRef.current = i;
+	const processQueue = useCallback( async () => {
+		while ( true ) {
+			while ( queueRef.current.length > 0 ) {
+				if ( pausedRef.current ) {
+					return;
+				}
+				const id = queueRef.current.shift();
+				attemptedRef.current.add( id );
+				try {
+					const res = await apiFetch( {
+						path: '/insag/v1/generate',
+						method: 'POST',
+						data: { image_id: id },
+					} );
+					addLog( id, true, res.alt_text );
+					setSuccesses( ( s ) => s + 1 );
+				} catch ( e ) {
+					addLog( id, false, e?.message || __( 'Generation failed.', 'internick-smart-alt-generator' ) );
+					setErrors( ( n ) => n + 1 );
+				}
+				setProcessed( ( p ) => p + 1 );
+			}
+			let scan;
+			try {
+				scan = await apiFetch( { path: '/insag/v1/bulk/scan?page=1' } );
+			} catch ( e ) {
+				addLog( 0, false, __( 'Could not load the next batch. Check your connection and press Generate All to retry.', 'internick-smart-alt-generator' ) );
+				setStatus( 'done' );
 				return;
 			}
-			try {
-				const res = await apiFetch( {
-					path: '/insag/v1/generate',
-					method: 'POST',
-					data: { image_id: imageIds[ i ] },
-				} );
-				addLog( imageIds[ i ], true, res.alt_text );
-				setSuccesses( ( s ) => s + 1 );
-			} catch ( e ) {
-				addLog(
-					imageIds[ i ],
-					false,
-					e?.message || __( 'Generation failed.', 'internick-smart-alt-generator' )
-				);
-				setErrors( ( n ) => n + 1 );
+			const fresh = ( scan.ids || [] ).filter( ( id ) => ! attemptedRef.current.has( id ) );
+			if ( fresh.length === 0 ) {
+				setStatus( 'done' );
+				return;
 			}
-			setProcessed( i + 1 );
-		}
-		if ( ! pausedRef.current ) {
-			setStatus( 'done' );
+			queueRef.current = fresh;
 		}
 	}, [ addLog ] );
 
 	const handleStart = useCallback( () => {
+		if (
+			total > 100 &&
+			// translators: %d: number of images that will be sent to the AI provider.
+			! window.confirm( sprintf( __( 'This will generate alt text for %d images using your API key. Continue?', 'internick-smart-alt-generator' ), total ) )
+		) {
+			return;
+		}
 		pausedRef.current = false;
-		indexRef.current = 0;
+		attemptedRef.current = new Set();
+		queueRef.current = [];
+		setSuccesses( 0 );
+		setErrors( 0 );
+		setProcessed( 0 );
 		setStatus( 'running' );
-		runFrom( 0 );
-	}, [ runFrom ] );
+		processQueue();
+	}, [ processQueue ] );
 
 	const handlePause = useCallback( () => {
 		pausedRef.current = true;
@@ -193,8 +213,8 @@ function BulkApp() {
 	const handleResume = useCallback( () => {
 		pausedRef.current = false;
 		setStatus( 'running' );
-		runFrom( indexRef.current );
-	}, [ runFrom ] );
+		processQueue();
+	}, [ processQueue ] );
 
 	if ( total === 0 ) {
 		return (
