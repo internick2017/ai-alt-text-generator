@@ -87,19 +87,7 @@ class INSAG_Admin {
 
         // Bulk page — React bundle.
         if ( 'media_page_insag-bulk' === $hook ) {
-            $bulk_query = new WP_Query( array(
-                'post_type'      => 'attachment',
-                'post_mime_type' => 'image',
-                'post_status'    => 'inherit',
-                'posts_per_page' => 100,
-                // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Intentional and unavoidable: finding attachments missing alt text requires a meta_query. Bounded to 100 results per page.
-                'meta_query'     => array(
-                    'relation' => 'OR',
-                    array( 'key' => '_wp_attachment_image_alt', 'compare' => 'NOT EXISTS' ),
-                    array( 'key' => '_wp_attachment_image_alt', 'value' => '', 'compare' => '=' ),
-                ),
-            ) );
-            $image_ids = wp_list_pluck( $bulk_query->posts, 'ID' );
+            $bulk_query = new WP_Query( INSAG_Media::missing_alt_query_args( 1 ) );
 
             $asset_file = INSAG_PLUGIN_DIR . 'build/admin-bulk.asset.php';
             if ( ! file_exists( $asset_file ) ) {
@@ -114,7 +102,7 @@ class INSAG_Admin {
                 true
             );
             wp_localize_script( 'insag-admin-bulk', 'insagBulkData', array(
-                'imageIds' => $image_ids,
+                'total'    => (int) $bulk_query->found_posts,
                 'nonce'    => wp_create_nonce( 'wp_rest' ),
                 'restBase' => rest_url( 'insag/v1' ),
             ) );
