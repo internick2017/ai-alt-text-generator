@@ -99,7 +99,7 @@ class INSAG_Image {
 
         $saved = $editor->save( $tmp, 'image/jpeg' );
         if ( $saved instanceof WP_Error ) {
-            @unlink( $tmp ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+            wp_delete_file( $tmp );
             return $convert_error;
         }
 
@@ -107,9 +107,9 @@ class INSAG_Image {
         $out   = ( is_array( $saved ) && ! empty( $saved['path'] ) ) ? $saved['path'] : $tmp;
         $bytes = file_get_contents( $out ); // phpcs:ignore WordPress.WP.AlternativeFunctions
 
-        @unlink( $tmp ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+        wp_delete_file( $tmp );
         if ( $out !== $tmp ) {
-            @unlink( $out ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+            wp_delete_file( $out );
         }
 
         if ( false === $bytes || '' === $bytes ) {
@@ -240,14 +240,14 @@ class INSAG_Image {
         // The editor picks its reader from the extension, so keep it.
         $source = $staged . '.' . $ext;
         if ( false === file_put_contents( $source, $bytes ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions
-            @unlink( $staged ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+            wp_delete_file( $staged );
             return $convert_error;
         }
 
         $converted = $this->convert_to_jpeg_bytes( $source );
 
-        @unlink( $staged ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
-        @unlink( $source ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+        wp_delete_file( $staged );
+        wp_delete_file( $source );
 
         return $converted;
     }

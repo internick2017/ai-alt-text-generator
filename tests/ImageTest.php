@@ -8,6 +8,14 @@ final class ImageTest extends TestCase {
     protected function set_up() {
         parent::set_up();
         Functions\when( '__' )->returnArg( 1 );
+        // Real deletion, so the conversion tests do not leave temp files behind.
+        Functions\when( 'wp_delete_file' )->alias(
+            function ( $file ) {
+                if ( is_string( $file ) && file_exists( $file ) ) {
+                    unlink( $file );
+                }
+            }
+        );
     }
 
     public function test_mime_from_path_known_extensions() {
