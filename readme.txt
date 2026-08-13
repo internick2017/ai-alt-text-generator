@@ -84,6 +84,7 @@ Build the compiled assets in `build/` with `npm install && npm run build`.
 == Changelog ==
 
 = 1.3.0 =
+* AVIF images are now supported: they are converted to JPEG before being sent for analysis, instead of being rejected. On servers that cannot read AVIF, the plugin explains the problem and suggests JPEG, PNG or WebP.
 * Bulk Generator now processes your entire media library, in batches of 100, with a progress counter across the whole run.
 * A confirmation dialog shows the total number of images (and that your API key will be used) before large runs start.
 * Review request now appears after 5 generated alt texts (was 10) and is only dismissed when the server confirms it.
