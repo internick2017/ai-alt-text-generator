@@ -1,18 +1,18 @@
-=== Internick - Smart Alt Generator ===
+=== AI Alt Text Generator for Images - Internick ===
 Contributors: internick2017
-Tags: alt text, accessibility, wcag, seo, ai
+Tags: alt text, alt text generator, accessibility, ai, seo
 Requires at least: 6.4
 Tested up to: 7.1
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Automatically generate descriptive alt text for images using AI. Supports WordPress 7.0 AI Connectors and OpenAI for older versions.
+AI alt text generator for your images. Bulk generate alt text, audit your media library, and improve accessibility and SEO.
 
 == Description ==
 
-Internick - Smart Alt Generator uses artificial intelligence to create descriptive,
+AI Alt Text Generator for Images uses artificial intelligence to create descriptive,
 SEO-friendly alt text for your WordPress images — improving accessibility
 (WCAG) and search rankings.
 
@@ -83,6 +83,9 @@ Build the compiled assets in `build/` with `npm install && npm run build`.
 
 == Changelog ==
 
+= 1.3.1 =
+* Plugin renamed to "AI Alt Text Generator for Images" so it is easier to find in the plugin directory. No functional changes.
+
 = 1.3.0 =
 * AVIF images are now supported: they are converted to JPEG before being sent for analysis, instead of being rejected. On servers that cannot read AVIF, the plugin explains the problem and suggests JPEG, PNG or WebP.
 * Bulk Generator now processes your entire media library, in batches of 100, with a progress counter across the whole run.
@@ -133,6 +136,9 @@ Build the compiled assets in `build/` with `npm install && npm run build`.
 * Initial release: settings, media button, bulk generator, REST API.
 
 == Upgrade Notice ==
+
+= 1.3.1 =
+Name change only, to make the plugin easier to find. Nothing to do on your side.
 
 = 1.3.0 =
 The Bulk Generator now works through your entire media library instead of
