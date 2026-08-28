@@ -1,5 +1,6 @@
 === AI Alt Text Generator for Images - Internick ===
 Contributors: internick2017
+Donate link: https://ko-fi.com/nickgranados
 Tags: alt text, alt text generator, accessibility, ai, seo
 Requires at least: 6.4
 Tested up to: 7.1
