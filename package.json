@@ -1,6 +1,6 @@
 {
   "name": "internick-smart-alt-generator",
-  "version": "1.3.0",
+  "version": "1.3.2",
   "description": "Block editor integration for AI Alt Text Generator for Images.",
   "license": "GPL-2.0-or-later",
   "private": true,

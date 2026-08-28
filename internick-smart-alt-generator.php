@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name:       AI Alt Text Generator for Images - Internick
+ * Plugin Name:       AI Alt Text Generator for Images
  * Plugin URI:        https://github.com/internick2017/smart-alt-generator
  * Description:       AI alt text generator for your images. Bulk generate alt text, audit your media library, and improve accessibility and SEO.
- * Version:           1.3.1
+ * Version:           1.3.2
  * Author:            Nick Granados
  * Author URI:        https://nickgranados.com
  * License:           GPL-2.0-or-later
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
     die;
 }
 
-define( 'INSAG_VERSION', '1.3.1' );
+define( 'INSAG_VERSION', '1.3.2' );
 define( 'INSAG_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'INSAG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'INSAG_PLUGIN_FILE', __FILE__ );

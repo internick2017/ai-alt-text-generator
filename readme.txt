@@ -1,33 +1,92 @@
-=== AI Alt Text Generator for Images - Internick ===
+=== AI Alt Text Generator for Images – Bulk Alt Text & Accessibility Audit ===
 Contributors: internick2017
 Donate link: https://ko-fi.com/nickgranados
-Tags: alt text, alt text generator, accessibility, ai, seo
+Tags: alt text, alt text generator, image alt text, alt tag, accessibility
 Requires at least: 6.4
 Tested up to: 7.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 Requires PHP: 8.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-AI alt text generator for your images. Bulk generate alt text, audit your media library, and improve accessibility and SEO.
+Generate alt text for images with AI. Bulk generate alt text, audit your media library for missing alt tags, and improve accessibility and SEO.
 
 == Description ==
 
-AI Alt Text Generator for Images uses artificial intelligence to create descriptive,
-SEO-friendly alt text for your WordPress images — improving accessibility
-(WCAG) and search rankings.
+**AI Alt Text Generator for Images** writes descriptive, SEO-friendly alt text for
+your WordPress images automatically. Instead of typing an alt tag for every image
+by hand, you can generate alt text for one image, for a whole page, or for your
+entire media library at once.
 
-Features:
+Missing alt text hurts twice. It locks out visitors who use screen readers, which
+is an accessibility failure under WCAG, and it hides your images from Google Image
+search. Most WordPress media libraries have hundreds of images with no alt text at
+all, because writing them by hand is slow, repetitive work that nobody enjoys.
 
-* Alt Text Audit: scan your whole library for missing, empty, duplicate, overly long, or placeholder alt text, with a health score and per-image generate, edit, or ignore actions
-* Native WordPress 7.0 AI Connectors support — no separate API key needed
-* Bulk generator — process every image missing alt text at once
-* Auto-generate on upload
-* REST API endpoint for external tools and automation
-* Generates alt text in your site's language
+This plugin does that work for you.
 
-On WordPress 6.x the plugin uses your OpenAI API key. On WordPress 7.0+ it
-uses your configured AI Connectors automatically.
+= Alt Text Audit =
+
+Scan your entire media library and get a health score for its alt text. The audit
+flags every image with a problem:
+
+* Missing alt text
+* Empty alt attributes
+* Duplicate alt text reused across images
+* Alt text that is too long for screen readers
+* Placeholder junk left behind by other tools
+
+Every flagged image can be fixed right there: generate new alt text with AI, edit
+it by hand, or mark it as decorative and ignore it. You can filter the list and
+generate alt text for everything currently shown in one action.
+
+= Bulk Alt Text Generator =
+
+Process your whole media library in one run. The bulk generator works through
+every image missing alt text in batches of 100, with a live progress counter
+across the entire run, pause and resume, and a per-image log so you can see
+exactly what was written and what failed. Before a large run starts, a
+confirmation dialog tells you how many images will be processed.
+
+= Generate Alt Text Anywhere You Work =
+
+* **Block editor** – an AI Alt Text panel in the Content tab of the image block
+* **Media Library** – a generate button right in the attachment details modal
+* **Bulk generator** – for the whole library at once
+* **On upload** – optionally generate alt text automatically for every new image
+* **REST API** – an endpoint for external tools and your own automation
+
+= Works in Your Language =
+
+Unlike most alt text plugins, this one is not English-only. The admin screens, the
+editor button and the notices are translated into **Spanish (es_ES)** and
+**Brazilian Portuguese (pt_BR)**.
+
+The generated alt text follows your site's language too, so a Spanish site gets
+Spanish alt text and a Brazilian site gets Portuguese alt text, without any extra
+configuration.
+
+= Bring Your Own AI =
+
+* On **WordPress 7.0 and later**, the plugin uses your site's native AI Connectors
+  configuration. No separate API key and no extra account needed.
+* On **WordPress 6.x**, the plugin uses your own OpenAI API key. Generation is
+  billed to you directly by OpenAI, at roughly $0.001 per image with gpt-4o-mini.
+
+There is no subscription, no per-image fee and no account with us. The plugin is
+free and you pay only your own AI provider, if anything.
+
+= Supported Image Formats =
+
+JPEG, PNG and WebP are analysed directly. AVIF images are converted to JPEG
+automatically before analysis instead of being rejected.
+
+= Who This Is For =
+
+* Site owners with a large media library and no alt text
+* Agencies and freelancers doing accessibility or SEO cleanups for clients
+* Bloggers and photographers who publish a lot of images
+* Anyone working toward WCAG accessibility compliance
 
 == Installation ==
 
@@ -42,7 +101,28 @@ uses your configured AI Connectors automatically.
 Only on WordPress 6.x. On 7.0+ the plugin uses your AI Connectors configuration.
 
 = How much does generation cost? =
-With gpt-4o-mini, roughly $0.001 per image.
+With gpt-4o-mini, roughly $0.001 per image. There is no fee from this plugin; you
+pay your AI provider directly.
+
+= What languages does it support? =
+The admin interface is available in English, Spanish (es_ES) and Brazilian
+Portuguese (pt_BR). The generated alt text follows your site's language setting.
+
+= Which image formats work? =
+JPEG, PNG and WebP are analysed directly. AVIF images are converted to JPEG
+automatically before being analysed.
+
+= Can it process my whole media library at once? =
+Yes. The bulk generator runs through the entire library in batches of 100, with a
+progress counter, pause and resume, and a per-image result log.
+
+= Is there a REST API? =
+Yes. The plugin exposes REST endpoints so you can generate alt text and manage
+settings from external tools or your own scripts.
+
+= Is the source code available? =
+Yes. The full unminified source, including the React sources and build tooling, is
+on GitHub. See the Development section below.
 
 == Screenshots ==
 
@@ -83,6 +163,9 @@ https://github.com/internick2017/smart-alt-generator
 Build the compiled assets in `build/` with `npm install && npm run build`.
 
 == Changelog ==
+
+= 1.3.2 =
+* Documentation only: clearer plugin name, an expanded description covering the Alt Text Audit, bulk generation and language support, and more detailed FAQs. No functional changes.
 
 = 1.3.1 =
 * Plugin renamed to "AI Alt Text Generator for Images" so it is easier to find in the plugin directory. No functional changes.
@@ -137,6 +220,9 @@ Build the compiled assets in `build/` with `npm install && npm run build`.
 * Initial release: settings, media button, bulk generator, REST API.
 
 == Upgrade Notice ==
+
+= 1.3.2 =
+Documentation update only. Nothing to do on your side.
 
 = 1.3.1 =
 Name change only, to make the plugin easier to find. Nothing to do on your side.
