@@ -1,27 +1,22 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Internick - Smart Alt Generator 1.2.1\n"
+"Project-Id-Version: AI Alt Text Generator for Images 1.3.2\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-29T02:13:08+00:00\n"
+"PO-Revision-Date: 2026-08-29T02:13:08+00:00\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Domain: internick-smart-alt-generator\n"
-
-#. Plugin Name of the plugin
-#: internick-smart-alt-generator.php
-msgid "Internick - Smart Alt Generator"
-msgstr "Internick - Smart Alt Generator"
 
 #. Plugin URI of the plugin
 #: internick-smart-alt-generator.php
 msgid "https://github.com/internick2017/smart-alt-generator"
 msgstr "https://github.com/internick2017/smart-alt-generator"
-
-#. Description of the plugin
-#: internick-smart-alt-generator.php
-msgid "Automatically generate descriptive alt text for images using AI. Supports WordPress 7.0 AI Connectors and OpenAI API for older versions."
-msgstr "Gera automaticamente texto alternativo descritivo para imagens usando IA. Compatível com os Conectores de IA do WordPress 7.0 e com a API da OpenAI em versões anteriores."
 
 #. Author of the plugin
 #: internick-smart-alt-generator.php
@@ -37,6 +32,7 @@ msgstr "https://nickgranados.com"
 #: admin/class-sag-admin.php:18
 #: includes/class-sag-media.php:53
 #: build/index.js:1
+#: src/block-editor/index.js:54
 msgid "AI Alt Text"
 msgstr "Texto alternativo com IA"
 
@@ -48,26 +44,27 @@ msgstr "Texto alternativo em massa"
 #: admin/class-sag-admin.php:33
 #: admin/class-sag-admin.php:34
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:233
 msgid "Alt Text Audit"
 msgstr "Auditoria de texto alternativo"
 
-#: includes/class-sag-ai-provider.php:65
+#: includes/class-sag-ai-provider.php:85
 msgid "Use the same language as the website."
 msgstr "Usar o mesmo idioma do site."
 
 #. translators: %s is a language name.
-#: includes/class-sag-ai-provider.php:68
+#: includes/class-sag-ai-provider.php:88
 #, php-format
 msgid "Write the alt text in %s."
 msgstr "Escreva o texto alternativo em %s."
 
 #. translators: %s is the language instruction.
-#: includes/class-sag-ai-provider.php:74
+#: includes/class-sag-ai-provider.php:94
 #, php-format
 msgid "Generate a concise, descriptive alt text for this image. Maximum 125 characters. %s Return only the alt text, no quotes."
 msgstr "Gere um texto alternativo conciso e descritivo para esta imagem. Máximo de 125 caracteres. %s Retorne apenas o texto alternativo, sem aspas."
 
-#: includes/class-sag-ai-provider.php:110
+#: includes/class-sag-ai-provider.php:130
 msgid "The AI provider returned an empty response."
 msgstr "O provedor de IA retornou uma resposta vazia."
 
@@ -75,24 +72,24 @@ msgstr "O provedor de IA retornou uma resposta vazia."
 msgid "Image not found."
 msgstr "Imagem não encontrada."
 
-#: includes/class-sag-image.php:64
-#: includes/class-sag-image.php:79
+#: includes/class-sag-image.php:142
+#: includes/class-sag-image.php:167
 msgid "Image file could not be read."
 msgstr "Não foi possível ler o arquivo de imagem."
 
-#: includes/class-sag-image.php:69
+#: includes/class-sag-image.php:149
 msgid "Unsupported image type."
 msgstr "Tipo de imagem não suportado."
 
-#: includes/class-sag-image.php:74
+#: includes/class-sag-image.php:154
 msgid "Image is too large to process."
 msgstr "A imagem é muito grande para ser processada."
 
-#: includes/class-sag-image.php:100
+#: includes/class-sag-image.php:188
 msgid "Could not download the image."
 msgstr "Não foi possível baixar a imagem."
 
-#: includes/class-sag-image.php:105
+#: includes/class-sag-image.php:193
 msgid "Downloaded image was empty."
 msgstr "A imagem baixada estava vazia."
 
@@ -105,277 +102,391 @@ msgid "OpenAI returned an empty response."
 msgstr "A OpenAI retornou uma resposta vazia."
 
 #: includes/class-sag-openai.php:70
-#: includes/class-sag-rest-api.php:423
+#: includes/class-sag-rest-api.php:455
 msgid "OpenAI API key is not configured."
 msgstr "A chave de API da OpenAI não está configurada."
 
-#: includes/class-sag-rest-api.php:187
-#: includes/class-sag-rest-api.php:319
-#: includes/class-sag-rest-api.php:344
+#: includes/class-sag-rest-api.php:200
+#: includes/class-sag-rest-api.php:351
+#: includes/class-sag-rest-api.php:376
 msgid "You are not allowed to edit this attachment."
 msgstr "Você não tem permissão para editar este anexo."
 
-#: includes/class-sag-rest-api.php:201
+#: includes/class-sag-rest-api.php:214
 msgid "Provide image_id or image_url."
 msgstr "Forneça image_id ou image_url."
 
-#: includes/class-sag-rest-api.php:365
+#: includes/class-sag-rest-api.php:397
 msgid "Unknown review action."
 msgstr "Ação de avaliação desconhecida."
 
-#: includes/class-sag-rest-api.php:385
+#: includes/class-sag-rest-api.php:417
 msgid "Invalid model."
 msgstr "Modelo inválido."
 
+#. translators: %d: minimum number of generated alt texts before this notice appears.
 #: includes/class-sag-review-notice.php:115
 #, php-format
 msgid "You've generated alt text for %d+ images with Smart Alt Generator!"
 msgstr "Você gerou texto alternativo para mais de %d imagens com o Smart Alt Generator!"
 
-#: includes/class-sag-review-notice.php:114
+#: includes/class-sag-review-notice.php:117
 msgid "If it's saving you time, a review on WordPress.org would help a lot. 🙏"
 msgstr "Se está economizando seu tempo, uma avaliação no WordPress.org ajudaria muito. 🙏"
 
-#: includes/class-sag-review-notice.php:119
+#: includes/class-sag-review-notice.php:122
 msgid "Leave a review ⭐"
 msgstr "Deixar uma avaliação ⭐"
 
-#: includes/class-sag-review-notice.php:122
+#: includes/class-sag-review-notice.php:125
 msgid "Maybe later"
 msgstr "Talvez mais tarde"
 
-#: includes/class-sag-review-notice.php:125
+#: includes/class-sag-review-notice.php:128
 msgid "I already did / Don't show again"
 msgstr "Já deixei / Não mostrar de novo"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:12
 msgid "Missing"
 msgstr "Faltante"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:13
 msgid "Empty"
 msgstr "Vazio"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:14
 msgid "Duplicate"
 msgstr "Duplicado"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:15
 msgid "Too long"
 msgstr "Muito longo"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:16
 msgid "Placeholder"
 msgstr "Genérico"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:29
 msgid "images"
 msgstr "imagens"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:79
 msgid "Generated ✓"
 msgstr "Gerado ✓"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:82
+#: src/admin-audit/index.js:95
+#: src/admin-audit/index.js:106
 msgid "Failed"
 msgstr "Falhou"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:92
 msgid "Saved ✓"
 msgstr "Salvo ✓"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:132
 msgid "Alt text…"
 msgstr "Texto alternativo…"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:137
 msgid "Generate with AI"
 msgstr "Gerar com IA"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:140
 msgid "Save"
 msgstr "Salvar"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:143
 msgid "Ignore"
 msgstr "Ignorar"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:210
 #, js-format
 msgid "Generate AI alt text for %d image(s)? Each one is a paid OpenAI request."
 msgstr "Gerar texto alternativo com IA para %d imagem(ns)? Cada uma é uma solicitação paga à OpenAI."
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:241
 #, js-format
 msgid "Generating %1$d/%2$d…"
 msgstr "Gerando %1$d/%2$d…"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:242
 #, js-format
 msgid "Generate all shown (%d)"
 msgstr "Gerar todas as exibidas (%d)"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:245
 msgid "Re-scan"
 msgstr "Escanear novamente"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:252
 msgid "Scanning…"
 msgstr "Escaneando…"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:263
 msgid "No problems here. Nice work!"
 msgstr "Nenhum problema por aqui. Bom trabalho!"
 
 #: build/admin-audit.js:1
+#: src/admin-audit/index.js:264
 msgid "Loading…"
 msgstr "Carregando…"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:12
 msgid "Total"
 msgstr "Total"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:13
 msgid "Completed"
 msgstr "Concluídas"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:14
 msgid "Errors"
 msgstr "Erros"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:15
 msgid "Remaining"
 msgstr "Restantes"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:72
 msgid "Generate All"
 msgstr "Gerar tudo"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:79
 msgid "⏸ Pause"
 msgstr "⏸ Pausar"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:86
 msgid "▶ Resume"
 msgstr "▶ Retomar"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:100
 msgid "✓ All done"
 msgstr "✓ Tudo concluído"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:114
 msgid "Results"
 msgstr "Resultados"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:120
 msgid "Clear log"
 msgstr "Limpar registro"
 
 #: build/admin-bulk.js:1
 #: build/index.js:1
+#: src/admin-bulk/index.js:192
+#: src/block-editor/index.js:47
 msgid "Generation failed."
 msgstr "Falha na geração."
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:287
+#: src/admin-bulk/index.js:295
 msgid "Bulk Alt Text Generator"
 msgstr "Gerador de texto alternativo em massa"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:288
 msgid "All your images already have alt text."
 msgstr "Todas as suas imagens já têm texto alternativo."
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:93
 msgid "Retry"
 msgstr "Tentar novamente"
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:184
 msgid "The AI returned an empty alt text."
 msgstr "A IA retornou um texto alternativo vazio."
 
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:207
+#: src/admin-bulk/index.js:225
 msgid "Could not load the next batch. Check your connection and press Retry."
 msgstr "Não foi possível carregar o próximo lote. Verifique sua conexão e pressione Tentar novamente."
 
+#. translators: %d: number of images that will be sent to the AI provider.
 #: build/admin-bulk.js:1
+#: src/admin-bulk/index.js:253
+#, js-format
 msgid "This will generate alt text for %d images using your API key. Continue?"
 msgstr "Isso gerará texto alternativo para %d imagens usando sua chave de API. Continuar?"
 
-#: build/admin-settings.js:1
-msgid "WordPress AI Connectors detected. Using your configured AI provider."
-msgstr "Conectores de IA do WordPress detectados. Usando o provedor de IA configurado."
-
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:86
 msgid "Connection successful"
 msgstr "Conexão bem-sucedida"
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:89
 msgid "Connection failed"
 msgstr "Falha na conexão"
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:101
 msgid "Test Connection"
 msgstr "Testar conexão"
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:125
 msgid "AI Provider"
 msgstr "Provedor de IA"
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:129
 msgid "OpenAI API Key"
 msgstr "Chave de API da OpenAI"
 
-#: build/admin-settings.js:1
-msgid "Get your key at platform.openai.com"
-msgstr "Obtenha sua chave em platform.openai.com"
-
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:149
 msgid "Model"
 msgstr "Modelo"
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:168
 msgid "Generation"
 msgstr "Geração"
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:172
 msgid "Auto-generate on upload"
 msgstr "Gerar automaticamente ao enviar"
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:173
 msgid "Automatically generate alt text when a new image is uploaded to the Media Library."
 msgstr "Gera automaticamente o texto alternativo quando uma nova imagem é enviada para a biblioteca de mídia."
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:181
 msgid "Language"
 msgstr "Idioma"
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:184
 msgid "Use \"auto\" to match the site language, or enter a language name (e.g. \"Spanish\")."
 msgstr "Use \"auto\" para corresponder ao idioma do site, ou digite o nome de um idioma (por exemplo, \"espanhol\")."
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:201
 msgid "Settings saved"
 msgstr "Configurações salvas"
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:206
 msgid "Save failed. Please try again."
 msgstr "Falha ao salvar. Tente novamente."
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:215
 msgid "Saving…"
 msgstr "Salvando…"
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:216
 msgid "Save Settings"
 msgstr "Salvar configurações"
 
-#: build/admin-settings.js:1
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:271
 msgid "Smart Alt Generator"
 msgstr "Smart Alt Generator"
 
 #: build/index.js:1
+#: src/block-editor/index.js:64
 msgid "Generating…"
 msgstr "Gerando…"
 
 #: build/index.js:1
+#: src/block-editor/index.js:67
 msgid "⚡ Generate with AI"
 msgstr "⚡ Gerar com IA"
+
+#. Plugin Name of the plugin
+#: internick-smart-alt-generator.php
+msgid "AI Alt Text Generator for Images"
+msgstr "Gerador de texto alternativo com IA para imagens"
+
+#. Description of the plugin
+#: internick-smart-alt-generator.php
+msgid "AI alt text generator for your images. Bulk generate alt text, audit your media library, and improve accessibility and SEO."
+msgstr "Gerador de texto alternativo com IA para suas imagens. Gere texto alternativo em massa, faça a auditoria da sua biblioteca de mídia e melhore a acessibilidade e o SEO."
+
+#: includes/class-sag-image.php:83
+#: includes/class-sag-image.php:227
+msgid "This image format could not be converted for AI processing. Try uploading a JPEG, PNG or WebP."
+msgstr "Não foi possível converter este formato de imagem para processamento com IA. Tente enviar um JPEG, PNG ou WebP."
+
+#. translators: %s: the connected AI provider's name, e.g. "Anthropic".
+#: build/admin-settings.js:2
+#: src/admin-settings/index.js:33
+#, js-format
+msgid "Generating alt text via your WordPress AI Connector: %s."
+msgstr "Gerando texto alternativo com o seu Conector de IA do WordPress: %s."
+
+#. translators: %s: comma-separated list of connected AI providers, e.g. "Anthropic, Google".
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:38
+#, js-format
+msgid "Generating alt text via WordPress AI Connectors. Connected: %s — WordPress picks which one answers each request automatically; this plugin does not choose or know in advance."
+msgstr "Gerando texto alternativo com os Conectores de IA do WordPress. Conectados: %s. O WordPress escolhe automaticamente qual deles responde a cada solicitação; este plugin não escolhe nem sabe de antemão."
+
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:54
+msgid "Currently generating alt text by calling OpenAI directly with the API key below."
+msgstr "No momento, o texto alternativo é gerado chamando a OpenAI diretamente com a chave de API abaixo."
+
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:59
+msgid "Running WordPress 7.0 or newer? You can connect a different AI provider (such as Anthropic or Google) in your site’s AI settings — once configured, this plugin switches to it automatically, no key or code change needed here."
+msgstr "Está no WordPress 7.0 ou posterior? Você pode conectar outro provedor de IA (como Anthropic ou Google) nas configurações de IA do seu site. Depois de configurado, este plugin passa a usá-lo automaticamente, sem precisar alterar nenhuma chave nem código aqui."
+
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:135
+msgid "Don't have a key? "
+msgstr "Não tem uma chave? "
+
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:137
+msgid "Get one at platform.openai.com"
+msgstr "Obtenha uma em platform.openai.com"
+
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:140
+msgid "Billed separately from ChatGPT Plus, as pay-per-use credits — "
+msgstr "É cobrado separadamente do ChatGPT Plus, como créditos de pagamento por uso: "
+
+#: build/admin-settings.js:3
+#: src/admin-settings/index.js:142
+msgid "check your OpenAI credit balance"
+msgstr "consulte seu saldo de créditos da OpenAI"
