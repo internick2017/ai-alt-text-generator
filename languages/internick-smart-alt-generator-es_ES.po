@@ -43,8 +43,8 @@ msgstr "Texto alternativo masivo"
 
 #: admin/class-sag-admin.php:33
 #: admin/class-sag-admin.php:34
-#: build/admin-audit.js:1
-#: src/admin-audit/index.js:233
+#: build/admin-audit.js:4
+#: src/admin-audit/index.js:234
 msgid "Alt Text Audit"
 msgstr "Auditoría de texto alternativo"
 
@@ -213,41 +213,44 @@ msgstr "Guardar"
 msgid "Ignore"
 msgstr "Ignorar"
 
-#: build/admin-audit.js:1
-#: src/admin-audit/index.js:210
+#. translators: %d: number of images that will be sent to the AI.
+#: build/admin-audit.js:4
+#: src/admin-audit/index.js:211
 #, js-format
 msgid "Generate AI alt text for %d image(s)? Each one is a paid OpenAI request."
 msgstr "¿Generar texto alternativo con IA para %d imagen(es)? Cada una es una solicitud de pago a OpenAI."
 
-#: build/admin-audit.js:1
-#: src/admin-audit/index.js:241
+#. translators: %1$d: images already generated. %2$d: total images in this run.
+#: build/admin-audit.js:7
+#: src/admin-audit/index.js:244
 #, js-format
 msgid "Generating %1$d/%2$d…"
 msgstr "Generando %1$d/%2$d…"
 
-#: build/admin-audit.js:1
-#: src/admin-audit/index.js:242
+#. translators: %d: number of images currently listed on screen.
+#: build/admin-audit.js:10
+#: src/admin-audit/index.js:250
 #, js-format
 msgid "Generate all shown (%d)"
 msgstr "Generar todas las mostradas (%d)"
 
-#: build/admin-audit.js:1
-#: src/admin-audit/index.js:245
+#: build/admin-audit.js:10
+#: src/admin-audit/index.js:255
 msgid "Re-scan"
 msgstr "Volver a escanear"
 
-#: build/admin-audit.js:1
-#: src/admin-audit/index.js:252
+#: build/admin-audit.js:10
+#: src/admin-audit/index.js:262
 msgid "Scanning…"
 msgstr "Escaneando…"
 
-#: build/admin-audit.js:1
-#: src/admin-audit/index.js:263
+#: build/admin-audit.js:10
+#: src/admin-audit/index.js:273
 msgid "No problems here. Nice work!"
 msgstr "Sin problemas aquí. ¡Buen trabajo!"
 
-#: build/admin-audit.js:1
-#: src/admin-audit/index.js:264
+#: build/admin-audit.js:10
+#: src/admin-audit/index.js:274
 msgid "Loading…"
 msgstr "Cargando…"
 
@@ -308,14 +311,14 @@ msgstr "Limpiar registro"
 msgid "Generation failed."
 msgstr "Error al generar."
 
-#: build/admin-bulk.js:1
-#: src/admin-bulk/index.js:287
-#: src/admin-bulk/index.js:295
+#: build/admin-bulk.js:4
+#: src/admin-bulk/index.js:290
+#: src/admin-bulk/index.js:298
 msgid "Bulk Alt Text Generator"
 msgstr "Generador masivo de texto alternativo"
 
-#: build/admin-bulk.js:1
-#: src/admin-bulk/index.js:288
+#: build/admin-bulk.js:4
+#: src/admin-bulk/index.js:291
 msgid "All your images already have alt text."
 msgstr "Todas tus imágenes ya tienen texto alternativo."
 
@@ -336,8 +339,8 @@ msgid "Could not load the next batch. Check your connection and press Retry."
 msgstr "No se pudo cargar el siguiente lote. Verifica tu conexión y presiona Reintentar."
 
 #. translators: %d: number of images that will be sent to the AI provider.
-#: build/admin-bulk.js:1
-#: src/admin-bulk/index.js:253
+#: build/admin-bulk.js:4
+#: src/admin-bulk/index.js:254
 #, js-format
 msgid "This will generate alt text for %d images using your API key. Continue?"
 msgstr "Esto generará texto alternativo para %d imágenes usando tu clave de API. ¿Continuar?"

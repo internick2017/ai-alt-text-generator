@@ -249,8 +249,11 @@ function BulkApp() {
 		}
 		if (
 			total > 100 &&
-			// translators: %d: number of images that will be sent to the AI provider.
-			! window.confirm( sprintf( __( 'This will generate alt text for %d images using your API key. Continue?', 'internick-smart-alt-generator' ), total ) )
+			! window.confirm( sprintf(
+				// translators: %d: number of images that will be sent to the AI provider.
+				__( 'This will generate alt text for %d images using your API key. Continue?', 'internick-smart-alt-generator' ),
+				total
+			) )
 		) {
 			return;
 		}

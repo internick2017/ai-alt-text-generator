@@ -207,6 +207,7 @@ function AuditApp() {
 		// eslint-disable-next-line no-alert
 		if ( ! window.confirm(
 			sprintf(
+				// translators: %d: number of images that will be sent to the AI.
 				__( 'Generate AI alt text for %d image(s)? Each one is a paid OpenAI request.', 'internick-smart-alt-generator' ),
 				targets.length
 			)
@@ -238,8 +239,17 @@ function AuditApp() {
 						disabled={ bulkBusy || status === 'scanning' || visible.length === 0 }
 					>
 						{ bulkBusy
-							? sprintf( __( 'Generating %1$d/%2$d…', 'internick-smart-alt-generator' ), bulkProgress.done, bulkProgress.total )
-							: sprintf( __( 'Generate all shown (%d)', 'internick-smart-alt-generator' ), visible.length ) }
+							? sprintf(
+								// translators: %1$d: images already generated. %2$d: total images in this run.
+								__( 'Generating %1$d/%2$d…', 'internick-smart-alt-generator' ),
+								bulkProgress.done,
+								bulkProgress.total
+							)
+							: sprintf(
+								// translators: %d: number of images currently listed on screen.
+								__( 'Generate all shown (%d)', 'internick-smart-alt-generator' ),
+								visible.length
+							) }
 					</Button>
 					<Button variant="secondary" onClick={ runScan } disabled={ status === 'scanning' || bulkBusy }>
 						{ __( 'Re-scan', 'internick-smart-alt-generator' ) }
